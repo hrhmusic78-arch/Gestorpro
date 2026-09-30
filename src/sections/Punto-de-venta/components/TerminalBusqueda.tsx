@@ -194,6 +194,27 @@ export const TerminalBusqueda: React.FC<Props> = ({ searchQuery, setSearchQuery,
                     )}
                   </div>
                   
+                  {/* IMAGEN PARA IDENTIFICAR EL PRODUCTO (o un ícono si no tiene) */}
+                  {(() => {
+                    const img = (prod as any).image_url || (prod as any).image_path || '';
+                    const valida = img.startsWith('http') || img.startsWith('data:');
+                    return (
+                      <div className={`w-full h-20 sm:h-24 mb-2 sm:mb-3 flex items-center justify-center border border-[#E2E8F0] bg-[#FFFFFF] overflow-hidden ${estaAgotado ? 'grayscale' : ''}`}>
+                        {valida ? (
+                          <img
+                            src={img}
+                            alt={prod.name}
+                            loading="lazy"
+                            className="w-full h-full object-contain p-1"
+                            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                          />
+                        ) : (
+                          <Package size={28} className="text-[#CBD5E1]" aria-hidden="true" />
+                        )}
+                      </div>
+                    );
+                  })()}
+
                   <span className="text-xs sm:text-sm font-black text-[#1E293B] uppercase leading-tight line-clamp-2 mb-3 sm:mb-4 break-words">
                     {prod.name}
                   </span>

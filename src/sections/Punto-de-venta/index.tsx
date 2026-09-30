@@ -240,8 +240,9 @@ const [searchQuery, setSearchQuery] = useState('');
           category: p.category || 'GENERAL',
           // CORRECCIÓN ESTRATÉGICA: Interceptar 'CONSUMPTION' desde la BD
           unit: p.control_type === 'CONSUMPTION' ? 'CONSUMO' : (p.unit || p.weight_unit || (p.control_type === 'WEIGHT' ? 'KG' : 'UND')),
-          control_type: p.control_type // Añadimos esto para validaciones estrictas
-        }));
+          control_type: p.control_type, // Añadimos esto para validaciones estrictas
+          image_url: p.image_url || p.image_path || null // imagen para identificar el producto en las tarjetas
+        } as Product));
         setProductos(mapeados);
       }
     };
