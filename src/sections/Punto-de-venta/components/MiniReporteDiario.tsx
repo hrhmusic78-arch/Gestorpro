@@ -194,7 +194,7 @@ export const MiniReporteDiario: React.FC<Props> = ({ refreshTrigger }) => {
 
   return (
     <>
-      <div className="bg-white border-2 border-[#1E293B] shadow-[4px_4px_0_0_#E2E8F0] shrink-0 font-mono flex flex-col">
+      <div className="bg-white border-2 border-[#1E293B] shrink-0 font-mono flex flex-col">
         <div className="bg-[#1E293B] text-white p-3 flex justify-between items-center">
           <button 
             onClick={() => setIsModalOpen(true)}
