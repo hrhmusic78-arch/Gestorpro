@@ -512,7 +512,7 @@ const [searchQuery, setSearchQuery] = useState('');
           setSelectedIndex(-1);
         }
       }}
-      className={`flex flex-col lg:flex-row h-full w-full bg-transparent font-mono gap-3 lg:gap-6 relative ${hasOpenSession === false ? 'pt-20 sm:pt-16' : ''}`}
+      className={`flex flex-col lg:flex-row h-full w-full bg-transparent font-mono gap-2 relative ${hasOpenSession === false ? 'pt-20 sm:pt-16' : ''}`}
     >
       
       {/* BARRA DE ADVERTENCIA - MODO CONSULTA */}
@@ -551,7 +551,7 @@ const [searchQuery, setSearchQuery] = useState('');
       </div>
       
       {/* 🛡️ CONTENEDOR DERECHO EVICAMP: MINI REPORTE + CAJA ALINEADA */}
-      <div className={`${vistaMovil === 'ticket' ? 'flex' : 'hidden'} lg:flex flex-col flex-1 lg:flex-none lg:h-full gap-3 lg:gap-4 shrink-0 z-10 relative w-full lg:w-[380px] xl:w-[420px] min-h-0`}>
+      <div className={`${vistaMovil === 'ticket' ? 'flex' : 'hidden'} lg:flex flex-col flex-1 lg:flex-none lg:h-full gap-2 shrink-0 z-10 relative w-full lg:w-[380px] xl:w-[420px] min-h-0`}>
         <MiniReporteDiario refreshTrigger={refreshReport} />
         
         {/* 🛡️ GEOMETRÍA PERFECTA: Flex-1 y min-h-0 hacen que se estire exactamente al ras del panel izquierdo */}

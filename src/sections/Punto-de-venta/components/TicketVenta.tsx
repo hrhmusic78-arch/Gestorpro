@@ -122,7 +122,7 @@ export const TicketVenta: React.FC<Props> = ({ selectedIndex = -1, colIndex = 0,
           setSelectedIndex(-1); // 🛡️ DESELECCIÓN AL CLIC EN EL FONDO
         }
       }}
-      className="w-full h-full flex flex-col bg-white border-2 border-[#1E293B] shadow-[4px_4px_0_0_#1E293B] lg:shadow-[8px_8px_0_0_#1E293B] shrink-0 relative overflow-hidden"
+      className="w-full h-full flex flex-col bg-white border-2 border-[#1E293B] shadow-[3px_3px_0_0_#1E293B] shrink-0 relative overflow-hidden"
     >
       
       {/* ENCABEZADO TICKET CON BOTÓN DE PAUSAR */}
