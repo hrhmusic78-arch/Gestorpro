@@ -39,6 +39,11 @@ export const App: React.FC = () => {
   // Valida la sesión al abrir la app, cada minuto y al volver a la pestaña.
   // Si el empleado fue desactivado o borrado, o le cambiaron los permisos, se aplica enseguida.
   useEffect(() => {
+    // Aplicar tema guardado al cargar
+    if (localStorage.getItem('gestorpro_theme') === 'monochrome') {
+      document.body.classList.add('theme-monochrome');
+    }
+
     let activo = true;
     const revisar = async () => {
       const resultado = await validarSesion();
