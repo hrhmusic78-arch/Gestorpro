@@ -9,9 +9,10 @@ interface TopBarProps {
   toggleSidebar: () => void;
   userEmail: string;
   onNavigate: (view: string) => void;
+  ocultoEnEscritorio?: boolean; // en PC/laptop se oculta junto con el menú lateral contraído
 }
 
-export const TopBar: React.FC<TopBarProps> = ({ toggleSidebar, userEmail, onNavigate }) => {
+export const TopBar: React.FC<TopBarProps> = ({ toggleSidebar, userEmail, onNavigate, ocultoEnEscritorio = false }) => {
   const puedeVerFiados = usePermiso('caja_ver_fiados');
   const [time, setTime] = useState<string>('');
   const [fiadosCount, setFiadosCount] = useState<number>(0);
@@ -54,7 +55,9 @@ export const TopBar: React.FC<TopBarProps> = ({ toggleSidebar, userEmail, onNavi
   }, [puedeVerFiados]);
 
   return (
-    <header className="h-16 border-b border-[#E2E8F0] bg-white flex items-center justify-between gap-2 px-3 sm:px-4 lg:px-6 shrink-0 font-mono relative z-10">
+    <header
+      className={`h-16 border-b border-[#E2E8F0] bg-white flex items-center justify-between gap-2 px-3 sm:px-4 lg:px-6 shrink-0 font-mono relative z-10 overflow-hidden lg:transition-[height,border-color] lg:duration-200 lg:ease-out ${ocultoEnEscritorio ? 'lg:h-0 lg:border-b-0 lg:invisible' : ''}`}
+    >
       
       <div className="absolute top-0 left-0 w-full h-[1px] bg-[#10B981]"></div>
 

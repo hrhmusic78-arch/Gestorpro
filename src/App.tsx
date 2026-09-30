@@ -129,6 +129,7 @@ export const App: React.FC = () => {
       <main className="flex-1 min-w-0 flex flex-col overflow-hidden bg-[#F8FAFC]">
         <TopBar
           toggleSidebar={toggleSidebar}
+          ocultoEnEscritorio={!isSidebarOpen}
           userEmail={empleado.email}
           onNavigate={handleNavigate}
         />
