@@ -144,7 +144,7 @@ export const TerminalBusqueda: React.FC<Props> = ({ searchQuery, setSearchQuery,
           </div>
         ) : (
           // ESTADO 3: MOSTRAR RESULTADOS
-          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-2 sm:gap-4">
             {filteredProducts.map((prod, index) => {
               // LÓGICA CORE: Interceptamos la BD para validar Consumo real
               const esConsumo = prod.unit === 'CONSUMO' || (prod as any).control_type === 'CONSUMPTION';
@@ -199,7 +199,7 @@ export const TerminalBusqueda: React.FC<Props> = ({ searchQuery, setSearchQuery,
                     const img = (prod as any).image_url || (prod as any).image_path || '';
                     const valida = img.startsWith('http') || img.startsWith('data:');
                     return (
-                      <div className={`w-full h-28 sm:h-36 2xl:h-44 mb-2 sm:mb-3 flex items-center justify-center border border-[#E2E8F0] bg-[#FFFFFF] overflow-hidden ${estaAgotado ? 'grayscale' : ''}`}>
+                      <div className={`w-full aspect-[4/3] mb-2 sm:mb-3 flex items-center justify-center border border-[#E2E8F0] bg-[#FFFFFF] overflow-hidden ${estaAgotado ? 'grayscale' : ''}`}>
                         {valida ? (
                           <img
                             src={img}

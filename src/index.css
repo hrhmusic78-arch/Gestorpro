@@ -60,20 +60,38 @@
      Usar h-[var(--alto-pantalla)] en lugar de h-dvh / h-screen / h-[90vh]. */
   --alto-pantalla: calc((100dvh - 2 * var(--tv-margen-y)) / var(--ui-zoom));
 }
+/* Solo sin mouse (TV con control remoto): un monitor de PC en pantalla completa también
+   mide 1920x1080 y no debe agrandarse. Si una TV no se agranda sola, se elige
+   "Grande (TV)" en Ajustes > Apariencia (clase ui-grande más abajo). */
 @media (min-width: 1900px) and (min-height: 1000px) {
-  :root { --ui-zoom: 1.25; }
+  @media not all and (pointer: fine) {
+    :root { --ui-zoom: 1.25; }
+  }
 }
 /* Margen contra el overscan solo en proporción 16:9 exacta (TV en pantalla completa).
    La ventana del navegador en un monitor nunca queda exacta por las barras del sistema. */
 @media (min-width: 1900px) and (min-height: 1000px) and (aspect-ratio: 16/9) {
-  :root { --tv-margen-x: 1.5vw; --tv-margen-y: 2vh; }
+  @media not all and (pointer: fine) {
+    :root { --tv-margen-x: 1.5vw; --tv-margen-y: 2vh; }
+  }
 }
 @media (min-width: 2500px) and (min-height: 1350px) {
-  :root { --ui-zoom: 1.5; }
+  @media not all and (pointer: fine) {
+    :root { --ui-zoom: 1.5; }
+  }
 }
 @media (min-width: 3800px) and (min-height: 2000px) {
-  :root { --ui-zoom: 2; }
+  @media not all and (pointer: fine) {
+    :root { --ui-zoom: 2; }
+  }
 }
+
+/* Tamaño elegido a mano en Ajustes > Apariencia (anula el automático) */
+html.ui-normal { --ui-zoom: 1; --tv-margen-x: 0px; --tv-margen-y: 0px; }
+html.ui-grande { --ui-zoom: 1.25; }
+@media (min-width: 2500px) and (min-height: 1350px) { html.ui-grande { --ui-zoom: 1.5; } }
+@media (min-width: 3800px) and (min-height: 2000px) { html.ui-grande { --ui-zoom: 2; } }
+@media (min-width: 1900px) and (min-height: 1000px) and (aspect-ratio: 16/9) { html.ui-grande { --tv-margen-x: 1.5vw; --tv-margen-y: 2vh; } }
 #root {
   zoom: var(--ui-zoom);
   /* Margen de seguridad: algunos televisores recortan los bordes de la imagen (overscan) */
