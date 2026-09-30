@@ -200,7 +200,16 @@ const [searchQuery, setSearchQuery] = useState('');
         setSelectedConsumoProduct(null);
       }
 
-      // 2. F2 o F4: Proceder al Pago Inmediato desde cualquier parte de la pantalla
+      // 2. ENTER con la vista previa del ticket abierta = "Nueva Venta": cierra y deja el buscador listo.
+      // preventDefault evita que Enter también active el botón que tenga el foco (p. ej. Imprimir).
+      if (e.key === 'Enter' && isVistaPreviaOpen && !e.repeat) {
+        e.preventDefault();
+        setIsVistaPreviaOpen(false);
+        setTimeout(() => document.getElementById('buscador-global-pos')?.focus(), 50);
+        return;
+      }
+
+      // 3. F2 o F4: Proceder al Pago Inmediato desde cualquier parte de la pantalla
       if (e.key === 'F2' || e.key === 'F4') {
         e.preventDefault(); // Evita el comportamiento por defecto del navegador web
         // Solo abrimos la ventana de pago si hay algo en el carrito y no hay otros modales encima
@@ -657,7 +666,7 @@ const [searchQuery, setSearchQuery] = useState('');
                 onClick={() => setIsVistaPreviaOpen(false)} 
                 className="flex-1 border-2 border-[#1E293B] bg-white text-[#1E293B] py-3 font-black text-xs uppercase tracking-widest hover:bg-gray-100 transition-colors cursor-pointer shadow-[4px_4px_0_0_#1E293B] active:translate-y-[4px] active:shadow-none"
               >
-                Nueva Venta
+                Nueva Venta <span className="opacity-60">(Enter)</span>
               </button>
               <button 
                 onClick={() => handlePrint()} 
