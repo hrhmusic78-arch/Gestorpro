@@ -91,11 +91,11 @@ export const TerminalBusqueda: React.FC<Props> = ({ searchQuery, setSearchQuery,
       <div className="h-2 w-full bg-[#10B981] shrink-0 rounded-none"></div>
 
       {/* HEADER DE BÚSQUEDA TIPO TERMINAL */}
-      <div className="bg-[#FFFFFF] p-3 sm:p-6 border-b border-[#E2E8F0] shrink-0 rounded-none">
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-[#FFFFFF] px-3 py-2 sm:px-4 border-b border-[#E2E8F0] shrink-0 rounded-none">
+        <div className="flex items-center justify-between mb-2">
           <div>
-            <h1 className="text-base sm:text-xl font-black text-[#1E293B] uppercase tracking-widest flex items-center gap-3">
-              <ScanLine className="text-[#1E293B]" size={24} /> Punto de Venta
+            <h1 className="text-sm sm:text-base font-black text-[#1E293B] uppercase tracking-widest flex items-center gap-2">
+              <ScanLine className="text-[#1E293B]" size={18} /> Punto de Venta
             </h1>
           </div>
         </div>
@@ -103,7 +103,7 @@ export const TerminalBusqueda: React.FC<Props> = ({ searchQuery, setSearchQuery,
         <div className="flex gap-3">
           {/* Estricto diseño monocrático, sin sombras difuminadas ni redondeos */}
           <div className="flex-1 relative flex items-center border-2 border-[#1E293B] bg-[#FFFFFF] focus-within:ring-2 focus-within:ring-[#64748B] transition-all shadow-[4px_4px_0_0_#1E293B] rounded-none">
-            <div className="w-12 h-12 flex items-center justify-center bg-[#1E293B] text-[#FFFFFF] shrink-0 rounded-none">
+            <div className="w-10 h-10 flex items-center justify-center bg-[#1E293B] text-[#FFFFFF] shrink-0 rounded-none">
               <Search size={20} />
             </div>
             <div className="flex flex-col flex-1 px-4 relative">
@@ -115,7 +115,7 @@ export const TerminalBusqueda: React.FC<Props> = ({ searchQuery, setSearchQuery,
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="w-full h-14 bg-transparent text-base font-black text-[#1E293B] uppercase outline-none placeholder:text-[#64748B]/50 rounded-none"
+                className="w-full h-10 bg-transparent text-base font-black text-[#1E293B] uppercase outline-none placeholder:text-[#64748B]/50 rounded-none"
               />
             </div>
           </div>
@@ -123,7 +123,7 @@ export const TerminalBusqueda: React.FC<Props> = ({ searchQuery, setSearchQuery,
       </div>
 
       {/* ÁREA DE RESULTADOS */}
-      <div className="flex-1 p-3 sm:p-6 overflow-y-auto custom-scrollbar flex flex-col bg-[#F8FAFC]">
+      <div className="flex-1 p-2 sm:p-3 overflow-y-auto custom-scrollbar flex flex-col bg-[#F8FAFC]">
         {searchQuery.trim() === '' ? (
           // ESTADO 1: ESPERANDO BÚSQUEDA
           <div className="border border-dashed border-[#64748B] flex-1 flex flex-col items-center justify-center text-center p-3 lg:p-4 bg-[#FFFFFF] rounded-none">

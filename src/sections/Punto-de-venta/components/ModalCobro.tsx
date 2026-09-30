@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Banknote, Smartphone, CreditCard, CheckCircle2, Calculator, UserPlus, Calendar, ChevronDown, Plus } from 'lucide-react';
 import { supabase } from '../../../db/supabase';
 import type { CartItem } from '../types';
-import { clicConTeclado } from '../../../utils/clicConTeclado';
+import { clicConTeclado } from '../../../utils/clicConTeclado';
 import { traerTodo } from '../../../utils/traerTodo';
 
 // NUEVA INTERFAZ PARA LOS DATOS DEL FIADO
@@ -151,9 +151,9 @@ interface Props {
   };
 
   return (
-    <div className="fixed inset-0 bg-[#1E293B]/90 backdrop-blur-sm z-[99999] flex items-start justify-center pt-2 sm:pt-17 pb-2 sm:pb-4 px-2 sm:px-4 font-mono">
-      <div className="bg-white w-full max-w-md border-2 border-[#1E293B] shadow-[8px_8px_0_0_#1E293B] flex flex-col max-h-[calc(var(--alto-pantalla)*0.94)] sm:max-h-[calc(var(--alto-pantalla)*0.9)]">
-        
+    <div className="fixed inset-0 bg-[#1E293B]/90 backdrop-blur-sm z-[99999] flex items-center justify-center p-2 sm:p-4 font-mono">
+      <div className={`bg-white w-full ${faltante > 0 ? 'max-w-md md:max-w-4xl' : 'max-w-md'} transition-[max-width] duration-200 border-2 border-[#1E293B] shadow-[8px_8px_0_0_#1E293B] flex flex-col max-h-[calc(var(--alto-pantalla)*0.94)] sm:max-h-[calc(var(--alto-pantalla)*0.9)]`}>
+
         <div className="bg-[#10B981] text-[#1E293B] px-4 py-3 flex items-center justify-between border-b-2 border-[#1E293B] shrink-0">
           <h2 className="text-lg font-black uppercase tracking-widest flex items-center gap-2">
             <Calculator size={20} /> Pago Mixto
@@ -163,8 +163,9 @@ interface Props {
           </button>
         </div>
 
-        <div className="p-4 bg-[#F8FAFC] flex flex-col gap-3 overflow-y-auto custom-scrollbar">
-          
+        <div className="p-4 bg-[#F8FAFC] flex flex-col md:flex-row md:items-start gap-3 overflow-y-auto custom-scrollbar">
+          {/* COLUMNA DE PAGO (a la derecha cuando hay fiado en pantallas medianas) */}
+          <div className={`flex flex-col gap-3 w-full ${faltante > 0 ? 'md:w-[26rem] md:shrink-0' : ''}`}>
           <div className="bg-[#1E293B] text-white p-4 text-center border-2 border-[#1E293B] shadow-inner relative shrink-0">
             <p className="text-[12px] font-bold text-[#94A3B8] uppercase tracking-[0.2em] mb-1">Total a Pagar</p>
             <p className="text-2xl sm:text-4xl font-black text-[#10B981]">S/ {total.toFixed(2)}</p>
@@ -268,9 +269,11 @@ interface Props {
             )}
           </div>
 
-          {/* === ZONA DINÁMICA DE FIADOS Y BUSCADOR MEJORADO === */}
+          </div>
+
+          {/* === ZONA DINÁMICA DE FIADOS: en celular va debajo; en pantallas medianas, a la izquierda === */}
           {faltante > 0 && (
-            <div className="border-2 border-[#F59E0B] bg-[#FFFBEB] p-3 flex flex-col gap-3 shrink-0 animate-fade-in rounded-none">
+            <div className="border-2 border-[#F59E0B] bg-[#FFFBEB] p-3 flex flex-col gap-3 shrink-0 md:shrink md:flex-1 md:order-first min-w-0 animate-fade-in rounded-none">
               
               {/* CABECERA DE FIADOS CON BOTÓN DE SWITCH TÉCNICO */}
               <div className="flex items-center justify-between border-b-2 border-[#FCD34D] pb-2">
