@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Plus, Edit2, ShieldAlert, Loader2 } from 'lucide-react';
+import { Users, Plus, Edit2, ShieldAlert, Loader2, Trash2 } from 'lucide-react';
 import type { Empleado } from '../types';
 import { ModalUsuario } from './ModalUsuario';
 import { supabase } from '../../../db/supabase'; // Asegúrate de la ruta correcta
+import { useEmpleado } from '../../../utils/permisos';
 
 export const TablaUsuarios: React.FC = () => {
   const [usuarios, setUsuarios] = useState<Empleado[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [usuarioEditando, setUsuarioEditando] = useState<Empleado | null>(null);
+  const yo = useEmpleado(); // el empleado con la sesión abierta (no puede borrarse a sí mismo)
 
   // Función para traer los usuarios desde la base de datos
   const cargarUsuarios = async () => {
@@ -16,7 +18,7 @@ export const TablaUsuarios: React.FC = () => {
     try {
       const { data, error } = await supabase
         .from('empleados')
-        .select('*')
+        .select('id, nombre, email, rol, estado, permisos, created_at') // sin contraseñas
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -40,6 +42,16 @@ export const TablaUsuarios: React.FC = () => {
   const handleEditar = (usuario: Empleado) => {
     setUsuarioEditando(usuario);
     setModalAbierto(true);
+  };
+
+  const handleEliminar = async (usuario: Empleado) => {
+    if (!window.confirm(`¿Eliminar la cuenta de ${usuario.nombre} (${usuario.email})?\n\nSe cerrarán sus sesiones abiertas y ya no podrá entrar. Esta acción no se puede deshacer.`)) return;
+    const { error } = await supabase.from('empleados').delete().eq('id', usuario.id);
+    if (error) {
+      alert('❌ No se pudo eliminar la cuenta: ' + error.message);
+      return;
+    }
+    cargarUsuarios();
   };
 
   // Cuando el modal se cierra, verificamos si hay que recargar la tabla
@@ -120,6 +132,15 @@ export const TablaUsuarios: React.FC = () => {
                     >
                       <Edit2 size={16} />
                     </button>
+                    {usuario.id !== yo?.id && (
+                      <button
+                        onClick={() => handleEliminar(usuario)}
+                        className="p-2 text-[#64748B] hover:text-[#EF4444] hover:bg-[#EF4444]/10 transition-colors rounded"
+                        title="Eliminar Usuario"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

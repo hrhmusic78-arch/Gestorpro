@@ -6,8 +6,9 @@ import logoEvicamp from '../assets/logo.png';
 import imgProyectos from '../assets/proyectos.jpg';
 import imgInventario from '../assets/inventario.jpg';
 import imgFinanzas from '../assets/finanzas.jpg';
+import { iniciarSesion, type EmpleadoSesion } from '../utils/sesion';
 interface LoginProps {
-  onLoginSuccess: (permisos?: any, email?: string) => void;
+  onLoginSuccess: (empleado: EmpleadoSesion) => void;
 }
 
 // 1. AQUI AGREGAS LAS IMAGENES Y TEXTOS QUE ROTARÁN
@@ -72,31 +73,18 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     setLoading(true);
     setError(null);
 
-    let identificador = email.trim();
-    if (!identificador.includes('@')) {
-      identificador = `${identificador}@evicamp.com`; 
-    }
-
-    // 🔥 VAMOS DIRECTO A TU TABLA DE EMPLEADOS (Bypass al Auth de Supabase que causa el error 405)
-    const { data: empleado } = await supabase
-      .from('empleados')
-      .select('*')
-      .eq('email', identificador)
-      .eq('password', password) 
-      .eq('estado', 'ACTIVO')    
-      .single();
-
-    if (empleado) {
-      // ¡Éxito! Es un empleado.
-      onLoginSuccess(empleado.permisos, empleado.email);
-    } else {
-      // Si la clave de empleado maestro es la tuya, la puedes forzar aquí por si acaso
-      if (identificador === 'admin@evicamp.com' && password === 'TU_CLAVE_MAESTRA') {
-        onLoginSuccess({ sistema_acceso_total: true }, 'admin@evicamp.com');
+    // Valida contra la tabla de empleados y crea una sesión en la base ("admin" → admin@gestorpro.com)
+    try {
+      const empleado = await iniciarSesion(email, password);
+      if (empleado) {
+        onLoginSuccess(empleado);
       } else {
         setError('ERROR: CREDENCIALES INVÁLIDAS O CUENTA INACTIVA.');
         setLoading(false);
       }
+    } catch (err: any) {
+      setError(err?.message || 'ERROR: NO SE PUDO CONECTAR. REVISA TU INTERNET.');
+      setLoading(false);
     }
   };
 

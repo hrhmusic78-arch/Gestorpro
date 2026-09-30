@@ -33,6 +33,7 @@ export const ModalMerma: React.FC<Props> = ({ isOpen, onClose, productos, onProd
 
   // 🚨 Variable de control PARCHADA: Garantiza que reconozca la edición aunque Supabase no devuelva un ID
   const isEdit = !!initialData && Object.keys(initialData).length > 0;
+  const esConsumoInicial = isEdit ? (initialData.reason === 'USO INTERNO' || Number(initialData.quantity) === 0) : false;
 
   // 1. Cargar Lotes cuando se selecciona un producto
   useEffect(() => {
@@ -89,7 +90,6 @@ export const ModalMerma: React.FC<Props> = ({ isOpen, onClose, productos, onProd
         setSearchQuery(initialData.product_name || '');
         
         // Corrección: Mostrar Soles si fue consumo, o Cantidad si fue físico
-        const esConsumoInicial = initialData.reason === 'USO INTERNO' || Number(initialData.quantity) === 0;
         setCantidad(esConsumoInicial ? initialData.total_loss.toString() : Math.abs(initialData.quantity).toString());
         
         setMotivo(initialData.reason || 'DAÑADO');
@@ -109,9 +109,7 @@ export const ModalMerma: React.FC<Props> = ({ isOpen, onClose, productos, onProd
 
   // --- MOTOR DE VALIDACIÓN Y CÁLCULO DE DIFERENCIAL (REACTIVO) ---
   const inputNumVal = Number(cantidad) || 0;
-  const esConsumoActivo = selectedProduct?.unit?.toUpperCase().includes('CONS') || 
-                          selectedProduct?.category?.toUpperCase().includes('CONS') || 
-                          motivo === 'USO INTERNO';
+  const esConsumoActivo = selectedProduct?.unit === 'CONSUMO' || motivo === 'USO INTERNO';
   const costoUnitLote = Number(selectedLote?.cost_unit) || 0;
   
   let cantNumCalculada = 0;
@@ -181,9 +179,7 @@ export const ModalMerma: React.FC<Props> = ({ isOpen, onClose, productos, onProd
 
     try {
       // 1. Detectamos de forma segura si es consumo/uso interno
-      const esConsumo = selectedProduct?.unit?.toUpperCase().includes('CONS') || 
-                        selectedProduct?.category?.toUpperCase().includes('CONS') || 
-                        motivo === 'USO INTERNO';
+      const esConsumo = selectedProduct?.unit === 'CONSUMO' || motivo === 'USO INTERNO';
 
       // A. ACTUALIZAR o REGISTRAR en Waste (Merma / Gasto)
       if (isEdit) {
@@ -317,7 +313,7 @@ export const ModalMerma: React.FC<Props> = ({ isOpen, onClose, productos, onProd
           {/* 1. BUSCADOR DE PRODUCTO DESPLEGABLE */}
           <div className="space-y-2 relative">
             <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">
-              { (selectedProduct?.unit?.toUpperCase().includes('CONS') || selectedProduct?.category?.toUpperCase().includes('CONS') || motivo === 'USO INTERNO') 
+              { (selectedProduct?.unit === 'CONSUMO' || motivo === 'USO INTERNO') 
               ? 'PRECIO / COSTO RETIRADO (S/)' 
               : (selectedProduct?.unit?.toUpperCase() === 'KG' ? 'CANTIDAD PERDIDA (KILOGRAMOS / GRAMOS)' : 'CANTIDAD PERDIDA (UNIDADES)') }
             </label>
@@ -408,7 +404,7 @@ export const ModalMerma: React.FC<Props> = ({ isOpen, onClose, productos, onProd
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">
-                {(selectedProduct?.unit?.toUpperCase().includes('CONS') || selectedProduct?.category?.toUpperCase().includes('CONS') || motivo === 'USO INTERNO') 
+                {(selectedProduct?.unit === 'CONSUMO' || motivo === 'USO INTERNO') 
                 ? 'Costo Total (S/)' 
                 : (selectedProduct?.unit?.toUpperCase() === 'KG' ? 'Cantidad (Kilos / Gramos)' : 'Cantidad (Unidades)')}
               </label>
@@ -439,11 +435,11 @@ export const ModalMerma: React.FC<Props> = ({ isOpen, onClose, productos, onProd
                 onChange={(e) => setMotivo(e.target.value)}
                 className="w-full bg-[#F8FAFC] border-2 border-[#E2E8F0] p-3 text-xs font-bold text-[#1E293B] uppercase outline-none focus:border-[#1E293B] transition-colors"
               >
-                <option value="DAÑADO">Producto Dañado</option>
-                <option value="VENCIDO">Fecha Vencida</option>
-                <option value="ROBO">Pérdida / Robo</option>
-                <option value="USO INTERNO">Uso Interno</option>
-                <option value="OTRO">Otro</option>
+                <option value="DAÑADO" disabled={isEdit && esConsumoInicial}>Producto Dañado</option>
+                <option value="VENCIDO" disabled={isEdit && esConsumoInicial}>Fecha Vencida</option>
+                <option value="ROBO" disabled={isEdit && esConsumoInicial}>Pérdida / Robo</option>
+                <option value="USO INTERNO" disabled={isEdit && !esConsumoInicial}>Uso Interno</option>
+                <option value="OTRO" disabled={isEdit && esConsumoInicial}>Otro</option>
               </select>
             </div>
           </div>

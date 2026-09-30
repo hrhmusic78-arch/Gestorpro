@@ -12,6 +12,7 @@ import { TablaLotes } from './components/TablaLotes';
 import { ModalMerma } from './components/ModalMerma';
 import { TarjetaMetrica } from './components/TarjetaMetrica';
 import { ModalLote } from './components/ModalLote';
+import { traerTodo } from '../../utils/traerTodo';
 
 interface InventarioProps {
   onNavigate?: (view: string) => void;
@@ -57,8 +58,8 @@ export const Inventario: React.FC<InventarioProps> = ({ onNavigate }) => {
           { data: catData, error: catError } // 🔥 NUEVO: Traemos tu tabla
         ] = await Promise.all([
           // 🛡️ EVICAMP: Solo descargar productos activos para evitar productos fantasma
-          supabase.from('products').select('*').eq('is_active', 1).limit(15000),
-          supabase.from('batches').select('id, product_id, quantity, cost_unit').limit(15000),
+          traerTodo(() => supabase.from('products').select('*').eq('is_active', 1).order('id')),
+          traerTodo(() => supabase.from('batches').select('id, product_id, quantity, cost_unit').order('id')),
           supabase.from('categories').select('name') // 🔥 CONEXIÓN A TU TABLA
         ]);
 

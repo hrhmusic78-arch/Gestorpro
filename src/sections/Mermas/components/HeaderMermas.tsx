@@ -14,7 +14,7 @@ export const HeaderMermas: React.FC<Props> = ({ onNuevaMerma }) => {
         </div>
         <div>
           <h1 className="text-2xl font-black text-[#1E293B] uppercase tracking-widest">
-            Control de Mermas
+            Control de Pérdidas
           </h1>
           <p className="text-[10px] font-bold text-[#64748B] uppercase tracking-[0.2em] mt-1">
             Registro de pérdidas, vencimientos y uso interno

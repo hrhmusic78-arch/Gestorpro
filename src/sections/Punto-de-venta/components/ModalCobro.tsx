@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { X, Banknote, Smartphone, CreditCard, CheckCircle2, Calculator, UserPlus, Calendar, ChevronDown, Plus } from 'lucide-react';
 import { supabase } from '../../../db/supabase';
 import type { CartItem } from '../types';
-import { clicConTeclado } from '../../../utils/clicConTeclado';
+import { clicConTeclado } from '../../../utils/clicConTeclado';
+import { traerTodo } from '../../../utils/traerTodo';
 
 // NUEVA INTERFAZ PARA LOS DATOS DEL FIADO
 export interface FiadoData {
@@ -61,7 +62,7 @@ interface Props {
 
       // Cargar directorio de clientes en segundo plano
       const fetchClientes = async () => {
-        const { data } = await supabase.from('customers').select('*');
+        const { data } = await traerTodo(() => supabase.from('customers').select('*').order('id'));
         if (data) setClientesDb(data);
       };
       fetchClientes();

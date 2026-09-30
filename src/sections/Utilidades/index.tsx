@@ -296,7 +296,7 @@ export const Utilidades = () => {
         <div className="border-l-4 border-[#065F46] pl-3 sm:pl-5 min-w-0">
           <h1 className="text-xl sm:text-3xl font-black text-[#1E293B] uppercase tracking-tighter flex items-center gap-3">
             <Activity className="text-[#065F46] w-6 h-6 sm:w-8 sm:h-8 shrink-0" strokeWidth={2.5} />
-            UTILIDADES Y RENTABILIDAD
+            Análisis de Rentabilidad
           </h1>
           <p className="text-[10px] sm:text-[11px] text-[#64748B] font-black mt-1 uppercase tracking-widest sm:tracking-[0.2em]">
             Sincronización Total con POS y Finanzas
@@ -305,7 +305,7 @@ export const Utilidades = () => {
         <div className="border-l-2 border-[#065F46] pl-3">
           <h1 className="text-xl font-bold text-[#1E293B] uppercase tracking-widest flex items-center gap-2">
             <Activity size={20} className="text-[#065F46]" />
-            Rentabilidad & Utilidades
+            Márgenes por Producto
           </h1>
           <p className="text-xs text-[#64748B] font-bold mt-1 uppercase tracking-wider">
             Sincronizado • <span className="text-[#065F46]">Zona Horaria: PE (UTC-5)</span>

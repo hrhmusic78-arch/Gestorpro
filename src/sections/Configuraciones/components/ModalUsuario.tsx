@@ -3,7 +3,9 @@ import { X, Save, Shield, User, Lock, CheckSquare, Loader2 } from 'lucide-react'
 import type { Empleado, PermisosUsuario } from '../types';
 import { supabase } from '../../../db/supabase';
 import { useCerrarConEscape } from '../../../utils/useCerrarConEscape';
-import { clicConTeclado } from '../../../utils/clicConTeclado';
+import { clicConTeclado } from '../../../utils/clicConTeclado';
+import { useEmpleado } from '../../../utils/permisos';
+import { normalizarEmail } from '../../../utils/sesion';
 
 interface ModalUsuarioProps {
   usuario: Empleado | null;
@@ -21,6 +23,7 @@ const PERMISOS_DEFAULT: PermisosUsuario = {
 export const ModalUsuario: React.FC<ModalUsuarioProps> = ({ usuario, onClose }) => {
   useCerrarConEscape(true, () => onClose()); // Escape (o "Atrás" del control de TV) cierra la ventana
   const isEditing = !!usuario;
+  const yo = useEmpleado();
   const [guardando, setGuardando] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -71,12 +74,16 @@ export const ModalUsuario: React.FC<ModalUsuarioProps> = ({ usuario, onClose }) 
       return;
     }
 
+    if (isEditing && usuario?.id === yo?.id && formData.estado !== 'ACTIVO') {
+      alert('⚠️ No puedes desactivar tu propia cuenta: te quedarías sin acceso.');
+      return;
+    }
     setGuardando(true);
     try {
       // Preparamos los datos
       const datosGuardar = {
         nombre: formData.nombre,
-        email: formData.email,
+        email: normalizarEmail(formData.email), // minúsculas; "juan" → juan@gestorpro.com
         rol: formData.rol,
         estado: formData.estado,
         permisos: permisos,
@@ -103,7 +110,10 @@ export const ModalUsuario: React.FC<ModalUsuarioProps> = ({ usuario, onClose }) 
       onClose(true); // Cerrar modal y avisar que SÍ hubo cambios
     } catch (error: any) {
       console.error('Error al guardar:', error);
-      alert('❌ Error al guardar usuario: ' + error.message);
+      // 23505 = correo repetido (la columna email es única)
+      alert(error?.code === '23505'
+        ? '⚠️ Ya existe un usuario con ese correo. Usa otro correo.'
+        : '❌ Error al guardar usuario: ' + error.message);
     } finally {
       setGuardando(false);
     }
@@ -113,7 +123,7 @@ export const ModalUsuario: React.FC<ModalUsuarioProps> = ({ usuario, onClose }) 
     const isChecked = permisos[labelKey];
     return (
       <label className="flex items-center gap-2 cursor-pointer group mb-2">
-        <div className={`flex items-center justify-center w-4 h-4 rounded-sm border ${isChecked ? 'bg-[#10B981] border-[#10B981]' : 'border-[#CBD5E1] group-hover:border-[#10B981]'} transition-colors`}>
+        <div className={`flex items-center justify-center w-4 h-4 shrink-0 rounded-sm border ${isChecked ? 'bg-[#10B981] border-[#10B981]' : 'border-[#CBD5E1] group-hover:border-[#10B981]'} transition-colors`}>
           {isChecked && <CheckSquare size={14} className="text-white absolute" />}
         </div>
         <span className={`text-xs font-mono ${isChecked ? 'text-[#1E293B] font-bold' : 'text-[#64748B]'}`}>

@@ -10,6 +10,7 @@ import { HeaderMermas } from './components/HeaderMermas';
 import { FiltrosMermas } from './components/FiltrosMermas';
 import { TarjetaMetrica } from './components/TarjetaMetrica';
 import { TablaMermas } from './components/TablaMermas';
+import { traerTodo } from '../../utils/traerTodo';
 
 export const Mermas: React.FC = () => {
   const [mermas, setMermas] = useState<Merma[]>([]);
@@ -27,10 +28,11 @@ export const Mermas: React.FC = () => {
   const fetchMermas = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      const { data, error } = await traerTodo(() => supabase
         .from('waste')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .order('id'));
 
       if (error) throw error;
 
@@ -58,7 +60,7 @@ export const Mermas: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
-      const { data, error } = await supabase.from('products').select('*');
+      const { data, error } = await traerTodo(() => supabase.from('products').select('*').order('id'));
       if (error) throw error;
       if (data) {
         const mapeados: Product[] = data.map((p: any) => {

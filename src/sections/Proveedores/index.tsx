@@ -118,7 +118,7 @@ export const Proveedores: React.FC = () => {
           </div>
           <div>
             <h1 className="text-2xl font-black text-[#1E293B] uppercase tracking-widest">
-              Directorio de Proveedores
+              Abastecimiento
             </h1>
             <p className="text-[10px] font-bold text-[#64748B] uppercase tracking-[0.2em] mt-1">
               Gestión de contactos y empresas aliadas

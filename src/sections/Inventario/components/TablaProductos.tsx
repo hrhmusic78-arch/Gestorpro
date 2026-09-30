@@ -3,6 +3,7 @@ import { Database, ArrowUpDown, Search, Edit, Trash2, ChevronLeft, ChevronRight,
 import { EtiquetaStock } from './EtiquetaStock';
 import type { Product } from '../types';
 import { clicConTeclado } from '../../../utils/clicConTeclado';
+import { usePermiso } from '../../../utils/permisos';
 
 interface Props {
   loading: boolean;
@@ -19,6 +20,12 @@ interface Props {
 export const TablaProductos: React.FC<Props> = ({ 
   loading, productos, currentPage, totalPages, onPageChange, onUpdateProduct, onEditProduct, onDeleteProduct, onViewHistory // <-- AGREGAR AQUÍ
 }) => {
+  // Permisos: editar (datos o precio) y eliminar productos
+  const puedeEditarDatos = usePermiso('almacen_crear_editar_productos');
+  const puedeCambiarPrecio = usePermiso('almacen_modificar_precios');
+  const puedeEditar = puedeEditarDatos || puedeCambiarPrecio;
+  const puedeEliminar = usePermiso('almacen_eliminar_productos');
+
   // ESTADOS PARA LA EDICIÓN EN LÍNEA
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Partial<Product>>({});
@@ -222,9 +229,9 @@ export const TablaProductos: React.FC<Props> = ({
             return (
               <div
                 key={item.id}
-                {...clicConTeclado(() => onEditProduct ? onEditProduct(item) : startEditing(item))}
-                className="grid grid-cols-12 items-center p-4 border-b border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors group cursor-pointer"
-                title="Click para editar"
+                {...(puedeEditar ? clicConTeclado(() => onEditProduct ? onEditProduct(item) : startEditing(item)) : {})}
+                className={`grid grid-cols-12 items-center p-4 border-b border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors group ${puedeEditar ? 'cursor-pointer' : ''}`}
+                title={puedeEditar ? 'Click para editar' : undefined}
               >
                 
                 {/* 0. IMAGEN (BLINDADA CONTRA MEDIA://) */}
@@ -295,6 +302,7 @@ export const TablaProductos: React.FC<Props> = ({
                   >
                     <History size={16} />
                   </button>
+                  {puedeEditar && (
                   <button
                     onClick={(e) => { e.stopPropagation(); onEditProduct ? onEditProduct(item) : startEditing(item); }}
                     className="text-[#94A3B8] hover:text-[#10B981] transition-colors cursor-pointer"
@@ -302,6 +310,8 @@ export const TablaProductos: React.FC<Props> = ({
                   >
                     <Edit size={16} />
                   </button>
+                  )}
+                  {puedeEliminar && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -314,6 +324,7 @@ export const TablaProductos: React.FC<Props> = ({
                   >
                     <Trash2 size={16} />
                   </button>
+                  )}
                 </div>
 
               </div>

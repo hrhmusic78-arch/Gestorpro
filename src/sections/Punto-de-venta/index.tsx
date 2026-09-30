@@ -11,7 +11,8 @@ import { TicketVenta } from './components/TicketVenta';
 import { ModalCobro } from './components/ModalCobro';
 import { ModalBalanza } from './components/ModalBalanza';
 import { ModalPrecioConsumo } from './components/ModalPrecioConsumo';
-import { TicketImprimible } from './components/TicketImprimible';
+import { TicketImprimible } from './components/TicketImprimible';
+import { traerTodo } from '../../utils/traerTodo';
 import { MiniReporteDiario } from './components/MiniReporteDiario'; // 🛡️ EVICAMP: Mini Reporte en Tiempo Real
 
 export const POS: React.FC = () => {
@@ -219,12 +220,12 @@ const [searchQuery, setSearchQuery] = useState('');
       // Bloqueo de Seguridad: Verificar Caja
       const { data: session } = await supabase.from('cash_sessions').select('id').eq('status', 'OPEN').maybeSingle();
       setHasOpenSession(!!session);
-      // 🛡️ PARCHE DE ARQUITECTURA: Romper el límite de 1000 filas de Supabase
-      const { data } = await supabase.from('products')
+      // Supabase devuelve máximo 1000 filas por consulta: traerTodo las pide por bloques
+      const { data } = await traerTodo(() => supabase.from('products')
         .select('*')
         .eq('is_active', 1) // 🛡️ EVICAMP: Bloqueo de productos fantasma directo en el motor de BD
-        .limit(15000)
-        .order('name', { ascending: true });
+        .order('name', { ascending: true })
+        .order('id'));
         
       if (data) {
         const mapeados: Product[] = data.map((p: any) => ({
@@ -421,73 +422,60 @@ const [searchQuery, setSearchQuery] = useState('');
       else if (pagos.tarjeta > 0 && pagos.efectivo === 0 && pagos.yape === 0) tipoPago = 'TARJETA';
       else if (totalIngresado > 0 && (pagos.efectivo > 0 || pagos.yape > 0 || pagos.tarjeta > 0)) tipoPago = 'MIXTO';
 
-      // === PASO 1: CREAR LA VENTA ===
-      const trueSaleId = Date.now(); // 🛡️ CORRECCIÓN: TIENE QUE SER NÚMERO, NO TEXTO
+      // === TRANSACCIÓN ATÓMICA DE VENTA ===
+      const trueSaleId = Date.now();
 
-      const { error: saleError } = await supabase
-        .from('sales')
-        .insert([{
-          id: trueSaleId,
-          total: totalVenta,
-          payment_type: tipoPago,
-          amount_cash: Math.max(0, pagos.efectivo - vuelto),
-          amount_yape: pagos.yape,
-          amount_card: pagos.tarjeta,
-          amount_credit: fiadoData ? Number(fiadoData.montoDeuda) : 0,
-          sunat_status: 'ACEPTADO',
-          created_at: new Date().toISOString(), 
-          is_synced: 1 
-        }]);
+      const p_sale = {
+        id: trueSaleId,
+        total: totalVenta,
+        payment_type: tipoPago,
+        amount_cash: Math.max(0, pagos.efectivo - vuelto),
+        amount_yape: pagos.yape,
+        amount_card: pagos.tarjeta,
+        amount_credit: fiadoData ? Number(fiadoData.montoDeuda) : 0,
+        sunat_status: 'ACEPTADO',
+        created_at: new Date().toISOString(),
+        is_synced: 1
+      };
 
-      if (saleError) {
-        alert(`Error crítico al registrar la venta: ${saleError.message}`);
-        return;
-      }
+      const p_fiado = fiadoData ? {
+        id: trueSaleId + 1,
+        customer_id: fiadoData.clienteId ? Number(fiadoData.clienteId) : null,
+        customer_name: fiadoData.clienteNombre,
+        amount: Number(fiadoData.montoDeuda),
+        paid_amount: 0,
+        date_given: new Date().toISOString(),
+        expected_pay_date: fiadoData.fechaVencimiento,
+        status: 'PENDIENTE',
+        is_synced: 1
+      } : null;
 
-      // === PASO 2: GUARDAR FIADO ===
-      if (fiadoData) {
-        const { error: fiadoError } = await supabase.from('fiados').insert([{
-          id: trueSaleId + 1, // 🛡️ CRÍTICO: SE AGREGÓ EL ID MATEMÁTICO. SI FALTA ESTO, EL FIADO DESAPARECE.
-          sale_id: trueSaleId,
-          customer_id: fiadoData.clienteId ? Number(fiadoData.clienteId) : null, 
-          customer_name: fiadoData.clienteNombre,
-          amount: Number(fiadoData.montoDeuda),
-          paid_amount: 0,
-          date_given: new Date().toISOString(),
-          expected_pay_date: fiadoData.fechaVencimiento,
-          status: 'PENDIENTE',
-          is_synced: 1
-        }]);
-        if (fiadoError) alert(`Error al guardar deuda: ${fiadoError.message}`); 
-      }
-
-      // === PASO 3: GUARDAR DETALLES Y DESCONTAR INVENTARIO ===
-      const saleDetails = cart.map(item => ({
-        sale_id: trueSaleId,
+      const p_details = cart.map(item => ({
         product_id: item.id,
         product_name: item.name,
-        quantity: Number(item.cartQuantity), 
-        price_at_moment: Number(item.price), 
+        quantity: Number(item.cartQuantity),
+        price_at_moment: Number(item.price),
         subtotal: Number(item.subtotal),
         is_synced: 1
       }));
-      
-      const { error: detailError } = await supabase.from('sale_details').insert(saleDetails);
 
-      if (detailError) {
-        console.error(`Fallo al guardar productos: ${detailError.message}`);
-      } else {
-        // Solo descontamos el stock visual si no hubo error
-        setProductos(prevProductos => 
-          prevProductos.map(p => {
-            const itemComprado = cart.find(i => i.id === p.id);
-            if (itemComprado && itemComprado.unit !== 'CONSUMO') {
-              return { ...p, quantity: p.quantity - Number(itemComprado.cartQuantity) };
-            }
-            return p;
-          })
-        );
+      const { error: rpcError } = await supabase.rpc('fn_register_sale', { p_sale, p_details, p_fiado });
+
+      if (rpcError) {
+        alert('Error crítico al registrar la venta (Rollback aplicado): ' + rpcError.message);
+        return;
       }
+
+      // Solo descontamos el stock visual si no hubo error
+      setProductos(prevProductos => 
+        prevProductos.map(p => {
+          const itemComprado = cart.find(i => i.id === p.id);
+          if (itemComprado && itemComprado.unit !== 'CONSUMO') {
+            return { ...p, quantity: p.quantity - Number(itemComprado.cartQuantity) };
+          }
+          return p;
+        })
+      );
 
       // === PASO 4: TICKET Y LIMPIEZA ===
       if (imprimirBoleta) {

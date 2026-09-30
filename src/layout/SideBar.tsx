@@ -1,5 +1,5 @@
 // src/layout/SideBar.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   LayoutDashboard, ShoppingCart, Users, Package, 
   Truck, Trash2, Wallet, 
@@ -9,17 +9,57 @@ import {
 // IMPORTAMOS EL LOGO Y SUPABASE
 import logoEvicamp from '../assets/logo.png';
 import { supabase } from '../db/supabase';
+import { puedeVerModulo } from '../utils/permisos';
 
 interface SideBarProps {
   isOpen: boolean;
   currentView: string;
   onNavigate: (view: string) => void;
-  onClose: () => void; // Cierra el menú deslizable en tablet/celular
+  onClose: () => void; // Contrae el menú (o cierra el panel deslizable en tablet/celular)
+  onToggle: () => void; // Tocar el logo abre o contrae el menú
   permisos?: any; // <--- AÑADIMOS LOS PERMISOS
 }
 
-export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigate, onClose, permisos }) => {
+// Tiempo sin usar el menú abierto antes de que se contraiga solo
+const AUTO_OCULTAR_MS = 8000;
+
+export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigate, onClose, onToggle, permisos }) => {
   const [empresaData, setEmpresaData] = useState({ nombre: 'EVICAMP', logo: logoEvicamp });
+
+  // === TEMPORIZADOR DE AUTO-OCULTADO ===
+  // Mientras el menú está abierto cuenta el tiempo sin actividad; con el mouse encima queda en pausa.
+  const [restante, setRestante] = useState(AUTO_OCULTAR_MS);
+  const [enPausa, setEnPausa] = useState(false);
+  const encima = useRef(false);
+  const ultimaActividad = useRef(0);
+  const cerrar = useRef(onClose);
+  useEffect(() => { cerrar.current = onClose; });
+
+  const marcarActividad = () => {
+    ultimaActividad.current = Date.now();
+    setRestante(AUTO_OCULTAR_MS);
+  };
+
+  useEffect(() => {
+    if (!isOpen) return;
+    ultimaActividad.current = Date.now();
+    const intervalo = setInterval(() => {
+      if (encima.current) {
+        ultimaActividad.current = Date.now();
+        setRestante(AUTO_OCULTAR_MS);
+        return;
+      }
+      const quedan = AUTO_OCULTAR_MS - (Date.now() - ultimaActividad.current);
+      if (quedan <= 0) cerrar.current();
+      else setRestante(quedan);
+    }, 100);
+    return () => clearInterval(intervalo);
+  }, [isOpen]);
+
+  const alTocarLogo = () => {
+    marcarActividad();
+    onToggle();
+  };
 
   useEffect(() => {
     const fetchEmpresa = async () => {
@@ -38,51 +78,34 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
     fetchEmpresa();
   }, []);
 
-  // Función para verificar si el empleado tiene acceso a un módulo
-  const tieneAcceso = (modulo: string) => {
-    // Si no se pasaron permisos (ej. es el Admin Maestro) o tiene acceso total, ve todo
-    if (!permisos || permisos.sistema_acceso_total) return true;
-
-    switch (modulo) {
-      case 'resumen': return true; // El dashboard inicial siempre se ve
-      case 'pos': return permisos.caja_realizar_ventas;
-      case 'fiados': return permisos.caja_ver_fiados;
-      case 'inventario': return permisos.almacen_ver_stock;
-      case 'proveedores': return permisos.almacen_gestionar_proveedores;
-      case 'mermas': return permisos.almacen_registrar_mermas;
-      case 'finanzas': return (permisos.caja_abrir_cerrar_turno || permisos.caja_ingresos_egresos);
-      case 'utilidades': return permisos.gerencia_ver_utilidades;
-      case 'reportes': return (permisos.reportes_ver_historial_ventas || permisos.reportes_ver_globales);
-      case 'configuracion': return permisos.gerencia_configuracion_sistema;
-      default: return false;
-    }
-  };
+  // Qué módulos puede ver: la regla vive en utils/permisos (la misma que usa App para bloquear el acceso)
+  const tieneAcceso = (modulo: string) => puedeVerModulo(permisos, modulo);
 
   // Modulos divididos por Categorías Lógicas con sus Iconos asignados
   const menuGroupsRaw = [
     {
-      category: 'Operaciones',
+      category: 'Núcleo Operativo',
       items: [
-        { id: 'resumen', name: 'Resumen', icon: LayoutDashboard },
+        { id: 'resumen', name: 'Panel de Control', icon: LayoutDashboard },
         { id: 'pos', name: 'Punto de Venta', icon: ShoppingCart },
-        { id: 'fiados', name: 'Fiados / Clientes', icon: Users },
+        { id: 'fiados', name: 'Cuentas por Cobrar', icon: Users },
       ]
     },
     {
-      category: 'Logística',
+      category: 'Cadena de Suministro',
       items: [
-        { id: 'inventario', name: 'Inventario', icon: Package },
-        { id: 'proveedores', name: 'Proveedores', icon: Truck },
-        { id: 'mermas', name: 'Mermas', icon: Trash2 },
+        { id: 'inventario', name: 'Control de Stock', icon: Package },
+        { id: 'proveedores', name: 'Abastecimiento', icon: Truck },
+        { id: 'mermas', name: 'Control de Pérdidas', icon: Trash2 },
       ]
     },
     {
-      category: 'Administración',
+      category: 'Gestión Gerencial',
       items: [
-        { id: 'finanzas', name: 'Finanzas', icon: Wallet },
-        { id: 'utilidades', name: 'Utilidades', icon: BarChart3 },
-        { id: 'reportes', name: 'Reportes', icon: FileText },
-        { id: 'configuracion', name: 'Configuración', icon: Settings },
+        { id: 'finanzas', name: 'Tesorería', icon: Wallet },
+        { id: 'utilidades', name: 'Análisis de Rentabilidad', icon: BarChart3 },
+        { id: 'reportes', name: 'Auditoría de Ventas', icon: FileText },
+        { id: 'configuracion', name: 'Parámetros del Sistema', icon: Settings },
       ]
     }
   ];
@@ -103,28 +126,47 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
     )}
 
     {/* En tablet/celular el menú es un panel deslizable sobre el contenido; en escritorio es una columna fija que se expande o contrae */}
-    <aside className={`fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-out lg:relative lg:max-w-none lg:translate-x-0 lg:z-20 lg:transition-[width] lg:duration-150 ${isOpen ? 'lg:w-64' : 'lg:w-20'} border-r border-[#E2E8F0] bg-white flex flex-col h-full shrink-0 font-mono overflow-hidden`}>
-      
+    <aside
+      onMouseEnter={() => { encima.current = true; setEnPausa(true); }}
+      onMouseLeave={() => { encima.current = false; setEnPausa(false); marcarActividad(); }}
+      onPointerDown={marcarActividad}
+      onKeyDown={marcarActividad}
+      onFocus={marcarActividad}
+      className={`fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-out lg:relative lg:max-w-none lg:translate-x-0 lg:z-20 lg:transition-[width] lg:duration-150 ${isOpen ? 'lg:w-64' : 'lg:w-20'} border-r border-[#E2E8F0] bg-white flex flex-col h-full shrink-0 font-mono overflow-hidden`}
+    >
+
       {/* LÍNEA DE TENSIÓN LATERAL VERDE ESTÁTICA */}
       <div className="absolute top-0 left-0 w-1 h-full bg-[#10B981]"></div>
 
-      {/* BRANDING HEADER CON LOGO */}
+      {/* BRANDING HEADER CON LOGO: tocar el logo abre o contrae el menú */}
       <div className={`h-16 border-b border-[#E2E8F0] flex items-center ${isOpen ? 'justify-between px-4' : 'justify-center'} bg-[#1E293B] ml-1`}>
         {isOpen ? (
-          <div className="flex items-center gap-3 overflow-hidden">
+          <button
+            onClick={alTocarLogo}
+            title="Contraer menú"
+            aria-label="Contraer menú"
+            aria-expanded={true}
+            className="flex items-center gap-3 overflow-hidden cursor-pointer group text-left"
+          >
             {/* Logo en bloque técnico */}
-            <div className="w-8 h-8 bg-white border border-[#10B981] flex items-center justify-center p-0.5 shrink-0">
+            <div className="w-8 h-8 bg-white border border-[#10B981] flex items-center justify-center p-0.5 shrink-0 transition-transform group-hover:scale-110">
               <img src={empresaData.logo} alt="Logo Empresa" className="w-full h-full object-contain" />
             </div>
             <h1 className="text-white font-black tracking-[0.2em] text-lg uppercase whitespace-nowrap">
               {empresaData.nombre}<span className="text-[#10B981]">.</span>
             </h1>
-          </div>
+          </button>
         ) : (
-          /* Logo centrado cuando la barra está colapsada */
-          <div className="w-10 h-10 bg-white border border-[#10B981] flex items-center justify-center p-1 shrink-0">
+          /* Logo centrado cuando la barra está colapsada: brilla para indicar que se toca para desplegar */
+          <button
+            onClick={alTocarLogo}
+            title="Toca el logo para desplegar el menú"
+            aria-label="Desplegar menú"
+            aria-expanded={false}
+            className="logo-brillo w-10 h-10 bg-white border border-[#10B981] flex items-center justify-center p-1 shrink-0 cursor-pointer transition-transform hover:scale-110"
+          >
             <img src={empresaData.logo} alt="Logo Empresa" className="w-full h-full object-contain" />
-          </div>
+          </button>
         )}
         
         {isOpen && <div className="hidden lg:block w-2 h-2 bg-[#10B981] animate-pulse shrink-0 ml-2"></div>}
@@ -150,7 +192,7 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
               {isOpen ? (
                 <>
                   <div className="h-[2px] w-3 bg-[#10B981] shrink-0"></div>
-                  <span className="text-xs font-black text-[#1E293B] uppercase tracking-[0.3em] whitespace-nowrap">
+                  <span className="text-xs font-black text-[#1E293B] uppercase tracking-[0.2em] whitespace-nowrap">
                     {group.category}
                   </span>
                 </>
@@ -170,7 +212,7 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
                     key={item.id}
                     onClick={() => onNavigate(item.id)}
                     title={!isOpen ? item.name : undefined}
-                    className={`w-full text-left py-3 short:py-2 text-xs font-black uppercase tracking-widest transition-all border rounded-none flex items-center cursor-pointer ${
+                    className={`w-full text-left py-3 short:py-2 text-xs font-black uppercase tracking-wider transition-all border rounded-none flex items-center cursor-pointer ${
                       isOpen ? 'px-4 justify-between' : 'justify-center px-0'
                     } ${
                       isActive 
@@ -191,14 +233,30 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
         ))}
       </nav>
 
-      {/* FOOTER TÉCNICO */}
-      <div className={`p-4 border-t border-[#E2E8F0] bg-[#1E293B] ml-1 flex ${isOpen ? 'justify-between items-center' : 'justify-center'}`}>
-        {isOpen && <span className="text-xs font-black text-[#10B981] uppercase tracking-[0.2em] whitespace-nowrap">SYS_v2.0</span>}
-        <div className="flex gap-1 shrink-0">
-           <div className="w-1 h-3 bg-[#10B981]/30"></div>
-           <div className="w-1 h-3 bg-[#10B981]/60"></div>
-           <div className="w-1 h-3 bg-[#10B981]"></div>
-        </div>
+      {/* FOOTER TÉCNICO: con el menú abierto muestra el temporizador de auto-ocultado */}
+      <div className={`p-4 border-t border-[#E2E8F0] bg-[#1E293B] ml-1 flex ${isOpen ? 'flex-col gap-2' : 'justify-center'}`}>
+        {isOpen ? (
+          <>
+            <div className="flex justify-between items-center gap-2">
+              <span className="text-[10px] font-black text-[#10B981] uppercase tracking-[0.2em] whitespace-nowrap">
+                {enPausa ? 'Auto-ocultar: en pausa' : `Auto-ocultar ${Math.ceil(restante / 1000)}s`}
+              </span>
+              <span className="text-[10px] font-black text-[#64748B] uppercase tracking-[0.2em] whitespace-nowrap">SYS_v2.0</span>
+            </div>
+            <div className="h-1 w-full bg-[#10B981]/20 overflow-hidden" aria-hidden="true">
+              <div
+                className="h-full bg-[#10B981] transition-[width] duration-100 ease-linear"
+                style={{ width: `${(restante / AUTO_OCULTAR_MS) * 100}%` }}
+              ></div>
+            </div>
+          </>
+        ) : (
+          <div className="flex gap-1 shrink-0">
+             <div className="w-1 h-3 bg-[#10B981]/30"></div>
+             <div className="w-1 h-3 bg-[#10B981]/60"></div>
+             <div className="w-1 h-3 bg-[#10B981]"></div>
+          </div>
+        )}
       </div>
     </aside>
     </>

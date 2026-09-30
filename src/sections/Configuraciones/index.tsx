@@ -3,9 +3,13 @@ import React, { useState } from 'react';
 import { Settings, Building2, Users } from 'lucide-react';
 import { FormularioEmpresa } from './components/FormularioEmpresa';
 import { TablaUsuarios } from './components/TablaUsuarios';
+import { usePermiso } from '../../utils/permisos';
 
 const Configuraciones: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'empresa' | 'usuarios'>('empresa');
+  // Cada pestaña tiene su permiso; se abre en la primera permitida
+  const puedeEmpresa = usePermiso('gerencia_configuracion_sistema');
+  const puedeUsuarios = usePermiso('gerencia_gestionar_usuarios');
+  const [activeTab, setActiveTab] = useState<'empresa' | 'usuarios'>(puedeEmpresa ? 'empresa' : 'usuarios');
 
   return (
     <div className="flex flex-col h-full bg-[#F8FAFC]">
@@ -13,7 +17,7 @@ const Configuraciones: React.FC = () => {
       <div className="bg-white border-b border-[#E2E8F0] p-6 shrink-0">
         <h1 className="text-2xl font-black text-[#1E293B] tracking-tight flex items-center gap-3 uppercase">
           <Settings className="text-[#10B981]" size={28} />
-          Configuración del Sistema
+          Parámetros del Sistema
         </h1>
         <p className="text-[#64748B] text-sm mt-1 font-mono">
           Gestiona los datos de tu empresa y los accesos de tus empleados.
@@ -23,6 +27,7 @@ const Configuraciones: React.FC = () => {
       {/* TABS */}
       <div className="px-6 pt-4 border-b border-[#E2E8F0] bg-white shrink-0">
         <div className="flex gap-6">
+          {puedeEmpresa && (
           <button
             onClick={() => setActiveTab('empresa')}
             className={`pb-3 font-bold text-sm uppercase tracking-wider flex items-center gap-2 transition-colors relative ${
@@ -37,7 +42,9 @@ const Configuraciones: React.FC = () => {
               <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#10B981]"></div>
             )}
           </button>
+          )}
           
+          {puedeUsuarios && (
           <button
             onClick={() => setActiveTab('usuarios')}
             className={`pb-3 font-bold text-sm uppercase tracking-wider flex items-center gap-2 transition-colors relative ${
@@ -52,16 +59,14 @@ const Configuraciones: React.FC = () => {
               <div className="absolute bottom-0 left-0 w-full h-[3px] bg-[#10B981]"></div>
             )}
           </button>
+          )}
         </div>
       </div>
 
       {/* CONTENIDO PRINCIPAL */}
       <div className="flex-1 overflow-auto p-6">
-        {activeTab === 'empresa' ? (
-          <FormularioEmpresa />
-        ) : (
-          <TablaUsuarios />
-        )}
+        {activeTab === 'empresa' && puedeEmpresa && <FormularioEmpresa />}
+        {activeTab === 'usuarios' && puedeUsuarios && <TablaUsuarios />}
       </div>
     </div>
   );

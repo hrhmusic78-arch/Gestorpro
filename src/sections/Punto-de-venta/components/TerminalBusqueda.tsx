@@ -95,7 +95,7 @@ export const TerminalBusqueda: React.FC<Props> = ({ searchQuery, setSearchQuery,
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-base sm:text-xl font-black text-[#1E293B] uppercase tracking-widest flex items-center gap-3">
-              <ScanLine className="text-[#1E293B]" size={24} /> Terminal de Operaciones
+              <ScanLine className="text-[#1E293B]" size={24} /> Punto de Venta
             </h1>
           </div>
         </div>

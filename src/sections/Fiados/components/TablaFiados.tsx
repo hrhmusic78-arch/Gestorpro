@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Eye, Edit,  Banknote, RotateCcw, FilterX, ChevronLeft, ChevronRight } from 'lucide-react';
 import type { Fiado } from '../types';
-import { clicConTeclado } from '../../../utils/clicConTeclado';
+import { clicConTeclado } from '../../../utils/clicConTeclado';
+import { usePermiso } from '../../../utils/permisos';
 
 interface Props {
   fiados: Fiado[];
@@ -12,6 +13,9 @@ interface Props {
 }
 
 export const TablaFiados: React.FC<Props> = ({ fiados, onView, onEdit, onPay, onRevertir }) => {
+  // Editar deudas requiere vender; abonar y anular pagos requiere cobrar deudas
+  const puedeEditarDeuda = usePermiso('caja_realizar_ventas');
+  const puedeCobrar = usePermiso('caja_cobrar_deudas');
   const [searchTerm, setSearchTerm] = useState('');
   const [filtroEstado, setFiltroEstado] = useState<'ACTIVOS' | 'TODOS' | 'PENDIENTE' | 'PAGADO'>('ACTIVOS');
   const [ordenPor, setOrdenPor] = useState<'RECIENTES' | 'ANTIGUOS' | 'MAYOR_DEUDA' | 'MENOR_DEUDA' | 'PROXIMO_VENCER'>('RECIENTES');
@@ -189,12 +193,16 @@ export const TablaFiados: React.FC<Props> = ({ fiados, onView, onEdit, onPay, on
 
                       {fiado.estado !== 'PAGADO' && (
                         <>
+                          {puedeEditarDeuda && (
                           <button onClick={(e) => { e.stopPropagation(); onEdit(fiado); }} className="p-2 bg-white text-[#94A3B8] border-2 border-[#E2E8F0] hover:border-[#F59E0B] hover:text-[#F59E0B] transition-colors cursor-pointer rounded-none" title="Editar Deuda">
                             <Edit size={16} />
                           </button>
+                          )}
+                          {puedeCobrar && (
                           <button onClick={(e) => { e.stopPropagation(); onPay(fiado); }} className="p-2 bg-white text-[#94A3B8] border-2 border-[#E2E8F0] hover:border-[#10B981] hover:text-[#10B981] transition-colors cursor-pointer rounded-none" title="Registrar Abono">
                             <Banknote size={16} />
                           </button>
+                          )}
                         </>
                       )}
 

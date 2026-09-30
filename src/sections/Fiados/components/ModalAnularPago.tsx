@@ -1,7 +1,8 @@
 import React from 'react';
 import { X, RotateCcw, Trash2 } from 'lucide-react';
 import type { Fiado } from '../types';
-import { useCerrarConEscape } from '../../../utils/useCerrarConEscape';
+import { useCerrarConEscape } from '../../../utils/useCerrarConEscape';
+import { usePermiso } from '../../../utils/permisos';
 
 interface Props {
   isOpen: boolean;
@@ -11,6 +12,8 @@ interface Props {
 }
 
 export const ModalAnularPago: React.FC<Props> = ({ isOpen, onClose, fiado, onAnularPago }) => {
+  // Anular pagos requiere el permiso de cobrar deudas (el historial se puede ver igual)
+  const puedeCobrar = usePermiso('caja_cobrar_deudas');
   useCerrarConEscape(isOpen, onClose); // Escape (o "Atrás" del control de TV) cierra la ventana
   if (!isOpen || !fiado) return null;
 
@@ -48,6 +51,7 @@ export const ModalAnularPago: React.FC<Props> = ({ isOpen, onClose, fiado, onAnu
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-sm font-black text-[#10B981]">S/ {pago.monto.toFixed(2)}</span>
+                    {puedeCobrar && (
                     <button 
                       onClick={() => onAnularPago(pago.id, pago.monto)} 
                       className="p-2 bg-white text-[#94A3B8] border-2 border-[#E2E8F0] group-hover:border-[#EF4444] group-hover:text-[#EF4444] transition-colors cursor-pointer"
@@ -55,6 +59,7 @@ export const ModalAnularPago: React.FC<Props> = ({ isOpen, onClose, fiado, onAnu
                     >
                       <Trash2 size={16} />
                     </button>
+                    )}
                   </div>
                 </div>
               ))

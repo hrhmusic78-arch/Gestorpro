@@ -174,36 +174,34 @@ export const ModalFiado: React.FC<Props> = ({ isOpen, onClose, onSave, fiadoAEdi
         const idVenta = Date.now(); // 🔥 Generamos ID único para Reportes
         const idFiado = idVenta + 1; // 🔥 Generamos ID único para el Fiado
 
-        // 1. Crear Venta de respaldo para cuadrar las finanzas
-        const { error: ventaError } = await supabase.from('sales').insert([{
+        // === TRANSACCIÓN ATÓMICA DE VENTA Y FIADO ===
+        const p_sale = {
           id: idVenta,
           total: totalCalculado,
           payment_type: 'credito',
+          amount_cash: 0,
+          amount_yape: 0,
+          amount_card: 0,
           amount_credit: totalCalculado,
           taxable_amount: 0,
           igv_amount: 0,
           total_exempt: totalCalculado,
+          sunat_status: 'ACEPTADO',
           is_synced: 1,
-          created_at: new Date().toISOString() // 🔥 LA PIEZA FALTANTE: Ahora Reportes sabrá de qué día es
-        }]).select().single();
-        if (ventaError) throw ventaError;
+          created_at: new Date().toISOString()
+        };
 
-        // 2. Insertar los productos en los detalles de la venta
-        const saleDetails = detalles.map(d => ({
-          sale_id: idVenta,
+        const p_details = detalles.map(d => ({
           product_id: d.productoId,
           product_name: d.name,
-          quantity: Number(d.qty), // <-- Forzamos el tipo numérico técnico
+          quantity: Number(d.qty),
           price_at_moment: d.price,
-          subtotal: Number(d.subtotal), // <-- Forzamos el tipo numérico técnico
-          is_synced: '1'
+          subtotal: Number(d.subtotal),
+          is_synced: 1
         }));
-        await supabase.from('sale_details').insert(saleDetails);
 
-        // 3. Crear el Documento de Deuda (Fiado)
-        const { error: fiadoError } = await supabase.from('fiados').insert([{
+        const p_fiado = {
           id: idFiado,
-          sale_id: idVenta,
           customer_id: cli?.id ? Number(cli.id) : null,
           customer_name: clienteSeleccionado,
           amount: totalCalculado,
@@ -211,26 +209,17 @@ export const ModalFiado: React.FC<Props> = ({ isOpen, onClose, onSave, fiadoAEdi
           expected_pay_date: fechaVencimiento,
           status: 'PENDIENTE',
           paid_amount: 0,
-          is_synced: '1'
-        }]);
-        if (fiadoError) throw fiadoError;
+          is_synced: 1
+        };
 
-        // 4. Descontar Inventario automáticamente
-        for (const det of detalles) {
-          const prod = productos.find(p => p.id === det.productoId);
-          if (prod) {
-            await supabase.from('products').update({ quantity: prod.quantity - Number(det.qty) }).eq('id', prod.id);
-            await supabase.from('inventory_movements').insert([{
-              product_id: prod.id,
-              product_name: prod.name,
-              change_amount: -Number(det.qty),
-              operation_type: 'VENTA',
-              reason: 'Venta a Crédito (Fiado)',
-              is_synced: '1',
-              user: 'Sistema'
-            }]);
-          }
-        }
+        const { error: rpcError } = await supabase.rpc('fn_register_sale', {
+          p_sale: p_sale,
+          p_details: p_details,
+          p_fiado: p_fiado
+        });
+
+        if (rpcError) throw new Error('Error al registrar fiado atómicamente: ' + rpcError.message);
+
         alert('✅ Fiado guardado, venta registrada e inventario descontado.');
       }
       

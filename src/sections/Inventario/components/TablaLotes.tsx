@@ -3,6 +3,8 @@ import { Database,Layers, Edit, Trash2, History, ChevronLeft, ChevronRight } fro
 import { supabase } from '../../../db/supabase';
 import { formatearCantidad } from '../../../utils/formato';
 import { clicConTeclado } from '../../../utils/clicConTeclado';
+import { usePermiso } from '../../../utils/permisos';
+import { traerTodo } from '../../../utils/traerTodo';
 
 interface Lote {
   id: string;
@@ -35,6 +37,8 @@ interface Props {
 export const TablaLotes: React.FC<Props> = ({ 
   searchQuery, filtroCategoria, filtroEstado, filtroOrden, nuevoLoteInyectado, onViewMermas, onEditLote, onLoteDeleted // <-- AÑADIR AQUÍ
 }) => {
+  // Editar o retirar lotes requiere el permiso de ingresar lotes (compras)
+  const puedeGestionarLotes = usePermiso('almacen_ingresar_lotes');
   const [lotes, setLotes] = useState<Lote[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -43,14 +47,15 @@ export const TablaLotes: React.FC<Props> = ({
       setLoading(true);
       try {
         // 🛡️ OPTIMIZACIÓN: Ocultamos los lotes que fueron eliminados (is_active: 0)
-        const { data, error } = await supabase
+        const { data, error } = await traerTodo(() => supabase
           .from('batches')
           .select(`
             *,
             products!batches_product_id_fkey (*)
           `)
           .neq('is_active', 0) // 🔥 EL ESCUDO: Ya no descarga los eliminados
-          .order('created_at', { ascending: false });
+          .order('created_at', { ascending: false })
+          .order('id'));
 
         if (error) throw error;
 
@@ -245,9 +250,9 @@ export const TablaLotes: React.FC<Props> = ({
     // SE AGRANDÓ LA LETRA BASE DE LA FILA (text-base)
     <div
       key={lote.id}
-      {...clicConTeclado(() => onEditLote && onEditLote(lote))}
-      className="grid grid-cols-12 items-center p-4 border-b border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors group text-base cursor-pointer"
-      title="Click para editar"
+      {...(puedeGestionarLotes ? clicConTeclado(() => onEditLote && onEditLote(lote)) : {})}
+      className={`grid grid-cols-12 items-center p-4 border-b border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors group text-base ${puedeGestionarLotes ? 'cursor-pointer' : ''}`}
+      title={puedeGestionarLotes ? 'Click para editar' : undefined}
     >
       
       {/* 1. INGRESO Y REFERENCIA / SUSTENTO / PROVEEDOR */}
@@ -339,6 +344,7 @@ export const TablaLotes: React.FC<Props> = ({
           <History size={18} />
         </button>
 
+        {puedeGestionarLotes && (<>
         <button
           onClick={(e) => { e.stopPropagation(); onEditLote && onEditLote(lote); }}
           className="text-[#94A3B8] hover:text-[#10B981] transition-colors cursor-pointer"
@@ -379,6 +385,7 @@ export const TablaLotes: React.FC<Props> = ({
         >
           <Trash2 size={18} />
         </button>
+        </>)}
       </div>
 
     </div>

@@ -104,9 +104,10 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
   };
 
   // FÓRMULA MATEMÁTICA AUTOMÁTICA (Costo Unitario)
-  const costoUnitario = (Number(costoTotal) > 0 && Number(cantidad) > 0) 
-    ? (Number(costoTotal) / Number(cantidad)).toFixed(2) 
-    : '0.00';
+  const costoUnitarioRaw = (Number(costoTotal) > 0 && Number(cantidad) > 0) 
+    ? (Number(costoTotal) / Number(cantidad)) 
+    : 0;
+  const costoUnitario = costoUnitarioRaw.toFixed(2);
 
   const handleSave = async () => {
     if (isSubmitting) return;
@@ -117,6 +118,14 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
       if (initialLote) {
         // === MODO EDICIÓN EVICAMP ===
         const cantidadNueva = Number(cantidad) || 0;
+        const delta = cantidadNueva - Number(initialLote.initial_quantity || 0);
+        const nuevaActual = Number(initialLote.quantity || 0) + delta;
+        
+        if (nuevaActual < 0) {
+          alert('Error: La nueva cantidad es menor a lo que ya se vendió/mermó de este lote.');
+          setIsSubmitting(false);
+          return;
+        }
 
         // 1. Guardar los campos secundarios (vencimiento, sustento tributario)
         const { error: metaError } = await supabase
@@ -135,8 +144,8 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
         // 🛡️ 2. RPC BLINDADO: El VPS hace toda la matemática, actualiza cantidad y stock en 0.001ms
         const { error: rpcError } = await supabase.rpc('fn_edit_batch', {
           p_batch_id: String(initialLote.id),
-          p_new_qty: cantidadNueva,
-          p_new_cost: Number(costoUnitario) || 0,
+          p_new_qty: nuevaActual,
+          p_new_cost: costoUnitarioRaw,
           p_user_name: 'Admin'
         });
 
@@ -169,7 +178,7 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
             initial_quantity: Number(cantidad),
             expiration_date: expiration || null,
             cost_total: Number(costoTotal),
-            cost_unit: Number(costoUnitario),
+            cost_unit: costoUnitarioRaw,
             document_ref: documento,
             is_synced: '1',
             is_active: 1 // <--- 🔥 ¡ESTA ES LA LÍNEA MÁGICA QUE FALTABA!

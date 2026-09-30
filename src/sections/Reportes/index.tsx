@@ -7,6 +7,7 @@ import type { TicketVenta } from './types';
 // 🎯 MOTOR ÚNICO DE INGRESO TOTAL: misma fórmula y mismas fechas (Perú, UTC-5 fijo) que
 // Resumen, Utilidades, Finanzas y Punto de Venta, para que el monto SIEMPRE coincida.
 import { calcularIngresoTotal, fechaLocalPeru, primerDiaMesPeru, haceNDiasPeru } from '../../utils/ingresos';
+import { traerTodo } from '../../utils/traerTodo';
 
 export const Reportes: React.FC = () => {
   const [tickets, setTickets] = useState<TicketVenta[]>([]);
@@ -45,17 +46,9 @@ export const Reportes: React.FC = () => {
   };
   // ------------------------------------
 
-  useEffect(() => {
-    const autoLimpiarAntiguos = async () => {
-      const fechaLimite = new Date();
-      fechaLimite.setDate(fechaLimite.getDate() - 30);
-      await supabase
-        .from('sales')
-        .delete()
-        .lt('created_at', fechaLimite.toISOString());
-    };
-    autoLimpiarAntiguos();
-  }, []);
+  // Nota: antes aquí se borraban en silencio las ventas con más de 30 días cada vez que se
+  // abría esta sección, lo que destruía el historial que usan el Panel de Control, Tesorería
+  // y Análisis de Rentabilidad. Se quitó: las ventas no se borran automáticamente.
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -65,26 +58,23 @@ export const Reportes: React.FC = () => {
 
       // 🛠️ ZONA HORARIA PERÚ (UTC-5): "00:00" de un día en Perú equivale a "05:00" UTC.
       // Sin este ajuste, el rango se corría 5 horas y mezclaba ventas de la noche del día anterior.
-      let query = supabase.from('sales').select('*');
+      const hayRango = !!(fechaInicio && fechaFin);
+      const inicioUTC = `${fechaInicio}T05:00:00.000Z`;
+      const finUTC = `${finAjustado}T05:00:00.000Z`;
 
-      if (fechaInicio && fechaFin) {
-        query = query.gte('created_at', `${fechaInicio}T05:00:00.000Z`)
-                     .lt('created_at', `${finAjustado}T05:00:00.000Z`);
-      } else {
-        query = query.limit(100);
-      }
-      
-      const { data, error } = await query.order('created_at', { ascending: false });
+      // Con rango se traen TODAS las ventas por bloques (Supabase corta en 1000 filas); sin rango, las 100 últimas
+      const consultaVentas = () => supabase.from('sales').select('*')
+        .gte('created_at', inicioUTC).lt('created_at', finUTC)
+        .order('created_at', { ascending: false }).order('id');
+      const { data, error } = hayRango
+        ? await traerTodo(consultaVentas)
+        : await supabase.from('sales').select('*').order('created_at', { ascending: false }).limit(100);
 
       // 💰 ABONOS DE FIADOS EN EL RANGO (igual que Resumen/Utilidades/Finanzas)
-      let queryAbonos = supabase.from('debt_payments').select('amount, fiado_id, created_at');
-      if (fechaInicio && fechaFin) {
-        queryAbonos = queryAbonos.gte('created_at', `${fechaInicio}T05:00:00.000Z`)
-                                  .lt('created_at', `${finAjustado}T05:00:00.000Z`);
-      } else {
-        queryAbonos = queryAbonos.limit(1000);
-      }
-      const { data: abonosData } = await queryAbonos;
+      const { data: abonosData } = hayRango
+        ? await traerTodo(() => supabase.from('debt_payments').select('amount, fiado_id, created_at')
+            .gte('created_at', inicioUTC).lt('created_at', finUTC).order('id'))
+        : await supabase.from('debt_payments').select('amount, fiado_id, created_at').limit(1000);
 
       // 🛡️ Si el ticket de un fiado fue ANULADO después de un abono, ese abono ya se revirtió en
       // caja y no debe seguir sumando ingreso para siempre.

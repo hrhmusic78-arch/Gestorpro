@@ -24,6 +24,9 @@ dist-ssr
 *.sw?
 *.rar
 
-# Copias de la base de datos (contienen datos reales)
-*.sql
+# Respaldos de la base de datos en la raíz (contienen datos reales). Los scripts de supabase/ sí se guardan
+/*.sql
 .env
+
+.vercel
+.env*

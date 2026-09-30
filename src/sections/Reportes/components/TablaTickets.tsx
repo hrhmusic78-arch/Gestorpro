@@ -4,7 +4,8 @@ import { RotateCcw, Trash2, Receipt, ChevronLeft, ChevronRight, Eye, X } from 'l
 import { supabase } from '../../../db/supabase'; 
 import type { TicketVenta } from '../types';
 import { useCerrarConEscape } from '../../../utils/useCerrarConEscape';
-import { clicConTeclado } from '../../../utils/clicConTeclado';
+import { clicConTeclado } from '../../../utils/clicConTeclado';
+import { usePermiso } from '../../../utils/permisos';
 
 interface Props {
   tickets: TicketVenta[];
@@ -13,6 +14,8 @@ interface Props {
 }
 
 export const TablaTickets: React.FC<Props> = ({ tickets, onAnular, onDelete }) => {
+  // Anular o eliminar ventas requiere el permiso de anular ventas
+  const puedeAnular = usePermiso('reportes_anular_ventas');
   const [currentPage, setCurrentPage] = useState(1);
   const [ticketSeleccionado, setTicketSeleccionado] = useState<string | null>(null);
   useCerrarConEscape(ticketSeleccionado !== null, () => setTicketSeleccionado(null)); // Escape (o "Atrás" del control de TV) cierra la ventana
@@ -147,14 +150,16 @@ export const TablaTickets: React.FC<Props> = ({ tickets, onAnular, onDelete }) =
                         <button onClick={(e) => { e.stopPropagation(); verDetalles(t.id); }} className="p-2 bg-[#FFFFFF] text-[#1E293B] border border-[#E2E8F0] hover:border-[#1E293B] transition-colors cursor-pointer rounded-none" title="Ver Productos">
                           <Eye size={16} />
                         </button>
-                        {t.estado !== 'ANULADO' && (
+                        {t.estado !== 'ANULADO' && puedeAnular && (
                           <button onClick={(e) => { e.stopPropagation(); onAnular(t.id); }} className="p-2 bg-[#FFFFFF] text-[#64748B] border border-[#E2E8F0] hover:border-[#F59E0B] hover:text-[#F59E0B] transition-colors cursor-pointer rounded-none" title="Anular / Devolver">
                             <RotateCcw size={16} />
                           </button>
                         )}
+                        {puedeAnular && (
                         <button onClick={(e) => { e.stopPropagation(); onDelete(t.id); }} className="p-2 bg-[#FFFFFF] text-[#64748B] border border-[#E2E8F0] hover:border-[#EF4444] hover:text-[#EF4444] transition-colors cursor-pointer rounded-none" title="Eliminar Permanente">
                           <Trash2 size={16} />
                         </button>
+                        )}
                       </div>
                     </td>
                   </tr>

@@ -9,7 +9,7 @@ const ventanasAbiertas: symbol[] = [];
  */
 export const useCerrarConEscape = (activo: boolean, onClose: () => void) => {
   const cerrar = useRef(onClose);
-  cerrar.current = onClose;
+  useEffect(() => { cerrar.current = onClose; }); // siempre la versión más reciente de onClose
 
   useEffect(() => {
     if (!activo) return;

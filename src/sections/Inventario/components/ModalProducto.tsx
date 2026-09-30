@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { X, Package, Scale, Coffee, ArrowLeft, Save, ImagePlus, Search, Loader2, Database } from 'lucide-react';
 import { supabase } from '../../../db/supabase'; // RETORNO TÉCNICO: Conexión a la DB
 import { useCerrarConEscape } from '../../../utils/useCerrarConEscape';
+import { usePermiso } from '../../../utils/permisos';
 
 // Componente de Notificación de Errores (Diseño Geométrico y Alto Contraste)
 const TechnicalAlert = ({ message }: { message: string }) => {
@@ -36,6 +37,9 @@ type ProductNature = 'UNIDAD' | 'PESO' | 'CONSUMO' | null;
 
 export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, onProductSaved, initialData, productosExistentes = [] }) => {
   useCerrarConEscape(isOpen, onClose); // Escape (o "Atrás" del control de TV) cierra la ventana
+  // Permisos: "Crear/Editar productos" cambia los datos; "Modificar precios" cambia el precio de un producto existente
+  const puedeEditarDatos = usePermiso('almacen_crear_editar_productos');
+  const puedeCambiarPrecio = usePermiso('almacen_modificar_precios');
   const [step, setStep] = useState<1 | 2>(1);
   const [nature, setNature] = useState<ProductNature>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -78,7 +82,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
           price: initialData.price?.toString() || '',
           minStock: initialData.minStock?.toString() || '5',
           weightUnit: ['KG', 'GR', 'LT', 'ML'].includes(initialData.unit) ? initialData.unit : 'KG',
-          image: initialData.image || ''
+          image: initialData.imageUrl || initialData.image_url || initialData.image || ''
         });
         
         if (initialData.unit === 'UND') setNature('UNIDAD');
@@ -241,12 +245,14 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
 
       if (initialData) {
         // [ RETORNO ]: MODO EDICIÓN
-        const { data, error } = await supabase.from('products').update({
+        // Sin permiso de precios se conserva el precio actual; con solo permiso de precios, se guarda únicamente el precio
+        const precioFinal = puedeCambiarPrecio ? (Number(formData.price) || 0) : (initialData.price || 0);
+        const { data, error } = await supabase.from('products').update(!puedeEditarDatos ? { price: precioFinal } : {
           name: nombreLimpio,
           category: formData.category || 'GENERAL',
           code: safeCode,
           barcode: safeBarcode,
-          price: Number(formData.price) || 0,
+          price: precioFinal,
           min_stock: Number(formData.minStock) || 5,
           control_type: nature === 'PESO' ? 'WEIGHT' : 'UND',
           weight_unit: nature === 'PESO' ? formData.weightUnit : null,
@@ -649,7 +655,9 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
                   placeholder="0.00"
                   value={formData.price}
                   onChange={(e) => setFormData({...formData, price: e.target.value})}
-                  className="w-full bg-white border-2 border-[#E2E8F0] p-3 text-xs font-black text-[#1E293B] uppercase outline-none focus:border-[#10B981] transition-colors"
+                  disabled={!!initialData && !puedeCambiarPrecio}
+                  title={!!initialData && !puedeCambiarPrecio ? 'No tienes permiso para modificar precios' : undefined}
+                  className="w-full bg-white disabled:bg-[#F1F5F9] disabled:text-[#94A3B8] disabled:cursor-not-allowed border-2 border-[#E2E8F0] p-3 text-xs font-black text-[#1E293B] uppercase outline-none focus:border-[#10B981] transition-colors"
                 />
               </div>
 
