@@ -11,7 +11,7 @@ import { TicketVenta } from './components/TicketVenta';
 import { ModalCobro } from './components/ModalCobro';
 import { ModalBalanza } from './components/ModalBalanza';
 import { ModalPrecioConsumo } from './components/ModalPrecioConsumo';
-import { TicketImprimible } from './components/TicketImprimible';
+import { TicketImprimible } from './components/TicketImprimible';
 import { traerTodo } from '../../utils/traerTodo';
 import { MiniReporteDiario } from './components/MiniReporteDiario'; // 🛡️ EVICAMP: Mini Reporte en Tiempo Real
 
@@ -408,19 +408,33 @@ const [searchQuery, setSearchQuery] = useState('');
       const totalIngresadoCents = Math.round((pagos.efectivo + pagos.yape + pagos.tarjeta) * 100);
       
       const totalVenta = totalVentaCents / 100;
-      const totalIngresado = totalIngresadoCents / 100;
       
       let vuelto = 0;
       if (totalIngresadoCents > totalVentaCents) {
         vuelto = (totalIngresadoCents - totalVentaCents) / 100;
       }
 
-      // 🛡️ DETECCIÓN INTELIGENTE DEL MÉTODO DE PAGO
+      // 🛡️ VUELTO: físicamente solo sale del cajón en efectivo. ModalCobro no deja que
+      // Yape + tarjeta superen el total, así que esos montos se guardan tal cual se pagaron
+      // y el vuelto se descuenta únicamente del efectivo (lo cobrado nunca supera el total).
+      const cobradoEfectivo = Math.max(0, Math.round(pagos.efectivo * 100) - Math.round(vuelto * 100)) / 100;
+      const cobradoYape = Math.round(pagos.yape * 100) / 100;
+      const cobradoTarjeta = Math.round(pagos.tarjeta * 100) / 100;
+      const montoCredito = fiadoData ? Number(fiadoData.montoDeuda) || 0 : 0;
+
+      // 🛡️ DETECCIÓN DEL MÉTODO DE PAGO: un solo método usado => ese método;
+      // 2 o más (contando la parte fiada) => MIXTO. 'FIADO' solo cuando no se cobró nada al
+      // momento: Finanzas y el Mini Reporte ignoran los montos de ventas 'FIADO', así que una
+      // venta con parte cobrada nunca debe llevar esa etiqueta.
+      const metodosUsados = [
+        cobradoEfectivo > 0 ? 'EFECTIVO' : null,
+        cobradoYape > 0 ? 'YAPE' : null,
+        cobradoTarjeta > 0 ? 'TARJETA' : null,
+        montoCredito > 0 ? 'FIADO' : null,
+      ].filter((m): m is string => m !== null);
       let tipoPago = 'EFECTIVO';
-      if (totalIngresado === 0 && fiadoData) tipoPago = 'FIADO';
-      else if (pagos.yape > 0 && pagos.efectivo === 0 && pagos.tarjeta === 0) tipoPago = 'YAPE';
-      else if (pagos.tarjeta > 0 && pagos.efectivo === 0 && pagos.yape === 0) tipoPago = 'TARJETA';
-      else if (totalIngresado > 0 && (pagos.efectivo > 0 || pagos.yape > 0 || pagos.tarjeta > 0)) tipoPago = 'MIXTO';
+      if (metodosUsados.length === 1) tipoPago = metodosUsados[0];
+      else if (metodosUsados.length > 1) tipoPago = 'MIXTO';
 
       // === TRANSACCIÓN ATÓMICA DE VENTA ===
       const trueSaleId = Date.now();
@@ -429,10 +443,10 @@ const [searchQuery, setSearchQuery] = useState('');
         id: trueSaleId,
         total: totalVenta,
         payment_type: tipoPago,
-        amount_cash: Math.max(0, pagos.efectivo - vuelto),
-        amount_yape: pagos.yape,
-        amount_card: pagos.tarjeta,
-        amount_credit: fiadoData ? Number(fiadoData.montoDeuda) : 0,
+        amount_cash: cobradoEfectivo,
+        amount_yape: cobradoYape,
+        amount_card: cobradoTarjeta,
+        amount_credit: montoCredito,
         sunat_status: 'ACEPTADO',
         created_at: new Date().toISOString(),
         is_synced: 1
@@ -442,7 +456,7 @@ const [searchQuery, setSearchQuery] = useState('');
         id: trueSaleId + 1,
         customer_id: fiadoData.clienteId ? Number(fiadoData.clienteId) : null,
         customer_name: fiadoData.clienteNombre,
-        amount: Number(fiadoData.montoDeuda),
+        amount: montoCredito,
         paid_amount: 0,
         date_given: new Date().toISOString(),
         expected_pay_date: fiadoData.fechaVencimiento,
@@ -461,9 +475,16 @@ const [searchQuery, setSearchQuery] = useState('');
 
       const { error: rpcError } = await supabase.rpc('fn_register_sale', { p_sale, p_details, p_fiado });
 
+      // fn_register_sale inserta cabecera, detalle, fiado y stock en UNA sola transacción de la BD:
+      // si algo falla, la BD deshace todo y no queda ninguna venta a medias.
       if (rpcError) {
-        alert('Error crítico al registrar la venta (Rollback aplicado): ' + rpcError.message);
-        return;
+        // 🛡️ Caso borde: la BD confirmó la venta pero la respuesta se perdió (corte de red).
+        // Comprobamos por su ID antes de reportar error, para que un reintento no la duplique.
+        const { data: yaGuardada } = await supabase.from('sales').select('id').eq('id', trueSaleId).maybeSingle();
+        if (!yaGuardada) {
+          alert('❌ No se pudo registrar la venta. No se guardó nada; el ticket sigue en caja para reintentar.\n\nDetalle: ' + rpcError.message);
+          return;
+        }
       }
 
       // Solo descontamos el stock visual si no hubo error

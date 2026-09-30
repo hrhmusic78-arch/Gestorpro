@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { supabase } from '../../../db/supabase';
 import { Eye, EyeOff, BarChart3, X, Clock, Receipt, Coins, Smartphone, CreditCard, BookOpen, HandCoins } from 'lucide-react';
 import { useCerrarConEscape } from '../../../utils/useCerrarConEscape';
+import { traerTodo } from '../../../utils/traerTodo';
 
 interface Props {
   refreshTrigger: number;
@@ -34,18 +35,29 @@ export const MiniReporteDiario: React.FC<Props> = ({ refreshTrigger }) => {
       }
 
       // 1. VENTAS DIRECTAS
-      const { data: ventas } = await supabase
+      // Igual que Finanzas: se traen todas (por bloques) y las anuladas se descartan aquí.
+      // Un .neq('sunat_status','ANULADO') en SQL también descartaría las filas con sunat_status NULL.
+      const { data: ventasTodas } = await traerTodo<any>(() => supabase
         .from('sales')
-        .select('id, payment_type, amount_cash, amount_yape, amount_card, amount_transfer, amount_credit, total, created_at')
+        .select('*')
         .gte('created_at', sesionActiva.opened_at)
-        .neq('sunat_status', 'ANULADO');
+        .order('id'));
+      const esAnulada = (s: any) => s.status === 'ANULADO' || s.sunat_status === 'ANULADO';
+      const ventas = ventasTodas ? ventasTodas.filter(s => !esAnulada(s)) : null;
 
       // 🔥 2. ABONOS DE DEUDAS EN TIEMPO REAL (INTEGRACIÓN)
-      const { data: abonos } = await supabase
+      // También trae las devoluciones de abonos (al anular un ticket fiado): restan como un abono negativo.
+      // Las devoluciones del cobro de la venta no se traen: esa venta ya se descarta por estar anulada.
+      const { data: movsAbonos } = await supabase
         .from('cash_movements')
-        .select('id, payment_type, amount, created_at')
-        .eq('flujo', 'INGRESO_FIADO')
+        .select('id, payment_type, amount, created_at, flujo, description')
+        .in('flujo', ['INGRESO_FIADO', 'DEVOLUCION'])
         .gte('created_at', sesionActiva.opened_at);
+      const abonos = movsAbonos
+        ? movsAbonos
+            .filter(m => m.flujo === 'INGRESO_FIADO' || (m.description || '').startsWith('DEVOLUCIÓN ABONO'))
+            .map(m => m.flujo === 'DEVOLUCION' ? { ...m, amount: -Number(m.amount || 0) } : m)
+        : null;
 
       let ef = 0, ya = 0, ta = 0, tr = 0, fi = 0;
       let ticketsUnificados: any[] = [];
@@ -86,7 +98,7 @@ export const MiniReporteDiario: React.FC<Props> = ({ refreshTrigger }) => {
           ticketsUnificados.push({
             id: a.id,
             tipo: 'ABONO',
-            metodo: `ABONO ${a.payment_type || 'EFECTIVO'}`,
+            metodo: `${monto < 0 ? 'DEVOLUCIÓN ABONO' : 'ABONO'} ${a.payment_type || 'EFECTIVO'}`,
             total: monto,
             hora: a.created_at
           });

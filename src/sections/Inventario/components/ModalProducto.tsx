@@ -63,6 +63,8 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
   const [isSearchingImage, setIsSearchingImage] = useState(false);
   const [imageResults, setImageResults] = useState<string[]>([]);
   const [showImageResults, setShowImageResults] = useState(false); // <-- Controla si la galería está abierta o cerrada
+  // true solo cuando el usuario pulsa "Quitar imagen": así una búsqueda abandonada no borra la foto guardada
+  const [imagenQuitada, setImagenQuitada] = useState(false);
 
   // 1. LIMPIEZA DE MEMORIA AL ABRIR EL MODAL
   // 1. CONTROL DE MEMORIA AL ABRIR (MODO CREACIÓN vs MODO EDICIÓN)
@@ -71,6 +73,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
       setImageQuery('');
       setImageResults([]);
       setShowImageResults(false);
+      setImagenQuitada(false);
 
       if (initialData) {
         // MODO EDICIÓN: Cargamos datos y saltamos al Paso 2
@@ -247,6 +250,10 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
         // [ RETORNO ]: MODO EDICIÓN
         // Sin permiso de precios se conserva el precio actual; con solo permiso de precios, se guarda únicamente el precio
         const precioFinal = puedeCambiarPrecio ? (Number(formData.price) || 0) : (initialData.price || 0);
+        // Imagen: se conserva la existente salvo que el usuario la reemplace o la quite a propósito
+        const imagenOriginal = initialData.imageUrl || initialData.image_url || initialData.image || '';
+        const imagenFinal = formData.image || (imagenQuitada ? '' : imagenOriginal);
+        const cambioImagen = imagenFinal !== imagenOriginal ? { image_url: imagenFinal || null } : {};
         const { data, error } = await supabase.from('products').update(!puedeEditarDatos ? { price: precioFinal } : {
           name: nombreLimpio,
           category: formData.category || 'GENERAL',
@@ -257,17 +264,13 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
           control_type: nature === 'PESO' ? 'WEIGHT' : 'UND',
           weight_unit: nature === 'PESO' ? formData.weightUnit : null,
           unit: unidadAsignada,
-          image_url: formData.image,
+          ...cambioImagen,
           is_active: 1
         }).eq('id', initialData.id).select().single();
 
         if (error) throw error;
         productoGuardado = data;
         
-        // [ SALIDA ]: Notificamos al inventario el éxito de la edición
-        if (onProductSaved) {
-          onProductSaved(productoGuardado);
-        }
         
         alert(`PRODUCTO ACTUALIZADO CORRECTAMENTE.\nNombre: ${nombreLimpio}`);
       } else {
@@ -286,7 +289,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
           control_type: nature === 'PESO' ? 'WEIGHT' : 'UND',
           weight_unit: nature === 'PESO' ? formData.weightUnit : null,
           unit: unidadAsignada,
-          image_url: formData.image, 
+          image_url: formData.image || null, 
           is_synced: '1',
           is_active: 1 // <--- 🔥 ¡SEGUNDA LÍNEA MÁGICA PARA LOS PRODUCTOS!
         }]).select().single();
@@ -638,7 +641,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
                       <p className="text-[12px] text-[#64748B] truncate mt-1">{formData.image}</p>
                     </div>
                     <button 
-                      onClick={() => setFormData({...formData, image: ''})}
+                      onClick={() => { setFormData({...formData, image: ''}); setImagenQuitada(true); }}
                       className="text-[#EF4444] hover:bg-[#FEF2F2] p-2 transition-colors border-2 border-transparent hover:border-[#EF4444] cursor-pointer"
                       title="Quitar imagen"
                     >

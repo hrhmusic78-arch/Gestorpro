@@ -67,8 +67,9 @@ export const ModalCierre: React.FC<Props> = ({ isOpen, onClose, onSuccess, sessi
 
   // Lo que el sistema espera encontrar en cada método, según las ventas/cobros de la sesión.
   const esperadoEfectivo = superMetricas.efectivoEsperadoCaja;
-  const esperadoYape = superMetricas.ventasYape + superMetricas.cobroDeudasYape;
-  const esperadoTarjeta = superMetricas.ventasTarjeta;
+  // Cada egreso/ingreso manual ya se sumó o restó en la bolsa de su propio método de pago.
+  const esperadoYape = superMetricas.yapeEsperado;
+  const esperadoTarjeta = superMetricas.tarjetaEsperada;
 
   const diferenciaEfectivo = (Number(montoEfectivo) || 0) - esperadoEfectivo;
   const diferenciaYape = (Number(montoYape) || 0) - esperadoYape;

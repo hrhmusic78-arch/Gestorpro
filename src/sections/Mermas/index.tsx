@@ -64,11 +64,11 @@ export const Mermas: React.FC = () => {
       if (error) throw error;
       if (data) {
         const mapeados: Product[] = data.map((p: any) => {
-          const registroCompleto = JSON.stringify(p).toUpperCase();
-          const esConsumo = registroCompleto.includes('"CONSUMO"') || 
-                            registroCompleto.includes('"SERVICE"') || 
-                            registroCompleto.includes('"USO INTERNO"') ||
-                            registroCompleto.includes('"CONSUMPTION"');
+          // Es Consumo solo si sus campos de TIPO/UNIDAD lo dicen exactamente
+          // (antes se buscaba en toda la fila: una categoría o nombre "CONSUMO" lo marcaba por error).
+          const TIPOS_CONSUMO = ['CONSUMO', 'SERVICE', 'USO INTERNO', 'CONSUMPTION'];
+          const esConsumo = [p.unit, p.control_type, p.weight_unit]
+            .some(v => TIPOS_CONSUMO.includes(String(v ?? '').trim().toUpperCase()));
 
           return {
             id: p.id,

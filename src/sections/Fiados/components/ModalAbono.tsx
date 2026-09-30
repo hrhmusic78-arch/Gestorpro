@@ -28,9 +28,12 @@ export const ModalAbono: React.FC<Props> = ({ isOpen, onClose, onConfirm, fiado 
 
   if (!isOpen || !fiado) return null;
 
-  const valEfectivo = Number(efectivo) || 0;
-  const valYape = Number(yape) || 0;
-  const valTarjeta = Number(tarjeta) || 0;
+  // Cada porción se redondea a céntimos para que efectivo + yape + tarjeta sume EXACTO el total
+  // grabado en debt_payments.amount (la caja registra una fila por cada porción).
+  const aCentimos = (v: string) => Math.max(0, Number((Number(v) || 0).toFixed(2)));
+  const valEfectivo = aCentimos(efectivo);
+  const valYape = aCentimos(yape);
+  const valTarjeta = aCentimos(tarjeta);
   
   // Destrucción de la distorsión de coma flotante de JavaScript
   const totalAbono = Number((valEfectivo + valYape + valTarjeta).toFixed(2));
@@ -60,7 +63,13 @@ export const ModalAbono: React.FC<Props> = ({ isOpen, onClose, onConfirm, fiado 
         amount_cash: valEfectivo,
         amount_yape: valYape,
         amount_card: valTarjeta,
-        payment_type: valEfectivo > 0 ? 'efectivo' : (valYape > 0 ? 'yape' : 'tarjeta'),
+        amount_transfer: 0,
+        // Un solo registro por abono con el desglose por método en amount_cash/yape/card.
+        // El trigger fn_register_fiado_payment_in_cash crea un movimiento de caja por cada
+        // porción > 0, así que aquí solo se marca el tipo: 'mixto' si hay más de un método.
+        payment_type: [valEfectivo, valYape, valTarjeta].filter(v => v > 0).length > 1
+          ? 'mixto'
+          : (valEfectivo > 0 ? 'efectivo' : (valYape > 0 ? 'yape' : 'tarjeta')),
         session_id: session ? session.id : null,
         created_at: new Date().toISOString(),
         is_synced: 1

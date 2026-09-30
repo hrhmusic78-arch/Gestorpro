@@ -181,6 +181,24 @@ export const ModalMerma: React.FC<Props> = ({ isOpen, onClose, productos, onProd
       // 1. Detectamos de forma segura si es consumo/uso interno
       const esConsumo = selectedProduct?.unit === 'CONSUMO' || motivo === 'USO INTERNO';
 
+      // Stock FRESCO del lote: si hubo una venta mientras el modal estaba abierto, no la pisamos
+      let stockLoteFresco = Number(selectedLote?.quantity) || 0;
+      if (!esConsumo && diffCant !== 0 && selectedLote) {
+        const { data: loteFresco, error: loteFrescoError } = await supabase
+          .from('batches')
+          .select('quantity')
+          .eq('id', selectedLote.id)
+          .single();
+        if (loteFrescoError) throw loteFrescoError;
+        stockLoteFresco = Number(loteFresco?.quantity) || 0;
+        if (diffCant > 0 && diffCant > stockLoteFresco) {
+          alert(`⚠️ ERROR: El lote ahora solo tiene ${stockLoteFresco} (hubo ventas mientras registrabas). Ajusta la cantidad.`);
+          return;
+        }
+      }
+      const nuevaCantLote = stockLoteFresco - diffCant;
+      let nuevoStockProducto = Number(selectedProduct.quantity) - diffCant;
+
       // A. ACTUALIZAR o REGISTRAR en Waste (Merma / Gasto)
       if (isEdit) {
         // 🚨 PROTECCIÓN QUIRÚRGICA: Buscar el registro EXACTO a actualizar sin alterar otras mermas del lote
@@ -232,13 +250,22 @@ export const ModalMerma: React.FC<Props> = ({ isOpen, onClose, productos, onProd
       if (!esConsumo && diffCant !== 0) {
         const { error: batchUpdateError } = await supabase
           .from('batches')
-          .update({ quantity: selectedLote.quantity - diffCant })
+          .update({ quantity: nuevaCantLote })
           .eq('id', selectedLote.id);
         if (batchUpdateError) throw batchUpdateError;
 
+        // Stock global FRESCO: suma de los lotes activos recién leída (misma regla que fn_edit_batch)
+        const { data: lotesActivos, error: lotesActivosError } = await supabase
+          .from('batches')
+          .select('quantity')
+          .eq('product_id', selectedProduct.id)
+          .eq('is_active', 1);
+        if (lotesActivosError) throw lotesActivosError;
+        nuevoStockProducto = (lotesActivos || []).reduce((s, l) => s + (Number(l.quantity) || 0), 0);
+
         const { error: productUpdateError } = await supabase
           .from('products')
-          .update({ quantity: selectedProduct.quantity - diffCant })
+          .update({ quantity: nuevoStockProducto })
           .eq('id', selectedProduct.id);
         if (productUpdateError) throw productUpdateError;
 
@@ -252,8 +279,8 @@ export const ModalMerma: React.FC<Props> = ({ isOpen, onClose, productos, onProd
             product_id: selectedProduct.id,
             product_name: selectedProduct.name,
             change_amount: -diffCant, // Negativo si sacamos más, Positivo si devolvemos
-            previous_quantity: selectedLote.quantity,
-            new_quantity: selectedLote.quantity - diffCant,
+            previous_quantity: stockLoteFresco,
+            new_quantity: nuevaCantLote,
             operation_type: tipoOperacion,
             reason: razonOperacion,
             notes: isEdit ? `Corrección de merma [Ref: ${initialData.id || initialData.batch_id || 'Virtual'}]` : detalle || 'Merma manual',
@@ -272,11 +299,10 @@ export const ModalMerma: React.FC<Props> = ({ isOpen, onClose, productos, onProd
       
       // [ SALIDA ]: Notificamos el cambio al Inventario General y al Control de Lotes
       if (onProductSaved && selectedProduct && selectedLote && diffCant !== 0) {
-        const cantFinalLote = selectedLote.quantity - diffCant;
         onProductSaved(
-          { ...selectedProduct, quantity: selectedProduct.quantity - diffCant },
+          { ...selectedProduct, quantity: nuevoStockProducto },
           selectedLote.id,
-          cantFinalLote
+          nuevaCantLote
         );
       }
 

@@ -178,7 +178,9 @@ export const ModalFiado: React.FC<Props> = ({ isOpen, onClose, onSave, fiadoAEdi
         const p_sale = {
           id: idVenta,
           total: totalCalculado,
-          payment_type: 'credito',
+          // 'FIADO' (igual que el Punto de Venta): Finanzas y el Mini Reporte excluyen de la caja
+          // las ventas con este tipo, porque no entró dinero al momento de la venta.
+          payment_type: 'FIADO',
           amount_cash: 0,
           amount_yape: 0,
           amount_card: 0,

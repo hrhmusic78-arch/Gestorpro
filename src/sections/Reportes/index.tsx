@@ -178,66 +178,21 @@ export const Reportes: React.FC = () => {
 
     if (window.confirm('⚠️ ¿Seguro que deseas ANULAR este ticket? El stock regresará y el dinero se descontará de la caja actual.')) {
       
-      // 🚨 INYECCIÓN ARQUITECTÓNICA: Capturar cómo pagó el cliente antes de anular el registro.
-      const { data: saleData } = await supabase.from('sales').select('*').eq('id', id).single();
-      
-      const { error } = await supabase.from('sales').update({ sunat_status: 'ANULADO' }).eq('id', id);
-      
+      // Todo en UNA transacción de la BD (fn_annul_sale, ver supabase/2026-09-30_anulacion.sql):
+      // venta y fiado ANULADO, stock devuelto a los mismos lotes que consumió la venta,
+      // contraasientos DEVOLUCION en la caja abierta (venta + abonos ya pagados del fiado).
+      const { data: resultado, error } = await supabase.rpc('fn_annul_sale', { p_sale_id: id });
+
       if (error) {
         alert("Error de integridad al anular en BD: " + error.message);
       } else {
-        // --- 1. DEVOLUCIÓN DE STOCK ---
-        const { data: detalles } = await supabase.from('sale_details').select('product_id, quantity, product_name').eq('sale_id', id);
-        if (detalles) {
-          for (const item of detalles) {
-            const { data: producto } = await supabase.from('products').select('quantity, control_type').eq('id', item.product_id).single();
-            if (producto && producto.control_type !== 'CONSUMPTION') {
-              const stockDevuelto = Number(producto.quantity) + Number(item.quantity);
-              await supabase.from('products').update({ quantity: stockDevuelto }).eq('id', item.product_id);
-              await supabase.from('inventory_movements').insert([{
-                product_id: item.product_id,
-                change_amount: Number(item.quantity),
-                operation_type: 'DEVOLUCION',
-                reason: `Anulación de Ticket #${id}`,
-                user: 'Sistema'
-              }]);
-            }
-          }
-        }
-
-        // --- 2. CANCELACIÓN DE DEUDA FIADA ---
-        await supabase.from('fiados').update({ status: 'ANULADO' }).eq('sale_id', id);
-
-        // --- 3. CONTRAASIENTO FINANCIERO (Reversión de Dinero en Caja) ---
-        if (saleData) {
-          const { data: session } = await supabase.from('cash_sessions').select('id').eq('status', 'OPEN').single();
-          
-          if (session) {
-            const devoluciones = [];
-            const shortId = id.slice(-6);
-
-            // Analizamos el desglose exacto de la venta para devolverlo por el mismo canal
-            if (Number(saleData.amount_cash) > 0) {
-              devoluciones.push({ session_id: session.id, type: 'EGRESO', amount: Number(saleData.amount_cash), description: `DEVOLUCIÓN EFECTIVO (ANULA TICKET #${shortId})`, payment_type: 'efectivo', created_at: new Date().toISOString(), is_synced: 1, flujo: 'DEVOLUCION' });
-            }
-            if (Number(saleData.amount_yape) > 0) {
-              devoluciones.push({ session_id: session.id, type: 'EGRESO', amount: Number(saleData.amount_yape), description: `DEVOLUCIÓN YAPE/PLIN (ANULA TICKET #${shortId})`, payment_type: 'yape', created_at: new Date().toISOString(), is_synced: 1, flujo: 'DEVOLUCION' });
-            }
-            if (Number(saleData.amount_card) > 0) {
-              devoluciones.push({ session_id: session.id, type: 'EGRESO', amount: Number(saleData.amount_card), description: `DEVOLUCIÓN TARJETA (ANULA TICKET #${shortId})`, payment_type: 'tarjeta', created_at: new Date().toISOString(), is_synced: 1, flujo: 'DEVOLUCION' });
-            }
-            if (Number(saleData.amount_transfer) > 0) {
-              devoluciones.push({ session_id: session.id, type: 'EGRESO', amount: Number(saleData.amount_transfer), description: `DEVOLUCIÓN TRANSFERENCIA (ANULA TICKET #${shortId})`, payment_type: 'transferencia', created_at: new Date().toISOString(), is_synced: 1, flujo: 'DEVOLUCION' });
-            }
-
-            if (devoluciones.length > 0) {
-              await supabase.from('cash_movements').insert(devoluciones);
-            }
-          }
-        }
-
         setTickets(tickets.map(t => t.id === id ? { ...t, estado: 'ANULADO' } : t));
-        alert("✅ OPERACIÓN COMPLETADA: Ticket anulado, stock restaurado y dinero retirado de la caja actual.");
+        const r = (resultado || {}) as { caja_abierta?: boolean; abonos_devueltos?: number };
+        const abonos = Number(r.abonos_devueltos || 0);
+        const avisoAbonos = abonos > 0 ? `\nSe devolvieron S/ ${abonos.toFixed(2)} de abonos ya pagados del fiado.` : '';
+        alert(r.caja_abierta === false
+          ? `✅ Ticket anulado y stock restaurado.\n⚠️ No hay caja abierta: el dinero NO se descontó de ninguna caja.${abonos > 0 ? `\n(Hay S/ ${abonos.toFixed(2)} de abonos que devolver al cliente.)` : ''}`
+          : `✅ OPERACIÓN COMPLETADA: Ticket anulado, stock restaurado y dinero retirado de la caja actual.${avisoAbonos}`);
       }
     }
   };

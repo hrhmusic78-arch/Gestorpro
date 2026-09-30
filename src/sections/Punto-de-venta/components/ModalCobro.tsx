@@ -87,9 +87,12 @@ interface Props {
   const faltante = totalIngresadoCents < totalLimpioCents ? (totalLimpioCents - totalIngresadoCents) / 100 : 0;
 
   // LÓGICA DE VALIDACIÓN HÍBRIDA (Basada 100% en números enteros)
+  // 🛡️ El vuelto solo puede salir del cajón en efectivo: Yape + tarjeta nunca pueden superar el total.
+  const digitalExcedeTotal = Math.round((numYape + numTarjeta) * 100) > totalLimpioCents;
+
   const esPagoCompleto = totalIngresadoCents >= totalLimpioCents;
   const esFiadoValido = faltante > 0 && clienteNombre.trim() !== '' && fechaVencimiento !== '';
-  const puedeConfirmar = esPagoCompleto || esFiadoValido;
+  const puedeConfirmar = !digitalExcedeTotal && (esPagoCompleto || esFiadoValido);
 
   const handleCobrar = async () => {
     // 🛡️ BLOQUEO: Ignorar múltiples clics
@@ -122,6 +125,12 @@ interface Props {
         }
         
         finalClienteId = data.id.toString();
+
+        // 🛡️ Si la venta falla y el cajero reintenta, reutilizamos este cliente recién creado
+        // en lugar de volver a insertarlo (evita clientes duplicados en el directorio).
+        setClienteId(finalClienteId);
+        setIsCreatingNew(false);
+        setClientesDb(prev => [...prev, { id: data.id, name: clienteNombre.toUpperCase(), dni: clienteDni || null }]);
       }
 
       const fiadoData: FiadoData | undefined = faltante > 0 ? {
@@ -268,6 +277,12 @@ interface Props {
               </div>
             )}
           </div>
+
+          {digitalExcedeTotal && (
+            <div role="alert" className="border-2 border-[#EF4444] bg-[#FEF2F2] text-[#B91C1C] p-2 text-[12px] font-black uppercase shrink-0">
+              Yape y tarjeta no pueden superar el total; el vuelto solo sale del efectivo.
+            </div>
+          )}
 
           </div>
 

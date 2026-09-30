@@ -100,8 +100,9 @@ export const ModalNuevoMovimiento: React.FC<Props> = ({ isOpen, onClose, onSucce
             <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Método</label>
             <select value={metodoPago} onChange={(e) => setMetodoPago(e.target.value)} className="w-full bg-[#F8FAFC] border-2 border-[#1E293B] p-2 text-xs font-black uppercase outline-none focus:border-[#3B82F6] rounded-none cursor-pointer">
               <option value="EFECTIVO">EFECTIVO</option>
-              <option value="YAPE">YAPE</option>
-              <option value="TARJETA">TARJETA / PLIN</option>
+              {/* Plin es billetera como Yape: va a la bolsa Yape/Transferencias (ver bolsaDe en Finanzas) */}
+              <option value="YAPE">YAPE / PLIN</option>
+              <option value="TARJETA">TARJETA</option>
             </select>
           </div>
         </div>

@@ -135,52 +135,34 @@ if (fiaData) {
     
     if (window.confirm(`⚠️ ANULACIÓN TÉCNICA: ¿Seguro que deseas anular este pago de S/ ${montoRestaurar.toFixed(2)}?`)) {
       try {
-        // 0. Traemos la fecha exacta del pago ANTES de borrarlo, para poder ubicar el
-        // movimiento de caja correcto (ver paso 2).
-        const { data: pagoOriginal } = await supabase.from('debt_payments').select('created_at').eq('id', pagoId).maybeSingle();
-
-        // 1. ELIMINACIÓN MAESTRA: Borra el pago de la deuda
-        await supabase.from('debt_payments').delete().eq('id', pagoId);
-
-        // 2. LIMPIEZA DE CAJA: Destruimos el "movimiento fantasma".
-        // 🚨 CORRECCIÓN: Antes se buscaba SOLO por monto, lo que borraba el movimiento de OTRO
-        // cliente si por casualidad abonó el mismo monto exacto (muy común con montos redondos:
-        // había hasta 14 abonos distintos de S/2.50 en la caja). Ahora filtramos también por el
-        // "Cliente ID" que ya viene grabado en la descripción del movimiento, y si aun así hay
-        // más de un candidato (mismo cliente abonó el mismo monto varias veces), nos quedamos
-        // con el más cercano en el tiempo al pago que se está anulando.
-        const { data: movs } = await supabase.from('cash_movements').select('id, amount, description, created_at').eq('flujo', 'INGRESO_FIADO');
-        const clienteTexto = fiadoAAnular.clienteId ? `Cliente ID: ${fiadoAAnular.clienteId}` : null;
-        const candidatosPorMonto = (movs || []).filter(m => Math.abs(Number(m.amount) - Number(montoRestaurar)) < 0.01);
-        const candidatos = clienteTexto
-          ? candidatosPorMonto.filter(m => (m.description || '').includes(clienteTexto))
-          : candidatosPorMonto;
-        let exactMov = candidatos[0];
-        if (candidatos.length > 1 && pagoOriginal?.created_at) {
-          const tRef = new Date(pagoOriginal.created_at).getTime();
-          exactMov = candidatos.reduce((mejor, actual) =>
-            Math.abs(new Date(actual.created_at).getTime() - tRef) < Math.abs(new Date(mejor.created_at).getTime() - tRef) ? actual : mejor
-          );
-        }
-        if (exactMov) {
-          await supabase.from('cash_movements').delete().eq('id', exactMov.id);
+        // 1. ELIMINACIÓN MAESTRA: Borra el pago de la deuda.
+        // El trigger update_fiado_status (AFTER DELETE en debt_payments) recalcula solo
+        // fiados.paid_amount = SUMA de los abonos que quedan, y el estado PENDIENTE/CANCELADO.
+        // Por eso aquí NO se toca la tabla fiados: antes también se restaba desde la app
+        // y el monto anulado quedaba descontado dos veces.
+        const { data: borrados, error: errDelete } = await supabase
+          .from('debt_payments')
+          .delete()
+          .eq('id', pagoId)
+          .select('id');
+        if (errDelete) throw errDelete;
+        // Si RLS bloquea el borrado, Supabase no da error pero no borra nada: lo detectamos aquí.
+        if (!borrados || borrados.length === 0) {
+          throw new Error('El pago no se eliminó (no existe o no tienes permiso para anularlo).');
         }
 
-        // 3. ACTUALIZAR TABLA FIADOS: Restamos el dinero del "paid_amount" para arreglar Reportes
-        const { data: fiadoReal } = await supabase.from('fiados').select('paid_amount, amount').eq('id', fiadoAAnular.id).maybeSingle();
-        if (fiadoReal) {
-          const nuevoPagado = Math.max(0, Number(fiadoReal.paid_amount || 0) - montoRestaurar);
-          const nuevoEstado = (Number(fiadoReal.amount || 0) - nuevoPagado) <= 0.05 ? 'CANCELADO' : 'PENDIENTE';
-          await supabase.from('fiados').update({ paid_amount: nuevoPagado, status: nuevoEstado }).eq('id', fiadoAAnular.id);
-        }
+        // 2. LIMPIEZA DE CAJA: la hace la base de datos. El trigger tr_fiado_payment_cash_delete
+        // borra todos los movimientos INGRESO_FIADO de este pago (uno por método si fue mixto).
+        // No se borra nada desde aquí: se eliminaría otro movimiento del mismo cliente.
 
-        // 4. RECARGAR DATOS
+        // 3. RECARGAR DATOS
         alert("✅ Anulación completada: La deuda se restauró y el ingreso desapareció de Finanzas, Caja y Reportes automáticamente.");
         setIsModalAnularOpen(false);
         await cargarDatos(); 
       } catch (error) {
         console.error("Error al anular pago:", error);
-        alert("Fallo de integridad: No se pudo anular el pago.");
+        const detalle = error instanceof Error ? error.message : (error as any)?.message;
+        alert("Fallo de integridad: No se pudo anular el pago." + (detalle ? `\n${detalle}` : ''));
       }
     }
   };

@@ -73,14 +73,11 @@ export const Inventario: React.FC<InventarioProps> = ({ onNavigate }) => {
         
         if (productsData) {
           const mapeados: Product[] = productsData.map((p: any) => {
-            // RADAR ABSOLUTO: Convierte TODA la fila del producto (todas sus columnas) a texto mayúscula
-            const registroCompleto = JSON.stringify(p).toUpperCase();
-            
-            // Si en cualquier rincón del producto dice alguna de estas palabras, es Consumo.
-            const esConsumo = registroCompleto.includes('"CONSUMO"') || 
-                              registroCompleto.includes('"SERVICE"') || 
-                              registroCompleto.includes('"USO INTERNO"') ||
-                              registroCompleto.includes('"CONSUMPTION"');
+            // Es Consumo solo si sus campos de TIPO/UNIDAD lo dicen exactamente
+            // (antes se buscaba en toda la fila: una categoría o nombre "CONSUMO" lo marcaba por error).
+            const TIPOS_CONSUMO = ['CONSUMO', 'SERVICE', 'USO INTERNO', 'CONSUMPTION'];
+            const esConsumo = [p.unit, p.control_type, p.weight_unit]
+              .some(v => TIPOS_CONSUMO.includes(String(v ?? '').trim().toUpperCase()));
 
             // [ SUMA GLOBAL ]: Filtramos los lotes de este producto
             const lotesDelProducto = batchesData?.filter(b => b.product_id === p.id) || [];

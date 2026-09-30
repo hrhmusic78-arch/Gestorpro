@@ -36,11 +36,16 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
         // === MODO EDICIÓN ===
         const prod = productos.find(p => p.id === initialLote.product_id) || null;
         setSelectedProduct(prod);
+        // El campo "Cantidad" es la cantidad COMPRADA (initial_quantity): con ella se calcula el costo unitario.
+        // El stock actual (quantity) NO se reemplaza: al guardar solo se le suma/resta la diferencia.
         setCantidad(initialLote.initial_quantity?.toString() || '');
-        
-        // Calculamos el costo total reverso (costo_unitario * cantidad_inicial)
-        const cTotal = (Number(initialLote.cost_unit) * Number(initialLote.initial_quantity)).toFixed(2);
-        setCostoTotal(cTotal);
+
+        // Costo total: usamos el guardado; si no existe, lo reconstruimos (costo_unitario * cantidad_inicial)
+        const cTotalGuardado = Number(initialLote.cost_total);
+        const cTotal = cTotalGuardado > 0
+          ? cTotalGuardado
+          : Number(initialLote.cost_unit) * Number(initialLote.initial_quantity);
+        setCostoTotal(cTotal ? String(Math.round(cTotal * 100) / 100) : '');
         
         if (initialLote.document_ref === 'OMITIDO / SIN SUSTENTO') {
           setOmitirSustento(true);
@@ -104,10 +109,17 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
   };
 
   // FÓRMULA MATEMÁTICA AUTOMÁTICA (Costo Unitario)
-  const costoUnitarioRaw = (Number(costoTotal) > 0 && Number(cantidad) > 0) 
-    ? (Number(costoTotal) / Number(cantidad)) 
+  // Se guarda con 6 decimales (ej. 10.00 / 3 = 3.333333) para no perder costo; solo se redondea al mostrar.
+  const costoUnitarioRaw = (Number(costoTotal) > 0 && Number(cantidad) > 0)
+    ? Math.round((Number(costoTotal) / Number(cantidad)) * 1e6) / 1e6
     : 0;
-  const costoUnitario = costoUnitarioRaw.toFixed(2);
+  const costoUnitario = costoUnitarioRaw.toFixed(2); // solo para mostrar
+
+  // En edición: stock que quedará en el lote tras cambiar la cantidad comprada
+  const stockActualLote = initialLote ? Number(initialLote.quantity || 0) : 0;
+  const stockResultanteLote = initialLote
+    ? stockActualLote + ((Number(cantidad) || 0) - Number(initialLote.initial_quantity || 0))
+    : 0;
 
   const handleSave = async () => {
     if (isSubmitting) return;
@@ -117,10 +129,20 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
     try {
       if (initialLote) {
         // === MODO EDICIÓN EVICAMP ===
-        const cantidadNueva = Number(cantidad) || 0;
-        const delta = cantidadNueva - Number(initialLote.initial_quantity || 0);
-        const nuevaActual = Number(initialLote.quantity || 0) + delta;
-        
+        const cantidadNueva = Number(cantidad) || 0; // nueva cantidad comprada (initial_quantity)
+        // Releer el lote justo antes de guardar: el stock pudo cambiar (ventas/mermas) desde que se abrió la lista
+        const { data: loteFresco, error: freshError } = await supabase
+          .from('batches')
+          .select('quantity, initial_quantity')
+          .eq('id', initialLote.id)
+          .single();
+        if (freshError) throw freshError;
+        if (!loteFresco) throw new Error('No se encontró el lote para actualizarlo.');
+
+        // stock actual (fresco) + diferencia de la cantidad comprada (no se reinicia)
+        const nuevaActual = Number(loteFresco.quantity || 0)
+          + (cantidadNueva - Number(loteFresco.initial_quantity || 0));
+
         if (nuevaActual < 0) {
           alert('Error: La nueva cantidad es menor a lo que ya se vendió/mermó de este lote.');
           setIsSubmitting(false);
@@ -154,10 +176,10 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
         if (onLoteSaved && selectedProduct) {
           onLoteSaved({ 
             ...initialLote, 
-            quantity: cantidadNueva,
+            quantity: nuevaActual,
             initial_quantity: cantidadNueva,
-            expiration_date: expiration, 
-            cost_unit: Number(costoUnitario),
+            expiration_date: expiration,
+            cost_unit: costoUnitarioRaw,
             cost_total: Number(costoTotal),
             document_ref: documento 
           });
@@ -319,7 +341,7 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t-2 border-[#E2E8F0] pt-6">
             <div className="space-y-2">
               <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest flex justify-between">
-                <span>2. Cantidad *</span>
+                <span>{initialLote ? '2. Cantidad comprada *' : '2. Cantidad *'}</span>
                 <span className="text-[#10B981]">{selectedProduct ? `(${selectedProduct.unit})` : ''}</span>
               </label>
               <div className="flex border-2 border-[#E2E8F0] bg-white focus-within:border-[#10B981] transition-colors">
@@ -337,6 +359,11 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
                   {selectedProduct ? selectedProduct.unit : '---'}
                 </div>
               </div>
+              {initialLote && (
+                <p className={`text-[12px] font-bold uppercase tracking-wider ${stockResultanteLote < 0 ? 'text-[#EF4444]' : 'text-[#64748B]'}`}>
+                  Stock actual del lote: {stockActualLote} → quedará: {Math.round(stockResultanteLote * 1000) / 1000}
+                </p>
+              )}
             </div>
 
             <div className="space-y-2">
