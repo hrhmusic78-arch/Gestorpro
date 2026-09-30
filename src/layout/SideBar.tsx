@@ -132,27 +132,27 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
       onPointerDown={marcarActividad}
       onKeyDown={marcarActividad}
       onFocus={marcarActividad}
-      className={`fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-out lg:relative lg:max-w-none lg:translate-x-0 lg:z-20 lg:transition-[width] lg:duration-150 ${isOpen ? 'lg:w-72' : 'lg:w-20'} border-r border-[#E2E8F0] bg-white flex flex-col h-full shrink-0 font-mono overflow-hidden`}
+      className={`fixed inset-y-0 left-0 z-40 w-max min-w-[13rem] max-w-[85vw] ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-out lg:relative lg:max-w-none lg:translate-x-0 lg:z-20 ${isOpen ? 'lg:w-max lg:min-w-0' : 'lg:w-16 lg:min-w-0'} border-r border-[#E2E8F0] bg-white flex flex-col h-full shrink-0 font-mono overflow-hidden`}
     >
 
       {/* LÍNEA DE TENSIÓN LATERAL VERDE ESTÁTICA */}
       <div className="absolute top-0 left-0 w-1 h-full bg-[#10B981]"></div>
 
       {/* BRANDING HEADER CON LOGO: tocar el logo abre o contrae el menú */}
-      <div className={`h-16 border-b border-[#E2E8F0] flex items-center ${isOpen ? 'justify-between px-4' : 'justify-center'} bg-[#1E293B] ml-1`}>
+      <div className={`h-12 border-b border-[#E2E8F0] flex items-center ${isOpen ? 'justify-between gap-2 px-3' : 'justify-center'} bg-[#1E293B] ml-1`}>
         {isOpen ? (
           <button
             onClick={alTocarLogo}
             title="Contraer menú"
             aria-label="Contraer menú"
             aria-expanded={true}
-            className="flex items-center gap-3 overflow-hidden cursor-pointer group text-left"
+            className="flex items-center gap-2 overflow-hidden cursor-pointer group text-left"
           >
             {/* Logo en bloque técnico */}
             <div className="w-8 h-8 bg-white border border-[#10B981] flex items-center justify-center p-0.5 shrink-0 transition-transform group-hover:scale-110">
               <img src={empresaData.logo} alt="Logo Empresa" className="w-full h-full object-contain" />
             </div>
-            <h1 className="text-white font-black tracking-[0.2em] text-lg uppercase whitespace-nowrap">
+            <h1 className="text-white font-black tracking-[0.1em] text-base uppercase whitespace-nowrap">
               {empresaData.nombre}<span className="text-[#10B981]">.</span>
             </h1>
           </button>
@@ -163,13 +163,13 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
             title="Toca el logo para desplegar el menú"
             aria-label="Desplegar menú"
             aria-expanded={false}
-            className="logo-brillo w-10 h-10 bg-white border border-[#10B981] flex items-center justify-center p-1 shrink-0 cursor-pointer transition-transform hover:scale-110"
+            className="logo-brillo w-9 h-9 bg-white border border-[#10B981] flex items-center justify-center p-1 shrink-0 cursor-pointer transition-transform hover:scale-110"
           >
             <img src={empresaData.logo} alt="Logo Empresa" className="w-full h-full object-contain" />
           </button>
         )}
         
-        {isOpen && <div className="hidden lg:block w-2 h-2 bg-[#10B981] animate-pulse shrink-0 ml-2"></div>}
+        {isOpen && <div className="hidden lg:block w-2 h-2 bg-[#10B981] animate-pulse shrink-0"></div>}
         {isOpen && (
           <button
             onClick={onClose}
@@ -185,10 +185,10 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
       <nav className="flex-1 py-4 short:py-2 overflow-y-auto custom-scrollbar bg-white ml-1 overflow-x-hidden">
         
         {menuGroups.map((group, index) => (
-          <div key={index} className="mb-8 short:mb-3 last:mb-0">
+          <div key={index} className="mb-5 short:mb-3 last:mb-0">
             
             {/* CATEGORY HEADER CON ACENTO VERDE */}
-            <div className={`flex items-center gap-2 mb-3 short:mb-1 ${isOpen ? 'px-6' : 'justify-center'}`}>
+            <div className={`flex items-center gap-2 mb-2 short:mb-1 ${isOpen ? 'px-3' : 'justify-center'}`}>
               {isOpen ? (
                 <>
                   <div className="h-[2px] w-3 bg-[#10B981] shrink-0"></div>
@@ -203,7 +203,7 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
             </div>
 
             {/* ITEMS DE LA CATEGORÍA */}
-            <div className="space-y-1 px-2">
+            <div className="space-y-1 px-1.5">
               {group.items.map((item) => {
                 const isActive = currentView === item.id;
                 const Icon = item.icon; 
@@ -213,14 +213,14 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
                     onClick={() => onNavigate(item.id)}
                     title={!isOpen ? item.name : undefined}
                     className={`w-full text-left py-3 short:py-2 text-xs font-black uppercase tracking-wider transition-all border rounded-none flex items-center cursor-pointer ${
-                      isOpen ? 'px-4 justify-between' : 'justify-center px-0'
+                      isOpen ? 'pl-3 pr-2 gap-3 justify-between' : 'justify-center px-0'
                     } ${
                       isActive 
                         ? 'border-[#1E293B] bg-[#10B981] text-[#1E293B] shadow-[3px_3px_0_0_#1E293B] translate-x-[-2px] translate-y-[-2px]' 
                         : 'border-transparent text-[#64748B] hover:border-[#10B981] hover:text-[#10B981] hover:bg-[#10B981]/5'
                     }`}
                   >
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
                       <Icon size={18} className="shrink-0" />
                       {isOpen && <span className="whitespace-nowrap">{item.name}</span>}
                     </div>
@@ -234,12 +234,12 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
       </nav>
 
       {/* FOOTER TÉCNICO: con el menú abierto muestra el temporizador de auto-ocultado */}
-      <div className={`p-4 border-t border-[#E2E8F0] bg-[#1E293B] ml-1 flex ${isOpen ? 'flex-col gap-2' : 'justify-center'}`}>
+      <div className={`px-3 py-3 border-t border-[#E2E8F0] bg-[#1E293B] ml-1 flex ${isOpen ? 'flex-col gap-2' : 'justify-center'}`}>
         {isOpen ? (
           <>
             <div className="flex justify-between items-center gap-2">
-              <span className="text-[12px] font-black text-[#10B981] uppercase tracking-[0.2em] whitespace-nowrap">
-                {enPausa ? 'Auto-ocultar: en pausa' : `Auto-ocultar ${Math.ceil(restante / 1000)}s`}
+              <span className="text-[12px] font-black text-[#10B981] uppercase tracking-wider whitespace-nowrap">
+                {enPausa ? 'Ocultar: pausa' : `Ocultar en ${Math.ceil(restante / 1000)}s`}
               </span>
             </div>
             <div className="h-1 w-full bg-[#10B981]/20 overflow-hidden" aria-hidden="true">

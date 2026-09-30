@@ -41,7 +41,7 @@ export const App: React.FC = () => {
   useEffect(() => {
     // Aplicar tema guardado al cargar
     if (localStorage.getItem('gestorpro_theme') === 'monochrome') {
-      document.body.classList.add('theme-monochrome');
+      document.documentElement.classList.add('theme-monochrome');
     }
 
     let activo = true;

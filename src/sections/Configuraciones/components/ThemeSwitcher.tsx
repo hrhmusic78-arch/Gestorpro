@@ -13,9 +13,9 @@ export const ThemeSwitcher: React.FC = () => {
     setTheme(newTheme);
     localStorage.setItem('gestorpro_theme', newTheme);
     if (newTheme === 'monochrome') {
-      document.body.classList.add('theme-monochrome');
+      document.documentElement.classList.add('theme-monochrome');
     } else {
-      document.body.classList.remove('theme-monochrome');
+      document.documentElement.classList.remove('theme-monochrome');
     }
   };
 
