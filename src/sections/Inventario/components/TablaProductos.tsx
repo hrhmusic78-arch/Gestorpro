@@ -97,7 +97,7 @@ export const TablaProductos: React.FC<Props> = ({
       <div className="flex-1 min-h-0 flex flex-col overflow-x-auto custom-scrollbar">
       <div className="flex-1 min-h-0 flex flex-col min-w-[960px]">
       {/* CABECERAS DE LA TABLA REESTRUCTURADAS (CON COLUMNA DE IMAGEN) */}
-      <div className="grid grid-cols-12 bg-[#1E293B] text-white p-4 text-sm font-black uppercase tracking-[0.2em] shrink-0 items-center">
+      <div className="grid grid-cols-12 gap-x-3 bg-[#1E293B] text-white p-4 text-sm font-black uppercase tracking-wider shrink-0 items-center">
         <div className="col-span-1 text-center">Img</div>
         <div className="col-span-2">Códigos</div>
         <div className="col-span-3">Producto / Categoría</div>
@@ -125,7 +125,7 @@ export const TablaProductos: React.FC<Props> = ({
             // === MODO EDICIÓN EN LÍNEA ===
             if (editingId === item.id) {
               return (
-                <div key={item.id} className="grid grid-cols-12 items-center p-4 border-b-2 border-[#1E293B] bg-[#F8FAFC] shadow-inner">
+                <div key={item.id} className="grid grid-cols-12 gap-x-3 items-center p-4 border-b-2 border-[#1E293B] bg-[#F8FAFC] shadow-inner">
                   {/* IMAGEN (NO EDITABLE DESDE AQUÍ) */}
                   <div className="col-span-1 flex justify-center pr-2">
                     {item.imageUrl && (item.imageUrl.startsWith('http') || item.imageUrl.startsWith('data:')) ? (
@@ -230,7 +230,7 @@ export const TablaProductos: React.FC<Props> = ({
               <div
                 key={item.id}
                 {...(puedeEditar ? clicConTeclado(() => onEditProduct ? onEditProduct(item) : startEditing(item)) : {})}
-                className={`grid grid-cols-12 items-center p-4 border-b border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors group ${puedeEditar ? 'cursor-pointer' : ''}`}
+                className={`grid grid-cols-12 gap-x-3 items-center p-4 border-b border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors group ${puedeEditar ? 'cursor-pointer' : ''}`}
                 title={puedeEditar ? 'Click para editar' : undefined}
               >
                 

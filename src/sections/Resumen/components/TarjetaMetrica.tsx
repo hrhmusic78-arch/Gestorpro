@@ -17,7 +17,7 @@ export const TarjetaMetrica: React.FC<Props> = ({ titulo, valor, icono: Icon, co
     <div className="bg-white border border-[#E2E8F0] p-3 sm:p-5 min-w-0 relative overflow-hidden group rounded-none shadow-sm transition-all hover:shadow-md">
       <div className={`absolute -right-4 -top-4 w-16 h-16 ${bgIcono} opacity-10 group-hover:scale-150 transition-transform duration-500`}></div>
       <div className="flex justify-between items-start mb-3 relative z-10">
-        <h3 className="text-[12px] font-black text-[#64748B] uppercase tracking-wider sm:tracking-[0.2em] leading-tight w-2/3 break-words">{titulo}</h3>
+        <h3 className="text-[12px] font-black text-[#64748B] uppercase tracking-wide leading-tight flex-1 min-w-0 pr-2 hyphens-auto">{titulo}</h3>
         <div className={`p-2 ${bgIcono} ${colorIcono} rounded-none border border-[#E2E8F0]/20`}>
           <Icon size={16} />
         </div>

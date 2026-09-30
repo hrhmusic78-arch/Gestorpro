@@ -1,7 +1,7 @@
 // src/layout/TopBar.tsx
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../db/supabase';
-import { LogOut, Activity, AlertTriangle } from 'lucide-react';
+import { LogOut, Activity, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { usePermiso } from '../utils/permisos';
 import { cerrarSesion } from '../utils/sesion';
 
@@ -84,13 +84,19 @@ export const TopBar: React.FC<TopBarProps> = ({ toggleSidebar, userEmail, onNavi
       {/* LADO DERECHO: Telemetría y Alertas */}
       <div className="flex items-center h-full py-3 gap-2 lg:gap-4 min-w-0">
         
-        {/* BOTÓN ALERTA DE FIADOS: Solo aparece si hay deudas mayores a 0 */}
-        {puedeVerFiados && fiadosCount > 0 && (
-          <button 
+        {/* BOTÓN DE CUENTAS POR COBRAR: siempre visible para quien puede verlas.
+            Con deudas: naranja y parpadeando. En 0: verde y quieto, para que se vea que nadie debe. */}
+        {puedeVerFiados && (
+          <button
             onClick={() => onNavigate('fiados')}
-            className="flex items-center shrink-0 whitespace-nowrap border-2 border-[#F59E0B] px-2 sm:px-3 py-1.5 bg-[#FFFBEB] text-[12px] font-black uppercase tracking-widest text-[#D97706] hover:bg-[#F59E0B] hover:text-white transition-all cursor-pointer animate-pulse shadow-[2px_2px_0_0_#D97706] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
+            title={fiadosCount > 0 ? 'Hay deudas pendientes por cobrar' : 'Nadie tiene deudas pendientes'}
+            className={`flex items-center shrink-0 whitespace-nowrap border-2 px-2 sm:px-3 py-1.5 text-[12px] font-black uppercase tracking-widest transition-all cursor-pointer hover:shadow-none active:translate-x-[2px] active:translate-y-[2px] ${
+              fiadosCount > 0
+                ? 'border-[#F59E0B] bg-[#FFFBEB] text-[#D97706] hover:bg-[#F59E0B] hover:text-white animate-pulse shadow-[2px_2px_0_0_#D97706]'
+                : 'border-[#10B981] bg-[#ECFDF5] text-[#059669] hover:bg-[#10B981] hover:text-white shadow-[2px_2px_0_0_#059669]'
+            }`}
           >
-            <AlertTriangle size={12} className="mr-2" />
+            {fiadosCount > 0 ? <AlertTriangle size={12} className="mr-2" /> : <CheckCircle2 size={12} className="mr-2" />}
             Por cobrar: {fiadosCount}
           </button>
         )}

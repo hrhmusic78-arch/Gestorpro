@@ -308,7 +308,7 @@ export const Utilidades = () => {
             Márgenes por Producto
           </h1>
           <p className="text-xs text-[#64748B] font-bold mt-1 uppercase tracking-wider">
-            Sincronizado • <span className="text-[#065F46]">Zona Horaria: PE (UTC-5)</span>
+            Sincronizado • <span className="text-[#065F46] whitespace-nowrap">Zona Horaria: PE (UTC-5)</span>
           </p>
         </div>
         

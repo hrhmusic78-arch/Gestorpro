@@ -221,7 +221,7 @@ export const TablaLotes: React.FC<Props> = ({
       <div className="flex-1 min-h-0 flex flex-col overflow-x-auto custom-scrollbar">
       <div className="flex-1 min-h-0 flex flex-col min-w-[960px]">
       {/* Cabecera de la Tabla (TEXTO AGRANDADO a text-sm) */}
-      <div className="grid grid-cols-12 bg-[#1E293B] text-white p-4 text-sm font-black uppercase tracking-[0.1em] shrink-0">
+      <div className="grid grid-cols-12 gap-x-3 bg-[#1E293B] text-white p-4 text-sm font-black uppercase tracking-wide shrink-0">
         <div className="col-span-2">Fecha / Doc / Prov.</div>
         <div className="col-span-3">Producto</div>
         <div className="col-span-2 text-center">Estado / Vence</div>
@@ -251,7 +251,7 @@ export const TablaLotes: React.FC<Props> = ({
     <div
       key={lote.id}
       {...(puedeGestionarLotes ? clicConTeclado(() => onEditLote && onEditLote(lote)) : {})}
-      className={`grid grid-cols-12 items-center p-4 border-b border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors group text-base ${puedeGestionarLotes ? 'cursor-pointer' : ''}`}
+      className={`grid grid-cols-12 gap-x-3 items-center p-4 border-b border-[#F1F5F9] hover:bg-[#F8FAFC] transition-colors group text-base ${puedeGestionarLotes ? 'cursor-pointer' : ''}`}
       title={puedeGestionarLotes ? 'Click para editar' : undefined}
     >
       

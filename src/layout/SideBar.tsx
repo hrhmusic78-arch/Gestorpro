@@ -132,7 +132,7 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
       onPointerDown={marcarActividad}
       onKeyDown={marcarActividad}
       onFocus={marcarActividad}
-      className={`fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-out lg:relative lg:max-w-none lg:translate-x-0 lg:z-20 lg:transition-[width] lg:duration-150 ${isOpen ? 'lg:w-64' : 'lg:w-20'} border-r border-[#E2E8F0] bg-white flex flex-col h-full shrink-0 font-mono overflow-hidden`}
+      className={`fixed inset-y-0 left-0 z-40 w-72 max-w-[85vw] ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-out lg:relative lg:max-w-none lg:translate-x-0 lg:z-20 lg:transition-[width] lg:duration-150 ${isOpen ? 'lg:w-72' : 'lg:w-20'} border-r border-[#E2E8F0] bg-white flex flex-col h-full shrink-0 font-mono overflow-hidden`}
     >
 
       {/* LÍNEA DE TENSIÓN LATERAL VERDE ESTÁTICA */}
@@ -241,7 +241,6 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
               <span className="text-[12px] font-black text-[#10B981] uppercase tracking-[0.2em] whitespace-nowrap">
                 {enPausa ? 'Auto-ocultar: en pausa' : `Auto-ocultar ${Math.ceil(restante / 1000)}s`}
               </span>
-              <span className="text-[12px] font-black text-[#64748B] uppercase tracking-[0.2em] whitespace-nowrap">SYS_v2.0</span>
             </div>
             <div className="h-1 w-full bg-[#10B981]/20 overflow-hidden" aria-hidden="true">
               <div

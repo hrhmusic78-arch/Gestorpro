@@ -126,7 +126,7 @@ export const ModalUsuario: React.FC<ModalUsuarioProps> = ({ usuario, onClose }) 
         <div className={`flex items-center justify-center w-4 h-4 shrink-0 rounded-sm border ${isChecked ? 'bg-[#10B981] border-[#10B981]' : 'border-[#CBD5E1] group-hover:border-[#10B981]'} transition-colors`}>
           {isChecked && <CheckSquare size={14} className="text-white absolute" />}
         </div>
-        <span className={`text-xs font-mono ${isChecked ? 'text-[#1E293B] font-bold' : 'text-[#64748B]'}`}>
+        <span className={`text-xs font-mono break-words min-w-0 ${isChecked ? 'text-[#1E293B] font-bold' : 'text-[#64748B]'}`}>
           {label}
         </span>
       </label>
@@ -199,7 +199,7 @@ export const ModalUsuario: React.FC<ModalUsuarioProps> = ({ usuario, onClose }) 
               </button>
             </div>
             
-            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 transition-opacity ${permisos.sistema_acceso_total ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
+            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4 transition-opacity ${permisos.sistema_acceso_total ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}>
               <div className="bg-[#F8FAFC] p-3 border border-[#E2E8F0]">
                 <h4 className="text-[12px] font-black text-[#10B981] uppercase tracking-widest mb-3">Caja / POS</h4>
                 <div className="space-y-1" {...clicConTeclado(() => togglePermiso('caja_realizar_ventas'))}><CheckboxItem label="Realizar Ventas (POS)" labelKey="caja_realizar_ventas" /></div>

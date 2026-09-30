@@ -9,7 +9,7 @@ import { TarjetaMetrica } from './TarjetaMetrica';
 import { supabase } from '../../../db/supabase';
 // 🎯 MOTOR ÚNICO DE INGRESO TOTAL: misma fórmula y mismas fechas (Perú, UTC-5 fijo) que
 // Reportes, Utilidades, Finanzas y Punto de Venta, para que "Ventas Netas" SIEMPRE coincida.
-import { calcularIngresoTotal, fechaLocalPeru, primerDiaMesPeru, haceNDiasPeru, rangoUTCPeru } from '../../../utils/ingresos';
+import { calcularIngresoTotal, fechaLocalPeru, primerDiaMesPeru, haceNDiasPeru, rangoUTCPeru } from '../../../utils/ingresos';
 import { usePermiso } from '../../../utils/permisos';
 import { traerTodo } from '../../../utils/traerTodo';
 
@@ -293,7 +293,7 @@ export const DashboardResumen: React.FC = () => {
           <h2 className="text-[14px] font-black text-[#1E293B] uppercase tracking-widest sm:tracking-[0.3em] mb-5 flex items-center gap-4">
             <div className="w-3 h-5 bg-[#1E293B]"></div> Stock y Pérdidas
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-5 gap-3 sm:gap-6">
             {verDinero && <TarjetaMetrica titulo="Valorización Total" valor={fSoles(metricas.valorizacionInventario)} icono={Package} colorIcono="text-[#1E293B]" bgIcono="bg-[#F1F5F9]" />}
             <TarjetaMetrica titulo="Stock Unidades" valor={String(Math.round(metricas.unidadesTotales))} icono={Hash} colorIcono="text-[#1E293B]" bgIcono="bg-[#F1F5F9]" />
             <TarjetaMetrica titulo="Stock Kilos" valor={`${metricas.kilosTotales.toFixed(2)} KG`} icono={Hash} colorIcono="text-[#1E293B]" bgIcono="bg-[#F1F5F9]" />
