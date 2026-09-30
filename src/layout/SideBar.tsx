@@ -84,28 +84,28 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
   // Modulos divididos por Categorías Lógicas con sus Iconos asignados
   const menuGroupsRaw = [
     {
-      category: 'Núcleo Operativo',
+      category: 'Operaciones',
       items: [
-        { id: 'resumen', name: 'Panel de Control', icon: LayoutDashboard },
-        { id: 'pos', name: 'Punto de Venta', icon: ShoppingCart },
-        { id: 'fiados', name: 'Cuentas por Cobrar', icon: Users },
+        { id: 'resumen', name: 'Resumen', icon: LayoutDashboard },
+        { id: 'pos', name: 'Caja', icon: ShoppingCart },
+        { id: 'fiados', name: 'Créditos', icon: Users },
       ]
     },
     {
-      category: 'Cadena de Suministro',
+      category: 'Almacén',
       items: [
-        { id: 'inventario', name: 'Control de Stock', icon: Package },
-        { id: 'proveedores', name: 'Abastecimiento', icon: Truck },
-        { id: 'mermas', name: 'Control de Pérdidas', icon: Trash2 },
+        { id: 'inventario', name: 'Inventario', icon: Package },
+        { id: 'proveedores', name: 'Compras', icon: Truck },
+        { id: 'mermas', name: 'Mermas', icon: Trash2 },
       ]
     },
     {
-      category: 'Gestión Gerencial',
+      category: 'Gestión',
       items: [
-        { id: 'finanzas', name: 'Tesorería', icon: Wallet },
-        { id: 'utilidades', name: 'Análisis de Rentabilidad', icon: BarChart3 },
-        { id: 'reportes', name: 'Auditoría de Ventas', icon: FileText },
-        { id: 'configuracion', name: 'Parámetros del Sistema', icon: Settings },
+        { id: 'finanzas', name: 'Finanzas', icon: Wallet },
+        { id: 'utilidades', name: 'Utilidades', icon: BarChart3 },
+        { id: 'reportes', name: 'Reportes', icon: FileText },
+        { id: 'configuracion', name: 'Ajustes', icon: Settings },
       ]
     }
   ];

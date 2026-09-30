@@ -195,7 +195,7 @@ export const MiniReporteDiario: React.FC<Props> = ({ refreshTrigger }) => {
   return (
     <>
       <div className="bg-white border-2 border-[#1E293B] shrink-0 font-mono flex flex-col">
-        <div className="bg-[#1E293B] text-white p-3 flex justify-between items-center">
+        <div className="bg-[#1E293B] text-white px-3 py-1.5 flex justify-between items-center">
           <button 
             onClick={() => setIsModalOpen(true)}
             className="flex items-center gap-2 hover:text-[#10B981] transition-colors cursor-pointer"
@@ -203,7 +203,7 @@ export const MiniReporteDiario: React.FC<Props> = ({ refreshTrigger }) => {
           >
             <BarChart3 size={18} />
             <span className="text-[13px] font-black uppercase tracking-widest hidden sm:inline">Caja Actual:</span>
-            <span className="text-lg font-black text-[#10B981] ml-1">
+            <span className="text-base font-black text-[#10B981] ml-1">
               {isVisible ? `S/ ${totales.totalReal.toFixed(2)}` : 'S/ ***.**'}
             </span>
           </button>
@@ -216,20 +216,20 @@ export const MiniReporteDiario: React.FC<Props> = ({ refreshTrigger }) => {
         </div>
 
         <div className="grid grid-cols-4 divide-x-2 divide-[#E2E8F0] bg-[#F8FAFC] min-w-0">
-          <div className="p-1.5 sm:p-2 flex flex-col items-center justify-center text-center min-w-0">
-            <span className="text-[12px] font-black text-[#64748B] uppercase mb-1">Efectivo</span>
+          <div className="px-1 py-1 flex flex-col items-center justify-center text-center min-w-0">
+            <span className="text-[12px] font-black text-[#64748B] uppercase leading-tight">Efectivo</span>
             <span className="text-xs font-black text-[#1E293B]">{isVisible ? `S/ ${totales.efectivo.toFixed(1)}` : '***'}</span>
           </div>
-          <div className="p-1.5 sm:p-2 flex flex-col items-center justify-center text-center min-w-0">
-            <span className="text-[12px] font-black text-[#8B5CF6] uppercase mb-1">Yape/Plin</span>
+          <div className="px-1 py-1 flex flex-col items-center justify-center text-center min-w-0">
+            <span className="text-[12px] font-black text-[#8B5CF6] uppercase leading-tight">Yape/Plin</span>
             <span className="text-xs font-black text-[#1E293B]">{isVisible ? `S/ ${(totales.yape + totales.transferencia).toFixed(1)}` : '***'}</span>
           </div>
-          <div className="p-1.5 sm:p-2 flex flex-col items-center justify-center text-center min-w-0">
-            <span className="text-[12px] font-black text-[#3B82F6] uppercase mb-1">Tarjeta</span>
+          <div className="px-1 py-1 flex flex-col items-center justify-center text-center min-w-0">
+            <span className="text-[12px] font-black text-[#3B82F6] uppercase leading-tight">Tarjeta</span>
             <span className="text-xs font-black text-[#1E293B]">{isVisible ? `S/ ${totales.tarjeta.toFixed(1)}` : '***'}</span>
           </div>
-          <div className="p-1.5 sm:p-2 flex flex-col items-center justify-center text-center min-w-0">
-            <span className="text-[12px] font-black text-[#EF4444] uppercase mb-1">Fiados</span>
+          <div className="px-1 py-1 flex flex-col items-center justify-center text-center min-w-0">
+            <span className="text-[12px] font-black text-[#EF4444] uppercase leading-tight">Fiados</span>
             <span className="text-xs font-black text-[#1E293B]">{isVisible ? `S/ ${totales.fiado.toFixed(1)}` : '***'}</span>
           </div>
         </div>
