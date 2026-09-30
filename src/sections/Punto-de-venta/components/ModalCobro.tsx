@@ -69,6 +69,15 @@ interface Props {
     }
   }, [isOpen, total]);
 
+  // Desde 900px (tablet horizontal/PC) hay ancho para poner el fiado en su propia ventana a la izquierda
+  const [esPantallaMedia, setEsPantallaMedia] = useState(() => window.matchMedia('(min-width: 900px)').matches);
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 900px)');
+    const cambiar = () => setEsPantallaMedia(mq.matches);
+    mq.addEventListener('change', cambiar);
+    return () => mq.removeEventListener('change', cambiar);
+  }, []);
+
   if (!isOpen) return null;
 
   const numEfectivo = Number(montoEfectivo) || 0;
@@ -159,9 +168,166 @@ interface Props {
     setMontoTarjeta(metodo === 'TARJETA' ? total.toFixed(2) : '');
   };
 
+  // Panel de crédito/fiado: en celular va dentro de la ventana de pago, debajo;
+  // desde tablet es una ventana aparte que sale al lado izquierdo de la de pago.
+  const panelFiado = faltante > 0 ? (
+        <div className="border-2 border-[#F59E0B] bg-[#FFFBEB] p-3 flex flex-col gap-3 shrink-0 min-w-0 animate-fade-in rounded-none">
+          
+          {/* CABECERA DE FIADOS CON BOTÓN DE SWITCH TÉCNICO */}
+          <div className="flex items-center justify-between border-b-2 border-[#FCD34D] pb-2">
+            <div className="flex items-center gap-2">
+              <UserPlus size={18} className="text-[#F59E0B]" />
+              <span className="text-xs font-black text-[#D97706] uppercase tracking-widest">Crédito / Fiado</span>
+            </div>
+
+            {!isCreatingNew ? (
+              <button 
+                onClick={() => {
+                  setIsCreatingNew(true);
+                  setClienteNombre('');
+                  setClienteDni('');
+                  setClienteTelefono('');
+                  setSearchCliente('');
+                }}
+                className="flex items-center gap-1 bg-[#10B981] text-white px-3 py-1.5 text-[12px] font-black uppercase border-2 border-[#10B981] hover:bg-[#059669] hover:border-[#059669] transition-colors rounded-none shadow-[2px_2px_0_0_#065F46] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] cursor-pointer"
+              >
+                <Plus size={14}/> Nuevo Cliente
+              </button>
+            ) : (
+              <button 
+                onClick={() => {
+                  setIsCreatingNew(false);
+                  setClienteNombre('');
+                  setClienteDni('');
+                  setClienteTelefono('');
+                }}
+                className="flex items-center gap-1 bg-[#EF4444] text-white px-3 py-1.5 text-[12px] font-black uppercase border-2 border-[#EF4444] hover:bg-[#DC2626] hover:border-[#DC2626] transition-colors rounded-none shadow-[2px_2px_0_0_#991B1B] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] cursor-pointer"
+              >
+                <X size={14}/> Cancelar Nuevo
+              </button>
+            )}
+          </div>
+          
+          {/* CONDICIONAL DE INTERFAZ: BUSCAR O CREAR */}
+          {!isCreatingNew ? (
+            // MODO 1: BUSCADOR DESPLEGABLE DE CLIENTES EXISTENTES
+            <div className="space-y-1 relative">
+              <label className="text-[12px] font-black text-[#92400E] uppercase">Buscar Cliente Existente *</label>
+              <div 
+                className="flex items-center justify-between border-2 border-[#FCD34D] bg-white p-2 cursor-text transition-colors rounded-none focus-within:border-[#F59E0B]"
+                {...clicConTeclado(() => setIsDropdownOpen(true))}
+              >
+                <input
+                  type="text"
+                  placeholder="BUSCAR CLIENTE EN EL DIRECTORIO..."
+                  value={isDropdownOpen ? searchCliente : clienteNombre}
+                  onChange={(e) => {
+                    setSearchCliente(e.target.value.toUpperCase());
+                    setIsDropdownOpen(true);
+                  }}
+                  className="w-full text-xs font-black uppercase outline-none bg-transparent text-[#1E293B] placeholder-[#94A3B8]"
+                />
+                <button type="button" onClick={(e) => { e.stopPropagation(); setIsDropdownOpen(!isDropdownOpen); }} className="text-[#D97706] hover:text-[#92400E] px-1 cursor-pointer">
+                  {isDropdownOpen ? <X size={16} /> : <ChevronDown size={16} />}
+                </button>
+              </div>
+
+              {/* LISTA DESPLEGABLE CONECTADA A LA BASE DE DATOS */}
+              {isDropdownOpen && (
+                <div className="absolute z-50 top-[100%] left-0 w-full mt-1 bg-white border-2 border-[#1E293B] shadow-[4px_4px_0_0_#1E293B] max-h-48 overflow-y-auto custom-scrollbar rounded-none">
+                  {clientesDb.filter(c => (c.nombre || c.name || '').toUpperCase().includes(searchCliente)).length === 0 ? (
+                    <div className="p-4 text-xs font-black uppercase text-[#64748B] text-center bg-[#F8FAFC]">
+                      NO SE ENCONTRARON CLIENTES
+                    </div>
+                  ) : (
+                    clientesDb
+                      .filter(c => (c.nombre || c.name || '').toUpperCase().includes(searchCliente))
+                      .map(c => (
+                        <div
+                          key={c.id}
+                          className="p-3 text-[13px] font-black uppercase text-[#1E293B] hover:bg-[#F59E0B] hover:text-white cursor-pointer border-b border-[#E2E8F0] last:border-0 transition-colors flex justify-between items-center rounded-none"
+                          {...clicConTeclado(() => {
+                            setClienteId(c.id?.toString() || ''); // <-- GUARDAMOS EL ID AL SELECCIONAR
+                            setClienteNombre(c.nombre || c.name || '');
+                            setClienteDni(c.dni || '');
+                            setClienteTelefono(c.telefono || '');
+                            setSearchCliente('');
+                            setIsDropdownOpen(false);
+                          })}
+                        >
+                          <span>{c.nombre || c.name || 'SIN NOMBRE'}</span>
+                          {c.dni && <span className="text-[12px] opacity-70">DNI:{c.dni}</span>}
+                        </div>
+                      ))
+                  )}
+                </div>
+              )}
+            </div>
+          ) : (
+            // MODO 2: CREACIÓN MANUAL DE CLIENTE (CUADROS PUROS)
+            <div className="space-y-3 bg-[#FEF3C7] p-3 border-2 border-[#FCD34D] rounded-none">
+              <div className="space-y-1">
+                <label className="text-[12px] font-black text-[#92400E] uppercase">Nombre del Nuevo Cliente *</label>
+                <input 
+                  type="text" 
+                  placeholder="EJ: JUAN PEREZ..."
+                  value={clienteNombre}
+                  onChange={(e) => setClienteNombre(e.target.value.toUpperCase())}
+                  className="w-full bg-white border-2 border-[#FCD34D] p-2 text-xs font-black text-[#1E293B] uppercase outline-none focus:border-[#F59E0B] rounded-none"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <label className="text-[12px] font-bold text-[#92400E] uppercase">DNI (Opcional)</label>
+                  <input 
+                    type="text" 
+                    placeholder="8 DÍGITOS"
+                    maxLength={8}
+                    value={clienteDni}
+                    onChange={(e) => setClienteDni(e.target.value.replace(/\D/g, ''))}
+                    className="w-full bg-white border-2 border-[#FCD34D] p-2 text-xs font-bold text-[#1E293B] outline-none focus:border-[#F59E0B] rounded-none"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-[12px] font-bold text-[#92400E] uppercase">Celular (Opcional)</label>
+                  <input 
+                    type="text" 
+                    placeholder="NÚMERO"
+                    maxLength={9}
+                    value={clienteTelefono}
+                    onChange={(e) => setClienteTelefono(e.target.value.replace(/\D/g, ''))}
+                    className="w-full bg-white border-2 border-[#FCD34D] p-2 text-xs font-bold text-[#1E293B] outline-none focus:border-[#F59E0B] rounded-none"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* FECHA VENCIMIENTO (APLICA PARA AMBOS MODOS) */}
+          <div className="space-y-1 mt-1 pt-2 border-t-2 border-[#FCD34D]">
+            <label className="text-[12px] font-black text-[#92400E] uppercase flex items-center gap-1">
+              <Calendar size={14}/> Fecha Límite de Pago *
+            </label>
+            <input 
+              type="date" 
+              value={fechaVencimiento}
+              onChange={(e) => setFechaVencimiento(e.target.value)}
+              className="w-full bg-white border-2 border-[#FCD34D] p-2 text-xs font-black text-[#1E293B] uppercase outline-none focus:border-[#F59E0B] rounded-none cursor-pointer"
+            />
+          </div>
+
+        </div>
+  ) : null;
+
   return (
     <div className="fixed inset-0 bg-[#1E293B]/90 backdrop-blur-sm z-[99999] flex items-center justify-center p-2 sm:p-4 font-mono">
-      <div className={`bg-white w-full ${faltante > 0 ? 'max-w-md md:max-w-4xl' : 'max-w-md'} transition-[max-width] duration-200 border-2 border-[#1E293B] shadow-[8px_8px_0_0_#1E293B] flex flex-col max-h-[calc(var(--alto-pantalla)*0.94)] sm:max-h-[calc(var(--alto-pantalla)*0.9)]`}>
+      <div className="flex items-start justify-center gap-4 w-full">
+        {esPantallaMedia && panelFiado && (
+          <div className="bg-white w-[23rem] shrink-0 border-2 border-[#1E293B] shadow-[8px_8px_0_0_#1E293B] p-3 animate-fade-in">
+            {panelFiado}
+          </div>
+        )}
+      <div className="bg-white w-full max-w-md border-2 border-[#1E293B] shadow-[8px_8px_0_0_#1E293B] flex flex-col max-h-[calc(var(--alto-pantalla)*0.94)] sm:max-h-[calc(var(--alto-pantalla)*0.9)]">
 
         <div className="bg-[#10B981] text-[#1E293B] px-4 py-3 flex items-center justify-between border-b-2 border-[#1E293B] shrink-0">
           <h2 className="text-lg font-black uppercase tracking-widest flex items-center gap-2">
@@ -172,9 +338,9 @@ interface Props {
           </button>
         </div>
 
-        <div className="p-4 bg-[#F8FAFC] flex flex-col md:flex-row md:items-start gap-3 overflow-y-auto custom-scrollbar">
-          {/* COLUMNA DE PAGO (a la derecha cuando hay fiado en pantallas medianas) */}
-          <div className={`flex flex-col gap-3 w-full ${faltante > 0 ? 'md:w-[26rem] md:shrink-0' : ''}`}>
+        <div className="p-4 bg-[#F8FAFC] flex flex-col gap-3 overflow-y-auto custom-scrollbar">
+          {/* COLUMNA DE PAGO */}
+          <div className="flex flex-col gap-3 w-full">
           <div className="bg-[#1E293B] text-white p-4 text-center border-2 border-[#1E293B] shadow-inner relative shrink-0">
             <p className="text-[12px] font-bold text-[#94A3B8] uppercase tracking-[0.2em] mb-1">Total a Pagar</p>
             <p className="text-2xl sm:text-4xl font-black text-[#10B981]">S/ {total.toFixed(2)}</p>
@@ -286,155 +452,7 @@ interface Props {
 
           </div>
 
-          {/* === ZONA DINÁMICA DE FIADOS: en celular va debajo; en pantallas medianas, a la izquierda === */}
-          {faltante > 0 && (
-            <div className="border-2 border-[#F59E0B] bg-[#FFFBEB] p-3 flex flex-col gap-3 shrink-0 md:shrink md:flex-1 md:order-first min-w-0 animate-fade-in rounded-none">
-              
-              {/* CABECERA DE FIADOS CON BOTÓN DE SWITCH TÉCNICO */}
-              <div className="flex items-center justify-between border-b-2 border-[#FCD34D] pb-2">
-                <div className="flex items-center gap-2">
-                  <UserPlus size={18} className="text-[#F59E0B]" />
-                  <span className="text-xs font-black text-[#D97706] uppercase tracking-widest">Crédito / Fiado</span>
-                </div>
-
-                {!isCreatingNew ? (
-                  <button 
-                    onClick={() => {
-                      setIsCreatingNew(true);
-                      setClienteNombre('');
-                      setClienteDni('');
-                      setClienteTelefono('');
-                      setSearchCliente('');
-                    }}
-                    className="flex items-center gap-1 bg-[#10B981] text-white px-3 py-1.5 text-[12px] font-black uppercase border-2 border-[#10B981] hover:bg-[#059669] hover:border-[#059669] transition-colors rounded-none shadow-[2px_2px_0_0_#065F46] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] cursor-pointer"
-                  >
-                    <Plus size={14}/> Nuevo Cliente
-                  </button>
-                ) : (
-                  <button 
-                    onClick={() => {
-                      setIsCreatingNew(false);
-                      setClienteNombre('');
-                      setClienteDni('');
-                      setClienteTelefono('');
-                    }}
-                    className="flex items-center gap-1 bg-[#EF4444] text-white px-3 py-1.5 text-[12px] font-black uppercase border-2 border-[#EF4444] hover:bg-[#DC2626] hover:border-[#DC2626] transition-colors rounded-none shadow-[2px_2px_0_0_#991B1B] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] cursor-pointer"
-                  >
-                    <X size={14}/> Cancelar Nuevo
-                  </button>
-                )}
-              </div>
-              
-              {/* CONDICIONAL DE INTERFAZ: BUSCAR O CREAR */}
-              {!isCreatingNew ? (
-                // MODO 1: BUSCADOR DESPLEGABLE DE CLIENTES EXISTENTES
-                <div className="space-y-1 relative">
-                  <label className="text-[12px] font-black text-[#92400E] uppercase">Buscar Cliente Existente *</label>
-                  <div 
-                    className="flex items-center justify-between border-2 border-[#FCD34D] bg-white p-2 cursor-text transition-colors rounded-none focus-within:border-[#F59E0B]"
-                    {...clicConTeclado(() => setIsDropdownOpen(true))}
-                  >
-                    <input
-                      type="text"
-                      placeholder="BUSCAR CLIENTE EN EL DIRECTORIO..."
-                      value={isDropdownOpen ? searchCliente : clienteNombre}
-                      onChange={(e) => {
-                        setSearchCliente(e.target.value.toUpperCase());
-                        setIsDropdownOpen(true);
-                      }}
-                      className="w-full text-xs font-black uppercase outline-none bg-transparent text-[#1E293B] placeholder-[#94A3B8]"
-                    />
-                    <button type="button" onClick={(e) => { e.stopPropagation(); setIsDropdownOpen(!isDropdownOpen); }} className="text-[#D97706] hover:text-[#92400E] px-1 cursor-pointer">
-                      {isDropdownOpen ? <X size={16} /> : <ChevronDown size={16} />}
-                    </button>
-                  </div>
-
-                  {/* LISTA DESPLEGABLE CONECTADA A LA BASE DE DATOS */}
-                  {isDropdownOpen && (
-                    <div className="absolute z-50 top-[100%] left-0 w-full mt-1 bg-white border-2 border-[#1E293B] shadow-[4px_4px_0_0_#1E293B] max-h-48 overflow-y-auto custom-scrollbar rounded-none">
-                      {clientesDb.filter(c => (c.nombre || c.name || '').toUpperCase().includes(searchCliente)).length === 0 ? (
-                        <div className="p-4 text-xs font-black uppercase text-[#64748B] text-center bg-[#F8FAFC]">
-                          NO SE ENCONTRARON CLIENTES
-                        </div>
-                      ) : (
-                        clientesDb
-                          .filter(c => (c.nombre || c.name || '').toUpperCase().includes(searchCliente))
-                          .map(c => (
-                            <div
-                              key={c.id}
-                              className="p-3 text-[13px] font-black uppercase text-[#1E293B] hover:bg-[#F59E0B] hover:text-white cursor-pointer border-b border-[#E2E8F0] last:border-0 transition-colors flex justify-between items-center rounded-none"
-                              {...clicConTeclado(() => {
-                                setClienteId(c.id?.toString() || ''); // <-- GUARDAMOS EL ID AL SELECCIONAR
-                                setClienteNombre(c.nombre || c.name || '');
-                                setClienteDni(c.dni || '');
-                                setClienteTelefono(c.telefono || '');
-                                setSearchCliente('');
-                                setIsDropdownOpen(false);
-                              })}
-                            >
-                              <span>{c.nombre || c.name || 'SIN NOMBRE'}</span>
-                              {c.dni && <span className="text-[12px] opacity-70">DNI:{c.dni}</span>}
-                            </div>
-                          ))
-                      )}
-                    </div>
-                  )}
-                </div>
-              ) : (
-                // MODO 2: CREACIÓN MANUAL DE CLIENTE (CUADROS PUROS)
-                <div className="space-y-3 bg-[#FEF3C7] p-3 border-2 border-[#FCD34D] rounded-none">
-                  <div className="space-y-1">
-                    <label className="text-[12px] font-black text-[#92400E] uppercase">Nombre del Nuevo Cliente *</label>
-                    <input 
-                      type="text" 
-                      placeholder="EJ: JUAN PEREZ..."
-                      value={clienteNombre}
-                      onChange={(e) => setClienteNombre(e.target.value.toUpperCase())}
-                      className="w-full bg-white border-2 border-[#FCD34D] p-2 text-xs font-black text-[#1E293B] uppercase outline-none focus:border-[#F59E0B] rounded-none"
-                    />
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="space-y-1">
-                      <label className="text-[12px] font-bold text-[#92400E] uppercase">DNI (Opcional)</label>
-                      <input 
-                        type="text" 
-                        placeholder="8 DÍGITOS"
-                        maxLength={8}
-                        value={clienteDni}
-                        onChange={(e) => setClienteDni(e.target.value.replace(/\D/g, ''))}
-                        className="w-full bg-white border-2 border-[#FCD34D] p-2 text-xs font-bold text-[#1E293B] outline-none focus:border-[#F59E0B] rounded-none"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[12px] font-bold text-[#92400E] uppercase">Celular (Opcional)</label>
-                      <input 
-                        type="text" 
-                        placeholder="NÚMERO"
-                        maxLength={9}
-                        value={clienteTelefono}
-                        onChange={(e) => setClienteTelefono(e.target.value.replace(/\D/g, ''))}
-                        className="w-full bg-white border-2 border-[#FCD34D] p-2 text-xs font-bold text-[#1E293B] outline-none focus:border-[#F59E0B] rounded-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* FECHA VENCIMIENTO (APLICA PARA AMBOS MODOS) */}
-              <div className="space-y-1 mt-1 pt-2 border-t-2 border-[#FCD34D]">
-                <label className="text-[12px] font-black text-[#92400E] uppercase flex items-center gap-1">
-                  <Calendar size={14}/> Fecha Límite de Pago *
-                </label>
-                <input 
-                  type="date" 
-                  value={fechaVencimiento}
-                  onChange={(e) => setFechaVencimiento(e.target.value)}
-                  className="w-full bg-white border-2 border-[#FCD34D] p-2 text-xs font-black text-[#1E293B] uppercase outline-none focus:border-[#F59E0B] rounded-none cursor-pointer"
-                />
-              </div>
-
-            </div>
-          )}
+          {!esPantallaMedia && panelFiado}
 
         </div>
 
@@ -469,6 +487,7 @@ interface Props {
         </div>
 
       </div>
-    </div>
+      </div>
+      </div>
   );
 };
