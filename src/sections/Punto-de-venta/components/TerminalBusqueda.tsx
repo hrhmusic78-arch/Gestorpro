@@ -168,18 +168,18 @@ export const TerminalBusqueda: React.FC<Props> = ({ searchQuery, setSearchQuery,
                     }
                   `}
                 >
-                  <div className="flex justify-between items-start mb-3 w-full">
-                    <span className="text-xs font-black text-[#64748B] truncate bg-[#F8FAFC] border border-[#E2E8F0] px-2 py-1 rounded-none">
+                  <div className="flex flex-wrap justify-between items-start gap-1 mb-2 w-full">
+                    <span className="text-xs font-black text-[#64748B] whitespace-nowrap bg-[#F8FAFC] border border-[#E2E8F0] px-2 py-1 rounded-none">
                       {prod.code}
                     </span>
                     
                     {/* Estricto etiquetado de Alto Contraste por Color */}
                     {esConsumo ? (
-                      <span className="text-xs font-black text-[#FFFFFF] bg-[#D97706] px-2 py-1 uppercase tracking-widest rounded-none">
+                      <span className="text-xs font-black text-[#FFFFFF] bg-[#D97706] px-2 py-1 uppercase tracking-widest whitespace-nowrap rounded-none">
                         CONSUMO
                       </span>
                     ) : (
-                      <span className={`text-xs font-black px-2 py-1 rounded-none uppercase tracking-widest ${
+                      <span className={`text-xs font-black px-2 py-1 rounded-none uppercase tracking-wide whitespace-nowrap ${
                         estaAgotado 
                           ? 'text-[#FFFFFF] bg-[#1E293B]' 
                           : prod.unit === 'KG' 
@@ -199,17 +199,17 @@ export const TerminalBusqueda: React.FC<Props> = ({ searchQuery, setSearchQuery,
                     const img = (prod as any).image_url || (prod as any).image_path || '';
                     const valida = img.startsWith('http') || img.startsWith('data:');
                     return (
-                      <div className={`w-full h-20 sm:h-24 mb-2 sm:mb-3 flex items-center justify-center border border-[#E2E8F0] bg-[#FFFFFF] overflow-hidden ${estaAgotado ? 'grayscale' : ''}`}>
+                      <div className={`w-full h-28 sm:h-36 2xl:h-44 mb-2 sm:mb-3 flex items-center justify-center border border-[#E2E8F0] bg-[#FFFFFF] overflow-hidden ${estaAgotado ? 'grayscale' : ''}`}>
                         {valida ? (
                           <img
                             src={img}
                             alt={prod.name}
                             loading="lazy"
-                            className="w-full h-full object-contain p-1"
+                            className="max-w-full max-h-full object-contain"
                             onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
                           />
                         ) : (
-                          <Package size={28} className="text-[#CBD5E1]" aria-hidden="true" />
+                          <Package size={36} className="text-[#CBD5E1]" aria-hidden="true" />
                         )}
                       </div>
                     );

@@ -3,6 +3,7 @@ import { X, Package, Scale, Coffee, ArrowLeft, Save, ImagePlus, Search, Loader2,
 import { supabase } from '../../../db/supabase'; // RETORNO TÉCNICO: Conexión a la DB
 import { useCerrarConEscape } from '../../../utils/useCerrarConEscape';
 import { usePermiso } from '../../../utils/permisos';
+import { buscarImagenes, imagenPorCodigoBarras, type FotoEncontrada } from '../../../utils/buscarImagenes';
 
 // Componente de Notificación de Errores (Diseño Geométrico y Alto Contraste)
 const TechnicalAlert = ({ message }: { message: string }) => {
@@ -61,7 +62,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
   // ESTADOS PARA BÚSQUEDA DE IMÁGENES
   const [imageQuery, setImageQuery] = useState('');
   const [isSearchingImage, setIsSearchingImage] = useState(false);
-  const [imageResults, setImageResults] = useState<string[]>([]);
+  const [imageResults, setImageResults] = useState<FotoEncontrada[]>([]);
   const [showImageResults, setShowImageResults] = useState(false); // <-- Controla si la galería está abierta o cerrada
   const [sinResultados, setSinResultados] = useState(false); // la búsqueda terminó sin ninguna foto
   // true solo cuando el usuario pulsa "Quitar imagen": así una búsqueda abandonada no borra la foto guardada
@@ -141,31 +142,11 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
     image: '' // <-- NUEVO ESTADO PARA LA IMAGEN
   });
 
-  // 3. MOTOR DE BÚSQUEDA DE IMÁGENES
-  // Fuentes, en orden de relevancia: (1) el producto exacto por su código de barras,
-  // (2) Open Food Facts por nombre (vía /api/off-search: no admite llamadas directas del navegador),
-  // (3) fotos de Wikimedia Commons y (4) Wikipedia. Cada fuente pinta sus fotos apenas llega,
-  // pero siempre respetando ese orden, para que las más acertadas queden primero.
-  const MAX_RESULTADOS = 8;
-
-  const imagenPorCodigoBarras = async (codigo: string, signal?: AbortSignal): Promise<string | null> => {
-    const limpio = codigo.replace(/\D/g, '');
-    if (limpio.length < 8) return null;
-    try {
-      const res = await fetch(`https://world.openfoodfacts.org/api/v2/product/${limpio}.json?fields=image_front_url,image_front_small_url,image_url`, { signal });
-      if (!res.ok) return null;
-      const data = await res.json();
-      const p = data?.product;
-      return p?.image_front_url || p?.image_url || p?.image_front_small_url || null;
-    } catch {
-      return null;
-    }
-  };
-
+  // 3. MOTOR DE BÚSQUEDA DE IMÁGENES (ver src/utils/buscarImagenes.ts)
+  // Tolera errores de escritura ("inka cola" → Inca Kola) y descarta fotos que no corresponden.
   const ejecutarBusquedaAPI = async (query: string) => {
     if (abortControllerRef.current) abortControllerRef.current.abort();
     const abortController = new AbortController();
-    const { signal } = abortController;
     abortControllerRef.current = abortController;
 
     setIsSearchingImage(true);
@@ -173,42 +154,10 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
     setImageResults([]); // Limpiamos la pantalla al instante para la nueva búsqueda
     setSinResultados(false);
 
-    const q = encodeURIComponent(query.trim());
-    const porFuente: string[][] = [[], [], [], []];
-    const pintar = (fuente: number, fotos: string[]) => {
-      if (signal.aborted) return;
-      porFuente[fuente] = fotos.filter(u => typeof u === 'string' && u.startsWith('http'));
-      setImageResults(Array.from(new Set(porFuente.flat())).slice(0, MAX_RESULTADOS));
-    };
-    const leer = (url: string) => fetch(url, { signal }).then(res => (res.ok ? res.json() : null));
-
-    // 1. Código de barras del formulario: es la foto del producto exacto
-    const porCodigo = imagenPorCodigoBarras(formData.barcode || '', signal)
-      .then(url => pintar(0, url ? [url] : []));
-
-    // 2. Open Food Facts por nombre (productos de supermercado)
-    const porNombre = leer(`/api/off-search?q=${q}&page_size=8&fields=image_front_small_url,image_front_url`)
-      .then(data => pintar(1, (data?.hits || []).map((p: any) => p.image_front_small_url || p.image_front_url)))
-      .catch(() => {});
-
-    // 3. Fotos de Wikimedia Commons (sirve para frutas, verduras, herramientas, etc.)
-    const porCommons = leer(`https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrnamespace=6&gsrsearch=${q}%20filetype:bitmap&gsrlimit=8&prop=imageinfo&iiprop=url&iiurlwidth=300&format=json&origin=*`)
-      .then(data => {
-        const paginas = Object.values(data?.query?.pages || {}) as any[];
-        paginas.sort((a, b) => (a.index ?? 0) - (b.index ?? 0));
-        pintar(2, paginas.map(p => p.imageinfo?.[0]?.thumburl));
-      })
-      .catch(() => {});
-
-    // 4. Wikipedia: último recurso (a veces devuelve el logo de la empresa)
-    const porWiki = leer(`https://es.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${q}&prop=pageimages&pithumbsize=300&format=json&origin=*`)
-      .then(data => pintar(3, Object.values(data?.query?.pages || {}).map((p: any) => p.thumbnail?.source)))
-      .catch(() => {});
-
-    await Promise.all([porCodigo, porNombre, porCommons, porWiki]);
-    if (!signal.aborted) {
+    const fotos = await buscarImagenes(query, formData.barcode || '', abortController.signal, setImageResults);
+    if (!abortController.signal.aborted) {
       setIsSearchingImage(false);
-      setSinResultados(porFuente.flat().length === 0);
+      setSinResultados(fotos.length === 0);
     }
   };
 
@@ -657,28 +606,33 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
                   {showImageResults && imageResults.length > 0 && !formData.image && (
                     <div ref={galeriaRef} className="w-full sm:basis-full p-2 border-2 border-[#1E293B] bg-[#F8FAFC] shadow-[4px_4px_0_0_#1E293B]">
                       <div className="grid grid-cols-4 gap-2">
-                        {imageResults.map((imgUrl, idx) => (
+                        {imageResults.map((foto, idx) => (
                           <div 
-                            key={idx} 
+                            key={foto.url} 
+                            title={foto.titulo}
                             onMouseDown={(e) => {
                               // onMouseDown evita que el onBlur del input se dispare antes
                               e.preventDefault();
-                              setFormData({...formData, image: imgUrl});
+                              // Open Food Facts: se guarda la versión de 400px (más nítida que la miniatura de 200px)
+                              setFormData({...formData, image: foto.url.replace(/\.200\.jpg$/, '.400.jpg')});
                               setImageResults([]);
                               setImageQuery('');
                               setShowImageResults(false);
                             }}
-                            className="aspect-square border-2 border-[#E2E8F0] bg-white hover:border-[#10B981] cursor-pointer overflow-hidden transition-all hover:scale-105 flex items-center justify-center"
+                            className="relative aspect-square border-2 border-[#E2E8F0] bg-white hover:border-[#10B981] cursor-pointer overflow-hidden transition-all hover:scale-105 flex items-center justify-center"
                           >
                             <img 
-                              src={imgUrl} 
-                              alt="Resultado" 
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                // Si la imagen original se rompe, ponemos una de respaldo limpia sin letras raras
-                                (e.target as HTMLImageElement).src = `https://placehold.co/200x200/F8FAFC/94A3B8?text=NO+IMAGEN`;
+                              src={foto.url} 
+                              alt={foto.titulo || `Resultado ${idx + 1}`}
+                              className="w-full h-full object-contain p-1"
+                              onError={() => {
+                                // Foto rota en el servidor de origen: se quita de la galería
+                                setImageResults(prev => prev.filter(f => f.url !== foto.url));
                               }}
                             />
+                            {foto.aproximada && (
+                              <span className="absolute bottom-0 inset-x-0 bg-[#F59E0B] text-[#1E293B] text-[12px] font-black uppercase text-center leading-5">Parecida</span>
+                            )}
                           </div>
                         ))}
                       </div>
