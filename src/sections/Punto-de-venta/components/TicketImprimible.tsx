@@ -47,29 +47,29 @@ export const TicketImprimible = forwardRef<HTMLDivElement, Props>(
         {/* CABECERA */}
         <div className="text-center border-b-2 border-black pb-2 mb-4">
           <h3 className="font-black text-lg uppercase tracking-widest">EVICAMP POS</h3>
-          <p className="text-[10px] font-bold mt-1">RUC: 20123456789</p>
-          <p className="text-[9px]">Av. Arquitectura Técnica 123 | Lima</p>
+          <p className="text-[12px] font-bold mt-1">RUC: 20123456789</p>
+          <p className="text-[12px]">Av. Arquitectura Técnica 123 | Lima</p>
           
           <h3 className="font-black text-sm uppercase mt-2">
             {fiadoData ? 'TICKET DE FIADO' : 'Boleta Electrónica'}
           </h3>
           <p className="font-black tracking-widest text-base">{nroBoleta}</p>
-          <p className="text-[9px] font-bold mt-1">Fecha: {fecha}</p>
+          <p className="text-[12px] font-bold mt-1">Fecha: {fecha}</p>
 
           {/* DATOS DEL FIADO */}
           {fiadoData && (
             <div className="mt-2 text-left border-2 border-black p-1.5 bg-gray-100">
-              <p className="text-[10px] font-black uppercase border-b border-black pb-1 mb-1">Datos del Crédito</p>
-              <p className="text-[9px] font-bold uppercase">Cliente: <span className="font-black">{fiadoData.clienteNombre}</span></p>
-              {fiadoData.clienteDni && <p className="text-[9px] font-bold uppercase">DNI: <span className="font-black">{fiadoData.clienteDni}</span></p>}
-              {fiadoData.clienteTelefono && <p className="text-[9px] font-bold uppercase">Cel: <span className="font-black">{fiadoData.clienteTelefono}</span></p>}
-              <p className="text-[10px] font-black uppercase mt-1 text-red-600">Límite Pago: {fiadoData.fechaVencimiento}</p>
+              <p className="text-[12px] font-black uppercase border-b border-black pb-1 mb-1">Datos del Crédito</p>
+              <p className="text-[12px] font-bold uppercase">Cliente: <span className="font-black">{fiadoData.clienteNombre}</span></p>
+              {fiadoData.clienteDni && <p className="text-[12px] font-bold uppercase">DNI: <span className="font-black">{fiadoData.clienteDni}</span></p>}
+              {fiadoData.clienteTelefono && <p className="text-[12px] font-bold uppercase">Cel: <span className="font-black">{fiadoData.clienteTelefono}</span></p>}
+              <p className="text-[12px] font-black uppercase mt-1 text-red-600">Límite Pago: {fiadoData.fechaVencimiento}</p>
             </div>
           )}
         </div>
 
         {/* TABLA DE PRODUCTOS */}
-        <table className="w-full text-[10px] mb-4">
+        <table className="w-full text-[12px] mb-4">
           <thead>
             <tr className="border-b-2 border-black text-left">
               <th className="w-[15%] pb-1 font-black">CANT</th>
@@ -83,7 +83,7 @@ export const TicketImprimible = forwardRef<HTMLDivElement, Props>(
                 <td className="py-1.5 font-bold align-top">{item.cartQuantity}</td>
                 <td className="py-1.5 pr-1 uppercase align-top">
                   <span className="font-bold leading-tight block">{item.name}</span>
-                  <span className="text-[8px] text-gray-600 font-bold">S/ {item.price.toFixed(2)} c/u</span>
+                  <span className="text-[11px] text-gray-600 font-bold">S/ {item.price.toFixed(2)} c/u</span>
                 </td>
                 <td className="py-1.5 text-right font-bold align-top">
                   {item.subtotal.toFixed(2)}
@@ -100,7 +100,7 @@ export const TicketImprimible = forwardRef<HTMLDivElement, Props>(
             <span>S/ {total.toFixed(2)}</span>
           </div>
           
-          <div className="border-t border-black pt-1 mb-1 text-[9px] text-gray-600">
+          <div className="border-t border-black pt-1 mb-1 text-[12px] text-gray-600">
             {fiadoData ? 'PAGOS PARCIALES:' : 'MÉTODOS DE PAGO:'}
           </div>
 
@@ -116,9 +116,9 @@ export const TicketImprimible = forwardRef<HTMLDivElement, Props>(
 
         {/* PIE DE PÁGINA */}
         <div className="text-center mt-6 border-t-2 border-dashed border-gray-400 pt-3">
-          <p className="font-black text-[10px] uppercase">¡Gracias por su compra!</p>
-          <p className="text-[8px] mt-1 font-bold">Consulte su documento en www.sunat.gob.pe</p>
-          <p className="mt-3 text-[8px] font-black">*** SISTEMA EVICAMP POS ***</p>
+          <p className="font-black text-[12px] uppercase">¡Gracias por su compra!</p>
+          <p className="text-[11px] mt-1 font-bold">Consulte su documento en www.sunat.gob.pe</p>
+          <p className="mt-3 text-[11px] font-black">*** SISTEMA EVICAMP POS ***</p>
         </div>
         <div className="h-2"></div>
       </div>

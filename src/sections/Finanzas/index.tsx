@@ -219,7 +219,7 @@ export const Finanzas: React.FC = () => {
   if (isLoading) return <div className="flex h-full items-center justify-center font-mono">Calculando Bóveda...</div>;
 
   return (
-    <div className="h-full flex flex-col gap-4 sm:gap-6 p-0 sm:p-2 lg:p-6 w-full font-mono">
+    <div className="h-full flex flex-col gap-4 sm:gap-6 p-0 w-full font-mono">
       
       <div className="flex flex-col lg:flex-row justify-between items-stretch lg:items-end gap-4 shrink-0">
         <div>
@@ -297,30 +297,30 @@ export const Finanzas: React.FC = () => {
           {/* SÚPER PANEL DE MÉTRICAS */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 shrink-0">
             <div className="bg-white border-2 border-[#1E293B] p-4 flex flex-col justify-between">
-               <p className="text-[10px] font-black text-[#64748B] uppercase tracking-widest flex items-center gap-2"><Banknote size={14}/> Efectivo Esperado Físico</p>
+               <p className="text-[12px] font-black text-[#64748B] uppercase tracking-widest flex items-center gap-2"><Banknote size={14}/> Efectivo Esperado Físico</p>
                <p className="text-xl sm:text-3xl font-black text-[#10B981] mt-2">S/ {superMetricas.efectivoEsperadoCaja.toFixed(2)}</p>
-               <p className="text-[9px] font-bold text-[#64748B] uppercase mt-2 border-t pt-2">(Fondo + Ventas Físicas + Cobros - Gastos)</p>
+               <p className="text-[12px] font-bold text-[#64748B] uppercase mt-2 border-t pt-2">(Fondo + Ventas Físicas + Cobros - Gastos)</p>
             </div>
             
             <div className="bg-[#F8FAFC] border-2 border-[#E2E8F0] p-4">
-               <p className="text-[10px] font-black text-[#3B82F6] uppercase tracking-widest flex items-center gap-2"><Smartphone size={14}/> Yape / Transferencias</p>
+               <p className="text-[12px] font-black text-[#3B82F6] uppercase tracking-widest flex items-center gap-2"><Smartphone size={14}/> Yape / Transferencias</p>
                <p className="text-xl font-black text-[#1E293B] mt-1">S/ {(superMetricas.ventasYape + superMetricas.cobroDeudasYape).toFixed(2)}</p>
-               <div className="text-[9px] font-bold text-[#64748B] uppercase mt-2 space-y-1 border-t pt-2">
+               <div className="text-[12px] font-bold text-[#64748B] uppercase mt-2 space-y-1 border-t pt-2">
                  <p>Ventas: S/ {superMetricas.ventasYape.toFixed(2)}</p>
                  <p>Cobros: S/ {superMetricas.cobroDeudasYape.toFixed(2)}</p>
                </div>
             </div>
 
             <div className="bg-[#F8FAFC] border-2 border-[#E2E8F0] p-4">
-               <p className="text-[10px] font-black text-[#8B5CF6] uppercase tracking-widest flex items-center gap-2"><CreditCard size={14}/> Pagos Tarjeta</p>
+               <p className="text-[12px] font-black text-[#8B5CF6] uppercase tracking-widest flex items-center gap-2"><CreditCard size={14}/> Pagos Tarjeta</p>
                <p className="text-xl font-black text-[#1E293B] mt-1">S/ {superMetricas.ventasTarjeta.toFixed(2)}</p>
-               <p className="text-[9px] font-bold text-[#64748B] uppercase mt-2 border-t pt-2">Ventas directas POS</p>
+               <p className="text-[12px] font-bold text-[#64748B] uppercase mt-2 border-t pt-2">Ventas directas POS</p>
             </div>
 
             <div className="bg-[#FEF2F2] border-2 border-[#EF4444] p-4">
-               <p className="text-[10px] font-black text-[#EF4444] uppercase tracking-widest flex items-center gap-2"><ArrowDownToLine size={14}/> Gastos y Retiros</p>
+               <p className="text-[12px] font-black text-[#EF4444] uppercase tracking-widest flex items-center gap-2"><ArrowDownToLine size={14}/> Gastos y Retiros</p>
                <p className="text-xl font-black text-[#EF4444] mt-1">S/ {superMetricas.gastos.toFixed(2)}</p>
-               <p className="text-[9px] font-bold text-[#EF4444] uppercase mt-2 border-t border-[#EF4444]/20 pt-2">Salió del cajón</p>
+               <p className="text-[12px] font-bold text-[#EF4444] uppercase mt-2 border-t border-[#EF4444]/20 pt-2">Salió del cajón</p>
             </div>
           </div>
 

@@ -47,7 +47,7 @@ export const ModalAnularPago: React.FC<Props> = ({ isOpen, onClose, fiado, onAnu
                 <div key={pago.id} className="flex justify-between items-center border-2 border-[#E2E8F0] p-3 hover:border-[#EF4444] transition-colors bg-[#F8FAFC] group">
                   <div className="flex-1">
                     <p className="text-xs font-black text-[#1E293B] uppercase">Abono {pago.metodo}</p>
-                    <p className="text-[10px] font-bold text-[#64748B]">{new Date(pago.fecha).toLocaleString()}</p>
+                    <p className="text-[12px] font-bold text-[#64748B]">{new Date(pago.fecha).toLocaleString()}</p>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-sm font-black text-[#10B981]">S/ {pago.monto.toFixed(2)}</span>

@@ -33,7 +33,7 @@ export const ModalDetalleFiado: React.FC<Props> = ({ isOpen, onClose, fiado }) =
           <div className="shrink-0 border-b-2 border-[#E2E8F0] pb-4">
             <p className="text-xs font-black text-[#64748B] uppercase">Cliente</p>
             <p className="text-lg font-black text-[#1E293B] uppercase leading-tight">{fiado.clienteNombre}</p>
-            <p className="text-[10px] font-bold text-[#64748B] mt-1">
+            <p className="text-[12px] font-bold text-[#64748B] mt-1">
               Fecha Emisión: {new Date(fiado.fechaEmision).toLocaleDateString()}
             </p>
           </div>
@@ -47,7 +47,7 @@ export const ModalDetalleFiado: React.FC<Props> = ({ isOpen, onClose, fiado }) =
                 <div key={d.productoId} className="flex justify-between items-center border-2 border-[#E2E8F0] p-3 hover:border-[#3B82F6] transition-colors bg-[#F8FAFC]">
                   <div className="flex-1">
                     <p className="text-xs font-black text-[#1E293B] uppercase">{d.name}</p>
-                    <p className="text-[10px] font-bold text-[#64748B]">{d.qty} unid. x S/ {d.price.toFixed(2)}</p>
+                    <p className="text-[12px] font-bold text-[#64748B]">{d.qty} unid. x S/ {d.price.toFixed(2)}</p>
                   </div>
                   <span className="text-sm font-black text-[#1E293B]">S/ {Number(d.subtotal || 0).toFixed(2)}</span>
                 </div>

@@ -25,7 +25,7 @@ export const TablaProveedores: React.FC<Props> = ({ proveedores, onEdit, onDelet
       <div className="flex-1 min-h-0 flex flex-col overflow-x-auto custom-scrollbar">
       <div className="flex-1 min-h-0 flex flex-col min-w-[760px]">
       {/* CABECERA */}
-      <div className="grid grid-cols-12 gap-3 bg-[#1E293B] text-white p-4 text-[10px] md:text-xs font-black uppercase tracking-[0.1em] shrink-0">
+      <div className="grid grid-cols-12 gap-3 bg-[#1E293B] text-white p-4 text-[12px] md:text-xs font-black uppercase tracking-[0.1em] shrink-0">
         <div className="col-span-2 min-w-0 truncate">RUC</div>
         <div className="col-span-4 min-w-0 truncate">Razón Social / Comercial</div>
         <div className="col-span-3 min-w-0 truncate">Contacto</div>
@@ -36,7 +36,7 @@ export const TablaProveedores: React.FC<Props> = ({ proveedores, onEdit, onDelet
       {/* CUERPO */}
       <div className="w-full flex-1 overflow-y-auto custom-scrollbar">
         {paginatedData.length === 0 ? (
-          <div className="p-6 sm:p-12 text-center text-[#94A3B8] font-bold uppercase text-[10px] tracking-widest flex flex-col items-center justify-center h-full gap-2">
+          <div className="p-6 sm:p-12 text-center text-[#94A3B8] font-bold uppercase text-[12px] tracking-widest flex flex-col items-center justify-center h-full gap-2">
             <Truck size={32} className="text-[#E2E8F0] mb-2" />
             <p>No se encontraron proveedores.</p>
           </div>
@@ -55,12 +55,12 @@ export const TablaProveedores: React.FC<Props> = ({ proveedores, onEdit, onDelet
                   {prov.razon_social}
                 </p>
                 {prov.nombre_comercial && (
-                  <p className="text-[10px] font-bold text-[#64748B] uppercase truncate" title={prov.nombre_comercial}>
+                  <p className="text-[12px] font-bold text-[#64748B] uppercase truncate" title={prov.nombre_comercial}>
                     Comercial: {prov.nombre_comercial}
                   </p>
                 )}
                 {prov.direccion && (
-                  <p className="text-[9px] font-bold text-[#94A3B8] uppercase truncate flex items-center gap-1 mt-1" title={prov.direccion}>
+                  <p className="text-[12px] font-bold text-[#94A3B8] uppercase truncate flex items-center gap-1 mt-1" title={prov.direccion}>
                     <MapPin size={10} /> {prov.direccion}
                   </p>
                 )}
@@ -69,13 +69,13 @@ export const TablaProveedores: React.FC<Props> = ({ proveedores, onEdit, onDelet
               {/* CONTACTO */}
               <div className="col-span-3 min-w-0 flex flex-col gap-1 pr-2">
                 {prov.telefono ? (
-                  <span className="text-[10px] font-bold text-[#3B82F6] flex items-center gap-1 truncate">
+                  <span className="text-[12px] font-bold text-[#3B82F6] flex items-center gap-1 truncate">
                     <Phone size={12} /> {prov.telefono}
                   </span>
-                ) : <span className="text-[10px] text-[#CBD5E1] italic">Sin teléfono</span>}
+                ) : <span className="text-[12px] text-[#CBD5E1] italic">Sin teléfono</span>}
                 
                 {prov.email ? (
-                  <span className="text-[10px] font-bold text-[#64748B] flex items-center gap-1 truncate">
+                  <span className="text-[12px] font-bold text-[#64748B] flex items-center gap-1 truncate">
                     <Mail size={12} /> {prov.email}
                   </span>
                 ) : null}
@@ -84,11 +84,11 @@ export const TablaProveedores: React.FC<Props> = ({ proveedores, onEdit, onDelet
               {/* ESTADO */}
               <div className="col-span-2 min-w-0 flex justify-center">
                 {prov.estado === 'ACTIVO' ? (
-                  <span className="text-[9px] font-black uppercase px-2 py-0.5 border inline-block bg-[#ECFDF5] text-[#10B981] border-[#10B981]">
+                  <span className="text-[12px] font-black uppercase px-2 py-0.5 border inline-block bg-[#ECFDF5] text-[#10B981] border-[#10B981]">
                     ACTIVO
                   </span>
                 ) : (
-                  <span className="text-[9px] font-black uppercase px-2 py-0.5 border inline-block bg-[#FEF2F2] text-[#EF4444] border-[#EF4444]">
+                  <span className="text-[12px] font-black uppercase px-2 py-0.5 border inline-block bg-[#FEF2F2] text-[#EF4444] border-[#EF4444]">
                     INACTIVO
                   </span>
                 )}
@@ -122,7 +122,7 @@ export const TablaProveedores: React.FC<Props> = ({ proveedores, onEdit, onDelet
       {/* PAGINACIÓN */}
       {totalPages > 0 && (
         <div className="border-t border-[#E2E8F0] bg-[#F8FAFC] p-3 flex items-center justify-between shrink-0">
-          <span className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest">
+          <span className="text-[12px] font-bold text-[#64748B] uppercase tracking-widest">
             Página {currentPage} de {totalPages}
           </span>
           <div className="flex gap-2">

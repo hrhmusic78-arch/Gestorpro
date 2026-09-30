@@ -9,7 +9,18 @@
   --color-brand-primary: #1E293B;
   --color-brand-accent: #10B981;  
   --color-brand-border: #E2E8F0;  
-  --color-brand-bg: #FFFFFF;      
+  --color-brand-bg: #FFFFFF;
+
+  /* Letra más grande para leer mejor (accesibilidad). Reemplaza la escala base de Tailwind:
+     xs 12→14px, sm 14→15px, base 16→17px, lg 18→19px. Los títulos grandes quedan igual. */
+  --text-xs: 0.875rem;
+  --text-xs--line-height: 1.35;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.4;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.5;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.5;
 }
 
 * {

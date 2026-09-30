@@ -30,7 +30,7 @@ const BloqueArqueo: React.FC<BloqueArqueoProps> = ({ icono, color, titulo, esper
   return (
     <div className="border-2 border-[#E2E8F0] p-4 flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <span className="text-[10px] font-black uppercase tracking-widest flex items-center gap-2" style={{ color }}>
+        <span className="text-[12px] font-black uppercase tracking-widest flex items-center gap-2" style={{ color }}>
           {icono} {titulo}
         </span>
         <span className="text-xs font-bold text-[#64748B]">Espera: S/ {esperado.toFixed(2)}</span>
@@ -46,7 +46,7 @@ const BloqueArqueo: React.FC<BloqueArqueoProps> = ({ icono, color, titulo, esper
         }`}
       />
       {hayDescuadre && (
-        <p className="text-[10px] font-black uppercase text-[#D97706] flex items-center gap-1">
+        <p className="text-[12px] font-black uppercase text-[#D97706] flex items-center gap-1">
           <AlertTriangle size={12} />
           {diferencia > 0 ? `Sobra S/ ${Math.abs(diferencia).toFixed(2)}` : `Falta S/ ${Math.abs(diferencia).toFixed(2)}`}
         </p>
@@ -135,7 +135,7 @@ export const ModalCierre: React.FC<Props> = ({ isOpen, onClose, onSuccess, sessi
 
           <div className="bg-[#F8FAFC] border-2 border-[#E2E8F0] p-3 flex items-center gap-2 text-[#64748B]">
             <Calculator size={16} />
-            <span className="text-[10px] font-bold uppercase tracking-widest">
+            <span className="text-[12px] font-bold uppercase tracking-widest">
               Cuenta lo que hay físicamente en caja y confirma tu Yape/Tarjeta contra lo que el sistema calculó.
             </span>
           </div>
@@ -157,7 +157,7 @@ export const ModalCierre: React.FC<Props> = ({ isOpen, onClose, onSuccess, sessi
             <div className="bg-[#FFFBEB] border-2 border-[#F59E0B] p-4 animate-fade-in space-y-2">
               <div className="flex items-center gap-2 text-[#D97706]">
                 <AlertTriangle size={16} />
-                <span className="text-[10px] font-black uppercase tracking-widest">Hay una diferencia, explica el motivo</span>
+                <span className="text-[12px] font-black uppercase tracking-widest">Hay una diferencia, explica el motivo</span>
               </div>
               <input
                 type="text"

@@ -180,7 +180,7 @@ export const TablaLotes: React.FC<Props> = ({
     if (loading || totalPages <= 0) return null;
     return (
       <div className={`${position === 'top' ? 'border-b' : 'border-t'} border-[#E2E8F0] bg-[#F8FAFC] p-3 flex items-center justify-between shrink-0`}>
-        <span className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest">
+        <span className="text-[12px] font-bold text-[#64748B] uppercase tracking-widest">
           Página {currentPage} de {totalPages}
         </span>
         <div className="flex gap-2">
@@ -209,7 +209,7 @@ export const TablaLotes: React.FC<Props> = ({
         <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center">
           <div className="flex flex-col items-center gap-3">
             <Database size={24} className="text-[#10B981] animate-bounce" />
-            <span className="text-[10px] font-black text-[#1E293B] uppercase tracking-[0.2em]">Cargando Lotes...</span>
+            <span className="text-[12px] font-black text-[#1E293B] uppercase tracking-[0.2em]">Cargando Lotes...</span>
           </div>
         </div>
       )}
@@ -235,7 +235,7 @@ export const TablaLotes: React.FC<Props> = ({
       {/* Cuerpo Scrolleable */}
       <div className="overflow-y-auto flex-1 custom-scrollbar">
         {!loading && paginatedLotes.length === 0 ? (
-          <div className="p-6 sm:p-12 text-center text-[#94A3B8] font-bold uppercase text-[10px] tracking-widest flex flex-col items-center justify-center h-full gap-2">
+          <div className="p-6 sm:p-12 text-center text-[#94A3B8] font-bold uppercase text-[12px] tracking-widest flex flex-col items-center justify-center h-full gap-2">
             <Layers size={32} className="text-[#E2E8F0] mb-2" />
             No hay lotes que coincidan con la búsqueda.
           </div>
@@ -266,7 +266,7 @@ export const TablaLotes: React.FC<Props> = ({
         
         {/* Proveedor en color azul para resaltarlo */}
         {lote.supplier && (
-          <span className="text-[10px] font-black text-[#3B82F6] uppercase truncate" title={lote.supplier}>
+          <span className="text-[12px] font-black text-[#3B82F6] uppercase truncate" title={lote.supplier}>
             PROV: {lote.supplier}
           </span>
         )}
@@ -307,7 +307,7 @@ export const TablaLotes: React.FC<Props> = ({
       {/* 6. TRAZABILIDAD DE MERMAS */}
       <div className="col-span-1 text-center">
         {lote.mermas_total && lote.mermas_total > 0 ? (
-          <div className="bg-red-50 text-red-600 border border-red-200 px-2 py-0.5 text-[11px] font-black inline-block mx-auto rounded-none" title={`Eventos: ${lote.mermas_count}`}>
+          <div className="bg-red-50 text-red-600 border border-red-200 px-2 py-0.5 text-[13px] font-black inline-block mx-auto rounded-none" title={`Eventos: ${lote.mermas_count}`}>
             -{lote.mermas_total}
           </div>
         ) : (
@@ -324,7 +324,7 @@ export const TablaLotes: React.FC<Props> = ({
           title={`Stock exacto en DB: ${lote.quantity} ${lote.unit || 'UND'}`}
         >
           <span className="leading-none">{formatearCantidad(lote.quantity, lote.unit)}</span>
-          <span className="text-[8px] opacity-70 leading-tight mt-0.5">{lote.unit || 'UND'}</span>
+          <span className="text-[11px] opacity-70 leading-tight mt-0.5">{lote.unit || 'UND'}</span>
         </div>
       </div>
 

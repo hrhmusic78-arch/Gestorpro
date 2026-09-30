@@ -289,7 +289,7 @@ if (fiaData) {
   }, 0);
 
   return (
-    <div className="h-full flex flex-col gap-4 sm:gap-6 p-0 sm:p-2 lg:p-6 w-full font-mono">
+    <div className="h-full flex flex-col gap-4 sm:gap-6 p-0 w-full font-mono">
       
       {/* TARJETAS Y CONTROLES */}
       <div className="flex flex-col xl:flex-row justify-between items-stretch xl:items-end gap-4 shrink-0">

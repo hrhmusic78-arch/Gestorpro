@@ -139,22 +139,22 @@ export const MiniReporteDiario: React.FC<Props> = ({ refreshTrigger }) => {
               <div className="grid grid-cols-2 gap-3 sm:gap-5 shrink-0">
                 <div className="bg-white border-4 border-[#E2E8F0] p-3 sm:p-5 flex flex-col items-center text-center min-w-0 shadow-[6px_6px_0_0_#E2E8F0]">
                   <Coins size={32} className="text-[#10B981] mb-2" />
-                  <span className="text-[10px] font-black text-[#64748B] uppercase tracking-widest">Efectivo Físico</span>
+                  <span className="text-[12px] font-black text-[#64748B] uppercase tracking-widest">Efectivo Físico</span>
                   <span className="text-lg sm:text-3xl font-black text-[#1E293B] mt-1 break-all">S/ {totales.efectivo.toFixed(2)}</span>
                 </div>
                 <div className="bg-white border-4 border-[#E2E8F0] p-3 sm:p-5 flex flex-col items-center text-center min-w-0 shadow-[6px_6px_0_0_#E2E8F0]">
                   <Smartphone size={32} className="text-[#8B5CF6] mb-2" />
-                  <span className="text-[10px] font-black text-[#64748B] uppercase tracking-widest">Yape / Plin / Transf.</span>
+                  <span className="text-[12px] font-black text-[#64748B] uppercase tracking-widest">Yape / Plin / Transf.</span>
                   <span className="text-lg sm:text-3xl font-black text-[#1E293B] mt-1 break-all">S/ {(totales.yape + totales.transferencia).toFixed(2)}</span>
                 </div>
                 <div className="bg-white border-4 border-[#E2E8F0] p-3 sm:p-5 flex flex-col items-center text-center min-w-0 shadow-[6px_6px_0_0_#E2E8F0]">
                   <CreditCard size={32} className="text-[#3B82F6] mb-2" />
-                  <span className="text-[10px] font-black text-[#64748B] uppercase tracking-widest">Tarjeta (POS)</span>
+                  <span className="text-[12px] font-black text-[#64748B] uppercase tracking-widest">Tarjeta (POS)</span>
                   <span className="text-lg sm:text-3xl font-black text-[#1E293B] mt-1 break-all">S/ {totales.tarjeta.toFixed(2)}</span>
                 </div>
                 <div className="bg-white border-4 border-[#E2E8F0] p-3 sm:p-5 flex flex-col items-center text-center min-w-0 shadow-[6px_6px_0_0_#E2E8F0]">
                   <BookOpen size={32} className="text-[#EF4444] mb-2" />
-                  <span className="text-[10px] font-black text-[#64748B] uppercase tracking-widest">Deuda (Fiados Emitidos)</span>
+                  <span className="text-[12px] font-black text-[#64748B] uppercase tracking-widest">Deuda (Fiados Emitidos)</span>
                   <span className="text-lg sm:text-3xl font-black text-[#1E293B] mt-1 break-all">S/ {totales.fiado.toFixed(2)}</span>
                 </div>
               </div>
@@ -202,7 +202,7 @@ export const MiniReporteDiario: React.FC<Props> = ({ refreshTrigger }) => {
             title="Ver Historial del Día"
           >
             <BarChart3 size={18} />
-            <span className="text-[11px] font-black uppercase tracking-widest hidden sm:inline">Caja Actual:</span>
+            <span className="text-[13px] font-black uppercase tracking-widest hidden sm:inline">Caja Actual:</span>
             <span className="text-lg font-black text-[#10B981] ml-1">
               {isVisible ? `S/ ${totales.totalReal.toFixed(2)}` : 'S/ ***.**'}
             </span>
@@ -217,19 +217,19 @@ export const MiniReporteDiario: React.FC<Props> = ({ refreshTrigger }) => {
 
         <div className="grid grid-cols-4 divide-x-2 divide-[#E2E8F0] bg-[#F8FAFC] min-w-0">
           <div className="p-1.5 sm:p-2 flex flex-col items-center justify-center text-center min-w-0">
-            <span className="text-[9px] font-black text-[#64748B] uppercase mb-1">Efectivo</span>
+            <span className="text-[12px] font-black text-[#64748B] uppercase mb-1">Efectivo</span>
             <span className="text-xs font-black text-[#1E293B]">{isVisible ? `S/ ${totales.efectivo.toFixed(1)}` : '***'}</span>
           </div>
           <div className="p-1.5 sm:p-2 flex flex-col items-center justify-center text-center min-w-0">
-            <span className="text-[9px] font-black text-[#8B5CF6] uppercase mb-1">Yape/Plin</span>
+            <span className="text-[12px] font-black text-[#8B5CF6] uppercase mb-1">Yape/Plin</span>
             <span className="text-xs font-black text-[#1E293B]">{isVisible ? `S/ ${(totales.yape + totales.transferencia).toFixed(1)}` : '***'}</span>
           </div>
           <div className="p-1.5 sm:p-2 flex flex-col items-center justify-center text-center min-w-0">
-            <span className="text-[9px] font-black text-[#3B82F6] uppercase mb-1">Tarjeta</span>
+            <span className="text-[12px] font-black text-[#3B82F6] uppercase mb-1">Tarjeta</span>
             <span className="text-xs font-black text-[#1E293B]">{isVisible ? `S/ ${totales.tarjeta.toFixed(1)}` : '***'}</span>
           </div>
           <div className="p-1.5 sm:p-2 flex flex-col items-center justify-center text-center min-w-0">
-            <span className="text-[9px] font-black text-[#EF4444] uppercase mb-1">Fiados</span>
+            <span className="text-[12px] font-black text-[#EF4444] uppercase mb-1">Fiados</span>
             <span className="text-xs font-black text-[#1E293B]">{isVisible ? `S/ ${totales.fiado.toFixed(1)}` : '***'}</span>
           </div>
         </div>

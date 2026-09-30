@@ -250,7 +250,7 @@ export const ModalFiado: React.FC<Props> = ({ isOpen, onClose, onSave, fiadoAEdi
           <div className="w-full md:w-1/2 p-4 sm:p-6 bg-[#F8FAFC] border-b-2 md:border-b-0 md:border-r-2 border-[#E2E8F0] flex flex-col gap-4 shrink-0 md:shrink md:overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             
             <div className="space-y-1 relative">
-              <label className="text-[10px] font-black uppercase text-[#64748B]">Seleccionar Cliente *</label>
+              <label className="text-[12px] font-black uppercase text-[#64748B]">Seleccionar Cliente *</label>
               
               <div 
                 className={`flex items-center justify-between border-2 border-[#E2E8F0] bg-white p-2 cursor-text transition-colors rounded-none ${isEdit ? 'bg-[#F8FAFC] cursor-not-allowed opacity-70' : 'focus-within:border-[#F59E0B]'}`}
@@ -298,7 +298,7 @@ export const ModalFiado: React.FC<Props> = ({ isOpen, onClose, onSave, fiadoAEdi
                             setIsDropdownOpen(false);
                           })}
                         >
-                          {c.nombre} <span className="text-[10px] font-bold text-inherit opacity-70 ml-2">{c.dni ? `(DNI: ${c.dni})` : ''}</span>
+                          {c.nombre} <span className="text-[12px] font-bold text-inherit opacity-70 ml-2">{c.dni ? `(DNI: ${c.dni})` : ''}</span>
                         </div>
                       ))
                   )}
@@ -307,14 +307,14 @@ export const ModalFiado: React.FC<Props> = ({ isOpen, onClose, onSave, fiadoAEdi
             </div>
 
             <div className="space-y-1">
-              <label className="text-[10px] font-black uppercase text-[#F59E0B]">Fecha Límite Pago *</label>
+              <label className="text-[12px] font-black uppercase text-[#F59E0B]">Fecha Límite Pago *</label>
               <input type="date" value={fechaVencimiento} onChange={e => setFechaVencimiento(e.target.value)} className="w-full border-2 border-[#E2E8F0] p-2 text-xs font-black focus:border-[#F59E0B] outline-none" />
             </div>
 
             {/* BUSCADOR DE INVENTARIO (OCULTO EN EDICIÓN) */}
             {!isEdit && (
               <div className="mt-4 border-t-2 border-dashed border-[#E2E8F0] pt-4">
-                <label className="text-[10px] font-black uppercase text-[#64748B] flex items-center gap-2 mb-2"><Package size={14}/> Buscar en Inventario</label>
+                <label className="text-[12px] font-black uppercase text-[#64748B] flex items-center gap-2 mb-2"><Package size={14}/> Buscar en Inventario</label>
                 <div className="relative">
                   <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]" />
                   <input
@@ -343,7 +343,7 @@ export const ModalFiado: React.FC<Props> = ({ isOpen, onClose, onSave, fiadoAEdi
                       >
                         <div>
                           <p className="text-xs font-black text-[#1E293B] uppercase">{p.name}</p>
-                          <p className="text-[9px] font-bold text-[#64748B]">Stock: {formatearCantidad(p.quantity, p.unit)} | S/ {p.price}</p>
+                          <p className="text-[12px] font-bold text-[#64748B]">Stock: {formatearCantidad(p.quantity, p.unit)} | S/ {p.price}</p>
                         </div>
                         <div className="p-1 bg-[#1E293B] text-white group-hover:bg-[#3B82F6] transition-colors"><Plus size={14}/></div>
                       </div>
@@ -357,10 +357,10 @@ export const ModalFiado: React.FC<Props> = ({ isOpen, onClose, onSave, fiadoAEdi
           {/* PANEL DERECHO: CARRITO / DETALLE DE LA DEUDA */}
           <div className="w-full md:w-1/2 p-4 sm:p-6 bg-white flex flex-col min-h-[360px] md:min-h-0">
             <div className="flex flex-col mb-4 border-b-2 border-[#E2E8F0] pb-2">
-              <h3 className="text-[10px] font-black uppercase tracking-widest text-[#1E293B]">
+              <h3 className="text-[12px] font-black uppercase tracking-widest text-[#1E293B]">
                 {isEdit ? 'Detalle de la deuda (Solo Lectura)' : 'Productos a fiar'}
               </h3>
-              {isEdit && <span className="text-[9px] font-black tracking-widest text-[#EF4444] uppercase mt-1">⚠️ En modo edición solo se puede modificar la fecha. Los productos están bloqueados por seguridad contable.</span>}
+              {isEdit && <span className="text-[12px] font-black tracking-widest text-[#EF4444] uppercase mt-1">⚠️ En modo edición solo se puede modificar la fecha. Los productos están bloqueados por seguridad contable.</span>}
             </div>
             
             <div className="flex-1 overflow-y-auto flex flex-col gap-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
@@ -371,7 +371,7 @@ export const ModalFiado: React.FC<Props> = ({ isOpen, onClose, onSave, fiadoAEdi
                   <div key={d.productoId} className="flex justify-between items-center border-2 border-[#E2E8F0] p-2">
                     <div className="flex-1">
                       <p className="text-xs font-black text-[#1E293B] uppercase leading-tight line-clamp-1">{d.name}</p>
-                      <p className="text-[10px] font-bold text-[#64748B]">S/ {d.price.toFixed(2)} c/u</p>
+                      <p className="text-[12px] font-bold text-[#64748B]">S/ {d.price.toFixed(2)} c/u</p>
                     </div>
                     
                     <div className="flex items-center gap-3">
@@ -396,18 +396,18 @@ export const ModalFiado: React.FC<Props> = ({ isOpen, onClose, onSave, fiadoAEdi
                         )}
                         {/* Indicador visual técnico de medida */}
                         {d.control_type === 'WEIGHT' ? (
-                          <div className="bg-[#1E293B] text-white text-[8px] font-black w-full text-center tracking-widest py-0.5 uppercase">Kilo</div>
+                          <div className="bg-[#1E293B] text-white text-[11px] font-black w-full text-center tracking-widest py-0.5 uppercase">Kilo</div>
                         ) : d.control_type === 'CONSUMO' || d.control_type === 'SERVICE' ? (
-                          <div className="bg-[#F59E0B] text-[#1E293B] text-[8px] font-black w-full text-center tracking-widest py-0.5 uppercase">Serv</div>
+                          <div className="bg-[#F59E0B] text-[#1E293B] text-[11px] font-black w-full text-center tracking-widest py-0.5 uppercase">Serv</div>
                         ) : (
-                          <div className="bg-[#E2E8F0] text-[#64748B] text-[8px] font-black w-full text-center tracking-widest py-0.5 uppercase">Und</div>
+                          <div className="bg-[#E2E8F0] text-[#64748B] text-[11px] font-black w-full text-center tracking-widest py-0.5 uppercase">Und</div>
                         )}
                       </div>
                       
                       {/* CAJA DE SUBTOTAL (Texto Fijo para UND, Input Editable para KILOS y CONSUMOS) */}
                       {!isEdit && (d.control_type === 'WEIGHT' || d.control_type === 'CONSUMO' || d.control_type === 'SERVICE') ? (
                         <div className="flex items-center border-b-2 border-[#1E293B] w-20 justify-end focus-within:border-[#F59E0B] transition-colors group">
-                          <span className="text-[10px] font-black text-[#1E293B] mr-1">S/</span>
+                          <span className="text-[12px] font-black text-[#1E293B] mr-1">S/</span>
                           <input 
                             type="number"
                             step="any"
@@ -441,7 +441,7 @@ export const ModalFiado: React.FC<Props> = ({ isOpen, onClose, onSave, fiadoAEdi
                 <span className="text-2xl font-black text-[#F59E0B]">S/ {totalCalculado.toFixed(2)}</span>
               </div>
               <div className="flex justify-end gap-3">
-                <button onClick={onClose} className="px-4 py-3 border-2 border-[#E2E8F0] text-[#64748B] text-[10px] font-black uppercase hover:border-[#1E293B]">Cancelar</button>
+                <button onClick={onClose} className="px-4 py-3 border-2 border-[#E2E8F0] text-[#64748B] text-[12px] font-black uppercase hover:border-[#1E293B]">Cancelar</button>
                 <button onClick={handleSave} className="flex-1 py-3 bg-[#F59E0B] text-[#1E293B] border-2 border-[#1E293B] text-xs font-black uppercase flex items-center justify-center gap-2 shadow-[2px_2px_0_0_#1E293B] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
                   <Save size={16}/> {isEdit ? 'Guardar Nueva Fecha' : 'Confirmar y Restar Inventario'}
                 </button>

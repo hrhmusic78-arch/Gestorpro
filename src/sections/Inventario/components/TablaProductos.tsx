@@ -56,7 +56,7 @@ export const TablaProductos: React.FC<Props> = ({
     
     return (
       <div className={`${position === 'top' ? 'border-b' : 'border-t'} border-[#E2E8F0] bg-[#F8FAFC] p-3 flex items-center justify-between shrink-0`}>
-        <span className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest">
+        <span className="text-[12px] font-bold text-[#64748B] uppercase tracking-widest">
           Página {currentPage} de {totalPages}
         </span>
         <div className="flex gap-2">
@@ -85,7 +85,7 @@ export const TablaProductos: React.FC<Props> = ({
         <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center">
           <div className="flex flex-col items-center gap-3">
             <Database size={24} className="text-[#10B981] animate-bounce" />
-            <span className="text-[10px] font-black text-[#1E293B] uppercase tracking-[0.2em]">Sincronizando con DB...</span>
+            <span className="text-[12px] font-black text-[#1E293B] uppercase tracking-[0.2em]">Sincronizando con DB...</span>
           </div>
         </div>
       )}
@@ -112,7 +112,7 @@ export const TablaProductos: React.FC<Props> = ({
       {/* ÁREA SCROLLEABLE DE LOS PRODUCTOS */}
       <div className="overflow-y-auto flex-1 custom-scrollbar">
         {!loading && productos.length === 0 ? (
-          <div className="p-6 sm:p-12 text-center text-[#94A3B8] font-bold uppercase text-[10px] tracking-widest flex flex-col items-center justify-center h-full gap-2">
+          <div className="p-6 sm:p-12 text-center text-[#94A3B8] font-bold uppercase text-[12px] tracking-widest flex flex-col items-center justify-center h-full gap-2">
             <Search size={32} className="text-[#E2E8F0] mb-2" />
             No se registran productos con esos parámetros.
           </div>
@@ -143,11 +143,11 @@ export const TablaProductos: React.FC<Props> = ({
                   </div>
 
                   <div className="col-span-2 flex flex-col gap-1 items-start pr-2">
-                    <span className="bg-[#E2E8F0] px-2 py-1 border border-[#CBD5E1] text-[9px] font-bold text-[#64748B] rounded-none cursor-not-allowed w-full truncate">
+                    <span className="bg-[#E2E8F0] px-2 py-1 border border-[#CBD5E1] text-[12px] font-bold text-[#64748B] rounded-none cursor-not-allowed w-full truncate">
                       {item.code}
                     </span>
                     {item.barcode && (
-                      <span className="flex items-center gap-1 text-[8px] font-bold text-[#94A3B8] truncate w-full">
+                      <span className="flex items-center gap-1 text-[11px] font-bold text-[#94A3B8] truncate w-full">
                         <Barcode size={10} /> {item.barcode}
                       </span>
                     )}
@@ -159,7 +159,7 @@ export const TablaProductos: React.FC<Props> = ({
                       value={editForm.name || ''} 
                       onChange={e => setEditForm({...editForm, name: e.target.value.toUpperCase()})}
                       placeholder="NOMBRE PRODUCTO"
-                      className="w-full bg-white border-2 border-[#E2E8F0] p-1.5 text-[10px] font-black text-[#1E293B] uppercase outline-none focus:border-[#10B981] transition-colors rounded-none"
+                      className="w-full bg-white border-2 border-[#E2E8F0] p-1.5 text-[12px] font-black text-[#1E293B] uppercase outline-none focus:border-[#10B981] transition-colors rounded-none"
                     />
                   </div>
 
@@ -168,7 +168,7 @@ export const TablaProductos: React.FC<Props> = ({
                       type="number" 
                       value={editForm.cost || 0} 
                       onChange={e => setEditForm({...editForm, cost: Number(e.target.value)})}
-                      className="w-full bg-white border-2 border-[#E2E8F0] p-1 text-[10px] font-bold text-[#1E293B] outline-none focus:border-[#10B981] transition-colors rounded-none"
+                      className="w-full bg-white border-2 border-[#E2E8F0] p-1 text-[12px] font-bold text-[#1E293B] outline-none focus:border-[#10B981] transition-colors rounded-none"
                       title="Costo U."
                     />
                   </div>
@@ -178,7 +178,7 @@ export const TablaProductos: React.FC<Props> = ({
                       type="number" 
                       value={editForm.price || 0} 
                       onChange={e => setEditForm({...editForm, price: Number(e.target.value)})}
-                      className="w-full bg-white border-2 border-[#E2E8F0] p-1 text-[10px] font-black text-[#10B981] outline-none focus:border-[#10B981] transition-colors rounded-none text-right"
+                      className="w-full bg-white border-2 border-[#E2E8F0] p-1 text-[12px] font-black text-[#10B981] outline-none focus:border-[#10B981] transition-colors rounded-none text-right"
                       title="Precio"
                     />
                   </div>
@@ -188,13 +188,13 @@ export const TablaProductos: React.FC<Props> = ({
                       type="number" 
                       value={editForm.minStock || 0} 
                       onChange={e => setEditForm({...editForm, minStock: Number(e.target.value)})}
-                      className="w-10 bg-white border-2 border-[#E2E8F0] p-1 text-[10px] font-bold text-[#1E293B] outline-none focus:border-[#EF4444] transition-colors rounded-none text-center"
+                      className="w-10 bg-white border-2 border-[#E2E8F0] p-1 text-[12px] font-bold text-[#1E293B] outline-none focus:border-[#EF4444] transition-colors rounded-none text-center"
                       title="Stock Mínimo"
                     />
                     <select 
                       value={editForm.unit || 'UND'}
                       onChange={e => setEditForm({...editForm, unit: e.target.value})}
-                      className="flex-1 bg-white border-2 border-[#E2E8F0] p-1 text-[8px] font-bold text-[#1E293B] uppercase outline-none focus:border-[#10B981] transition-colors rounded-none cursor-pointer"
+                      className="flex-1 bg-white border-2 border-[#E2E8F0] p-1 text-[11px] font-bold text-[#1E293B] uppercase outline-none focus:border-[#10B981] transition-colors rounded-none cursor-pointer"
                     >
                       <option value="UND">UND</option>
                       <option value="KG">KG</option>
@@ -256,7 +256,7 @@ export const TablaProductos: React.FC<Props> = ({
                     {item.code}
                   </span>
                   {item.barcode && (
-                    <span className="flex items-center gap-1 text-[10px] font-black text-[#64748B] tracking-wider truncate w-full" title="Código de Escáner">
+                    <span className="flex items-center gap-1 text-[12px] font-black text-[#64748B] tracking-wider truncate w-full" title="Código de Escáner">
                       <Barcode size={12} className="text-[#94A3B8]" />
                       {item.barcode}
                     </span>
@@ -268,7 +268,7 @@ export const TablaProductos: React.FC<Props> = ({
                   <p className="font-black text-sm uppercase text-[#1E293B] leading-tight line-clamp-2" title={item.name}>
                     {item.name}
                   </p>
-                  <span className="self-start text-[10px] font-black text-white bg-[#1E293B] px-2 py-1 tracking-widest rounded-none mt-0.5">
+                  <span className="self-start text-[12px] font-black text-white bg-[#1E293B] px-2 py-1 tracking-widest rounded-none mt-0.5">
                     {item.category}
                   </span>
                 </div>

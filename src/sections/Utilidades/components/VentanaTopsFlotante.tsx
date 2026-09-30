@@ -54,7 +54,7 @@ export const VentanaTopsFlotante = ({ tops, onClose }: Props) => {
       </div>
       
       <div className="mt-4 pt-2 border-t border-[#E2E8F0]">
-        <p className="text-[9px] text-[#64748B] uppercase font-bold text-center tracking-widest">
+        <p className="text-[12px] text-[#64748B] uppercase font-bold text-center tracking-widest">
           Cálculo: Ingresos - (Costo + Merma)
         </p>
       </div>

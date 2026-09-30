@@ -109,7 +109,7 @@ export const FormularioEmpresa: React.FC = () => {
   };
 
   if (loading) {
-    return <div className="p-4 sm:p-6 lg:p-8 short:py-4 text-center text-[#64748B] font-mono animate-pulse">Cargando datos...</div>;
+    return <div className="p-3 lg:p-4 text-center text-[#64748B] font-mono animate-pulse">Cargando datos...</div>;
   }
 
   return (
@@ -134,7 +134,7 @@ export const FormularioEmpresa: React.FC = () => {
         </button>
       </div>
 
-      <div className="p-6 flex flex-col md:flex-row gap-4 lg:gap-8">
+      <div className="p-6 flex flex-col md:flex-row gap-3 lg:gap-4">
         {/* COLUMNA IZQUIERDA: LOGO */}
         <div className="w-full md:w-1/3 flex flex-col items-center border-r border-dashed border-[#E2E8F0] pr-8">
           <div className="w-40 h-40 border-2 border-dashed border-[#CBD5E1] bg-[#F8FAFC] flex flex-col items-center justify-center mb-4 relative overflow-hidden group">
@@ -159,7 +159,7 @@ export const FormularioEmpresa: React.FC = () => {
               />
             </label>
           </div>
-          <p className="text-[10px] text-[#64748B] font-mono text-center">
+          <p className="text-[12px] text-[#64748B] font-mono text-center">
             Formato recomendado: PNG transparente.<br />Tamaño máximo: 2MB.
           </p>
         </div>

@@ -126,19 +126,19 @@ export const TerminalBusqueda: React.FC<Props> = ({ searchQuery, setSearchQuery,
       <div className="flex-1 p-3 sm:p-6 overflow-y-auto custom-scrollbar flex flex-col bg-[#F8FAFC]">
         {searchQuery.trim() === '' ? (
           // ESTADO 1: ESPERANDO BÚSQUEDA
-          <div className="border border-dashed border-[#64748B] flex-1 flex flex-col items-center justify-center text-center p-4 sm:p-6 lg:p-8 short:py-4 bg-[#FFFFFF] rounded-none">
+          <div className="border border-dashed border-[#64748B] flex-1 flex flex-col items-center justify-center text-center p-3 lg:p-4 bg-[#FFFFFF] rounded-none">
             <Package size={48} className="text-[#64748B] mb-4" />
             <h2 className="text-sm font-black text-[#1E293B] uppercase tracking-widest mb-2">Área de Trabajo</h2>
-            <p className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest max-w-sm">
+            <p className="text-[12px] font-bold text-[#64748B] uppercase tracking-widest max-w-sm">
               Sistema a la espera de identificador (SKU, EAN-13 o Texto).
             </p>
           </div>
         ) : filteredProducts.length === 0 ? (
           // ESTADO 2: SIN RESULTADOS
-          <div className="border border-dashed border-[#1E293B] flex-1 flex flex-col items-center justify-center text-center p-4 sm:p-6 lg:p-8 short:py-4 bg-[#FFFFFF] rounded-none">
+          <div className="border border-dashed border-[#1E293B] flex-1 flex flex-col items-center justify-center text-center p-3 lg:p-4 bg-[#FFFFFF] rounded-none">
             <Package size={48} className="text-[#1E293B] opacity-50 mb-4" />
             <h2 className="text-sm font-black text-[#1E293B] uppercase tracking-widest mb-2">Registro Inexistente</h2>
-            <p className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest max-w-sm">
+            <p className="text-[12px] font-bold text-[#64748B] uppercase tracking-widest max-w-sm">
               Verifique la integridad del código en la base de datos.
             </p>
           </div>

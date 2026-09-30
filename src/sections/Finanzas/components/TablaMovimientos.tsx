@@ -26,7 +26,7 @@ export const TablaMovimientos: React.FC<Props> = ({ movimientos, onDelete }) => 
           <tbody>
             {movimientos.length === 0 ? (
               <tr>
-                <td colSpan={5} className="p-4 sm:p-6 lg:p-8 short:py-4 text-center text-[#64748B] font-bold text-xs uppercase">
+                <td colSpan={5} className="p-3 lg:p-4 text-center text-[#64748B] font-bold text-xs uppercase">
                   No hay movimientos registrados en esta sesión.
                 </td>
               </tr>

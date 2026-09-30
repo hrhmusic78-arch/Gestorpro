@@ -89,7 +89,7 @@ export const ModalProveedor: React.FC<Props> = ({ isOpen, onClose, onSave, prove
               <h2 className="text-sm font-black uppercase tracking-widest text-[#3B82F6]">
                 {proveedorAEditar ? 'Editar Proveedor' : 'Nuevo Proveedor'}
               </h2>
-              <p className="text-[9px] font-bold opacity-80 uppercase tracking-widest">
+              <p className="text-[12px] font-bold opacity-80 uppercase tracking-widest">
                 Datos de la empresa o distribuidor
               </p>
             </div>
@@ -104,7 +104,7 @@ export const ModalProveedor: React.FC<Props> = ({ isOpen, onClose, onSave, prove
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">RUC / DNI *</label>
+              <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">RUC / DNI *</label>
               <input 
                 type="text"
                 maxLength={11}
@@ -116,7 +116,7 @@ export const ModalProveedor: React.FC<Props> = ({ isOpen, onClose, onSave, prove
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Estado</label>
+              <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Estado</label>
               <select 
                 value={formData.estado}
                 onChange={(e) => setFormData({...formData, estado: e.target.value as 'ACTIVO' | 'INACTIVO'})}
@@ -128,7 +128,7 @@ export const ModalProveedor: React.FC<Props> = ({ isOpen, onClose, onSave, prove
             </div>
 
             <div className="md:col-span-2 space-y-2">
-              <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Razón Social *</label>
+              <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Razón Social *</label>
               <input 
                 type="text"
                 placeholder="Ej: DISTRIBUIDORA DE ALIMENTOS S.A.C."
@@ -139,7 +139,7 @@ export const ModalProveedor: React.FC<Props> = ({ isOpen, onClose, onSave, prove
             </div>
 
             <div className="md:col-span-2 space-y-2">
-              <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Nombre Comercial (Opcional)</label>
+              <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Nombre Comercial (Opcional)</label>
               <input 
                 type="text"
                 placeholder="Ej: DISTRIBUCIONES PERÚ"
@@ -150,7 +150,7 @@ export const ModalProveedor: React.FC<Props> = ({ isOpen, onClose, onSave, prove
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Teléfono / Celular</label>
+              <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Teléfono / Celular</label>
               <input 
                 type="text"
                 placeholder="Ej: 987654321"
@@ -161,7 +161,7 @@ export const ModalProveedor: React.FC<Props> = ({ isOpen, onClose, onSave, prove
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Correo Electrónico</label>
+              <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Correo Electrónico</label>
               <input 
                 type="email"
                 placeholder="contacto@empresa.com"
@@ -172,7 +172,7 @@ export const ModalProveedor: React.FC<Props> = ({ isOpen, onClose, onSave, prove
             </div>
 
             <div className="md:col-span-2 space-y-2">
-              <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Dirección de la empresa</label>
+              <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Dirección de la empresa</label>
               <input 
                 type="text"
                 placeholder="Av. Principal 123, Distrito..."
@@ -189,13 +189,13 @@ export const ModalProveedor: React.FC<Props> = ({ isOpen, onClose, onSave, prove
         <div className="w-full p-6 bg-white border-t-2 border-[#E2E8F0] flex justify-end gap-3 shrink-0">
           <button 
             onClick={onClose}
-            className="px-6 py-3 border-2 border-[#E2E8F0] text-[#64748B] font-black text-[10px] uppercase tracking-widest hover:bg-[#F8FAFC] hover:border-[#1E293B] hover:text-[#1E293B] transition-all cursor-pointer rounded-none"
+            className="px-6 py-3 border-2 border-[#E2E8F0] text-[#64748B] font-black text-[12px] uppercase tracking-widest hover:bg-[#F8FAFC] hover:border-[#1E293B] hover:text-[#1E293B] transition-all cursor-pointer rounded-none"
           >
             Cancelar
           </button>
           <button 
             onClick={handleSubmit}
-            className="bg-[#3B82F6] text-white px-6 py-3 border-2 border-[#1E293B] font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-[#1E293B] hover:text-[#3B82F6] transition-all cursor-pointer rounded-none shadow-[4px_4px_0_0_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px]"
+            className="bg-[#3B82F6] text-white px-6 py-3 border-2 border-[#1E293B] font-black text-[12px] uppercase tracking-widest flex items-center gap-2 hover:bg-[#1E293B] hover:text-[#3B82F6] transition-all cursor-pointer rounded-none shadow-[4px_4px_0_0_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px]"
           >
             <Save size={16} /> Guardar Proveedor
           </button>

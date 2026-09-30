@@ -111,7 +111,7 @@ export const Proveedores: React.FC = () => {
     <div className="flex flex-col gap-6 short:gap-3 w-full pb-10 text-[#1E293B] font-mono min-h-full bg-white relative">
       
       {/* HEADER */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 sm:p-6 lg:p-8 short:py-4 bg-white border-b-2 border-[#1E293B] shrink-0">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-3 lg:p-4 bg-white border-b-2 border-[#1E293B] shrink-0">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 bg-[#EFF6FF] border-2 border-[#3B82F6] flex items-center justify-center shadow-[4px_4px_0_0_#3B82F6] rounded-none">
             <Users size={24} className="text-[#3B82F6]" />
@@ -120,7 +120,7 @@ export const Proveedores: React.FC = () => {
             <h1 className="text-2xl font-black text-[#1E293B] uppercase tracking-widest">
               Abastecimiento
             </h1>
-            <p className="text-[10px] font-bold text-[#64748B] uppercase tracking-[0.2em] mt-1">
+            <p className="text-[12px] font-bold text-[#64748B] uppercase tracking-[0.2em] mt-1">
               Gestión de contactos y empresas aliadas
             </p>
           </div>
@@ -131,7 +131,7 @@ export const Proveedores: React.FC = () => {
             setProveedorAEditar(null);
             setIsModalOpen(true);
           }}
-          className="bg-[#3B82F6] text-white px-6 py-3 border-2 border-[#1E293B] font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-[#1E293B] hover:text-[#3B82F6] transition-all cursor-pointer rounded-none shadow-[4px_4px_0_0_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px]"
+          className="bg-[#3B82F6] text-white px-6 py-3 border-2 border-[#1E293B] font-black text-[12px] uppercase tracking-widest flex items-center gap-2 hover:bg-[#1E293B] hover:text-[#3B82F6] transition-all cursor-pointer rounded-none shadow-[4px_4px_0_0_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px]"
         >
           <Plus size={16} /> Nuevo Proveedor
         </button>
@@ -145,12 +145,12 @@ export const Proveedores: React.FC = () => {
         matchCount={filteredProveedores.length}
       />
 
-      <div className="px-3 sm:px-6 lg:px-8 flex-1 flex flex-col min-h-[calc(var(--alto-pantalla)*0.5)] relative pb-8">
+      <div className="px-3 lg:px-4 flex-1 flex flex-col min-h-[calc(var(--alto-pantalla)*0.5)] relative pb-8">
         {loading ? (
           <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 flex items-center justify-center border-2 border-[#E2E8F0]">
             <div className="flex flex-col items-center gap-3">
               <Loader2 size={24} className="text-[#3B82F6] animate-spin" />
-              <span className="text-[10px] font-black text-[#1E293B] uppercase tracking-[0.2em]">Cargando Directorio...</span>
+              <span className="text-[12px] font-black text-[#1E293B] uppercase tracking-[0.2em]">Cargando Directorio...</span>
             </div>
           </div>
         ) : (

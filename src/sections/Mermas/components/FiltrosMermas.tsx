@@ -25,7 +25,7 @@ export const FiltrosMermas: React.FC<Props> = ({
   const hasActiveFilters = searchQuery !== '' || filtroMotivo !== '' || filtroOrden !== 'FECHA_DESC' || filtroFecha !== '';
 
   return (
-    <div className="px-3 sm:px-6 lg:px-8 shrink-0 flex flex-col gap-4">
+    <div className="px-3 lg:px-4 shrink-0 flex flex-col gap-4">
       <div className="grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 gap-4">
         
         {/* BUSCADOR */}
@@ -94,7 +94,7 @@ export const FiltrosMermas: React.FC<Props> = ({
           {hasActiveFilters && (
             <button 
               onClick={onClearFilters}
-              className="h-full w-full min-h-[46px] bg-white border-2 border-[#EF4444] text-[#EF4444] flex items-center justify-center hover:bg-[#EF4444] hover:text-white transition-colors cursor-pointer rounded-none font-bold text-[10px] xl:text-xs uppercase"
+              className="h-full w-full min-h-[46px] bg-white border-2 border-[#EF4444] text-[#EF4444] flex items-center justify-center hover:bg-[#EF4444] hover:text-white transition-colors cursor-pointer rounded-none font-bold text-[12px] xl:text-xs uppercase"
               title="Limpiar Filtros"
             >
               <X size={16} className="mr-1" /> Limpiar
@@ -103,7 +103,7 @@ export const FiltrosMermas: React.FC<Props> = ({
         </div>
       </div>
 
-      <div className="flex items-center gap-2 text-[10px] font-bold text-[#64748B] uppercase tracking-widest border-l-2 border-[#1E293B] pl-2">
+      <div className="flex items-center gap-2 text-[12px] font-bold text-[#64748B] uppercase tracking-widest border-l-2 border-[#1E293B] pl-2">
         <span>Resultados: <strong className="text-[#1E293B]">{matchCount}</strong></span>
       </div>
     </div>

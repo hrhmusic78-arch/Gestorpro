@@ -72,7 +72,7 @@ export const TablaFiados: React.FC<Props> = ({ fiados, onView, onEdit, onPay, on
     if (totalPages <= 1) return null;
     return (
       <div className="p-3 border-y-2 border-[#E2E8F0] bg-[#F8FAFC] flex justify-between items-center shrink-0">
-        <p className="text-[10px] font-black text-[#64748B] uppercase">
+        <p className="text-[12px] font-black text-[#64748B] uppercase">
           Mostrando {startIndex + 1} - {Math.min(startIndex + ITEMS_PER_PAGE, fiadosProcesados.length)} de {fiadosProcesados.length}
         </p>
         <div className="flex gap-2">
@@ -150,7 +150,7 @@ export const TablaFiados: React.FC<Props> = ({ fiados, onView, onEdit, onPay, on
           <tbody>
             {currentFiados.length === 0 ? (
               <tr>
-                <td colSpan={7} className="p-4 sm:p-6 lg:p-8 short:py-4 text-center text-[#94A3B8] font-bold text-xs uppercase bg-white">
+                <td colSpan={7} className="p-3 lg:p-4 text-center text-[#94A3B8] font-bold text-xs uppercase bg-white">
                   No se encontraron deudas
                 </td>
               </tr>

@@ -275,7 +275,7 @@ export const Reportes: React.FC = () => {
   const totalAnulados = tickets.filter(t => t.estado === 'ANULADO').length;
 
   return (
-    <div className="h-full flex flex-col gap-4 sm:gap-6 p-0 sm:p-2 lg:p-6 w-full font-mono">
+    <div className="h-full flex flex-col gap-4 sm:gap-6 p-0 w-full font-mono">
       
       {/* TARJETAS DE MÉTRICAS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 shrink-0">
@@ -284,7 +284,7 @@ export const Reportes: React.FC = () => {
               <FileText className="text-[#3B82F6]" />
             </div>
             <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-[#64748B]">Ventas del Rango</p>
+              <p className="text-[12px] font-black uppercase tracking-widest text-[#64748B]">Ventas del Rango</p>
               <p className="text-2xl font-black text-[#1E293B]">S/ {totalRango.toFixed(2)}</p>
             </div>
           </div>
@@ -294,7 +294,7 @@ export const Reportes: React.FC = () => {
               <RotateCcw className="text-[#EF4444]" />
             </div>
             <div>
-              <p className="text-[10px] font-black uppercase tracking-widest text-[#64748B]">Devoluciones</p>
+              <p className="text-[12px] font-black uppercase tracking-widest text-[#64748B]">Devoluciones</p>
               <p className="text-2xl font-black text-[#EF4444]">{totalAnulados} tickets</p>
             </div>
           </div>

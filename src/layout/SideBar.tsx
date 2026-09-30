@@ -238,10 +238,10 @@ export const SideBar: React.FC<SideBarProps> = ({ isOpen, currentView, onNavigat
         {isOpen ? (
           <>
             <div className="flex justify-between items-center gap-2">
-              <span className="text-[10px] font-black text-[#10B981] uppercase tracking-[0.2em] whitespace-nowrap">
+              <span className="text-[12px] font-black text-[#10B981] uppercase tracking-[0.2em] whitespace-nowrap">
                 {enPausa ? 'Auto-ocultar: en pausa' : `Auto-ocultar ${Math.ceil(restante / 1000)}s`}
               </span>
-              <span className="text-[10px] font-black text-[#64748B] uppercase tracking-[0.2em] whitespace-nowrap">SYS_v2.0</span>
+              <span className="text-[12px] font-black text-[#64748B] uppercase tracking-[0.2em] whitespace-nowrap">SYS_v2.0</span>
             </div>
             <div className="h-1 w-full bg-[#10B981]/20 overflow-hidden" aria-hidden="true">
               <div

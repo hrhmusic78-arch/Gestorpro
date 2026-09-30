@@ -46,7 +46,7 @@ export const FiltroFechas: React.FC<Props> = ({ onFilter }) => {
   return (
     <div className="bg-[#FFFFFF] border-2 border-[#1E293B] shadow-[4px_4px_0_0_#1E293B] p-4 flex flex-col md:flex-row gap-4 items-end mb-6 rounded-none">
       <div className="flex flex-col gap-1">
-        <label className="text-[10px] font-black text-[#64748B] uppercase tracking-widest">Desde</label>
+        <label className="text-[12px] font-black text-[#64748B] uppercase tracking-widest">Desde</label>
         <input 
           type="date" 
           value={desde}
@@ -55,7 +55,7 @@ export const FiltroFechas: React.FC<Props> = ({ onFilter }) => {
         />
       </div>
       <div className="flex flex-col gap-1">
-        <label className="text-[10px] font-black text-[#64748B] uppercase tracking-widest">Hasta</label>
+        <label className="text-[12px] font-black text-[#64748B] uppercase tracking-widest">Hasta</label>
         <input 
           type="date" 
           value={hasta}
@@ -82,19 +82,19 @@ export const FiltroFechas: React.FC<Props> = ({ onFilter }) => {
       <div className="flex gap-2 ml-auto">
         <button 
           onClick={() => aplicarFiltroRapido('HOY')}
-          className="bg-[#FFFFFF] text-[#1E293B] px-4 py-2 border-2 border-[#E2E8F0] hover:border-[#1E293B] text-[10px] font-black uppercase tracking-widest transition-colors rounded-none cursor-pointer"
+          className="bg-[#FFFFFF] text-[#1E293B] px-4 py-2 border-2 border-[#E2E8F0] hover:border-[#1E293B] text-[12px] font-black uppercase tracking-widest transition-colors rounded-none cursor-pointer"
         >
           Hoy
         </button>
         <button 
           onClick={() => aplicarFiltroRapido('SEMANA')}
-          className="bg-[#FFFFFF] text-[#1E293B] px-4 py-2 border-2 border-[#E2E8F0] hover:border-[#1E293B] text-[10px] font-black uppercase tracking-widest transition-colors rounded-none cursor-pointer"
+          className="bg-[#FFFFFF] text-[#1E293B] px-4 py-2 border-2 border-[#E2E8F0] hover:border-[#1E293B] text-[12px] font-black uppercase tracking-widest transition-colors rounded-none cursor-pointer"
         >
           Semana
         </button>
         <button 
           onClick={() => aplicarFiltroRapido('MES')}
-          className="bg-[#FFFFFF] text-[#1E293B] px-4 py-2 border-2 border-[#E2E8F0] hover:border-[#1E293B] text-[10px] font-black uppercase tracking-widest transition-colors rounded-none cursor-pointer"
+          className="bg-[#FFFFFF] text-[#1E293B] px-4 py-2 border-2 border-[#E2E8F0] hover:border-[#1E293B] text-[12px] font-black uppercase tracking-widest transition-colors rounded-none cursor-pointer"
         >
           Mes
         </button>

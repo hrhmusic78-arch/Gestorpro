@@ -21,9 +21,9 @@ export const FiltrosUtilidades: React.FC<Props> = ({
       </div>
 
       <div className="flex gap-2 items-end">
-        <button onClick={filtrarHoy} className="bg-[#FFFFFF] border border-[#E2E8F0] px-4 py-2 text-[11px] font-bold text-[#1E293B] hover:bg-[#F8FAFC] transition-colors rounded-none uppercase tracking-widest">Hoy</button>
-        <button onClick={filtrarSemana} className="bg-[#FFFFFF] border border-[#E2E8F0] px-4 py-2 text-[11px] font-bold text-[#1E293B] hover:bg-[#F8FAFC] transition-colors rounded-none uppercase tracking-widest">7 Días</button>
-        <button onClick={filtrarMes} className="bg-[#FFFFFF] border border-[#E2E8F0] px-4 py-2 text-[11px] font-bold text-[#1E293B] hover:bg-[#F8FAFC] transition-colors rounded-none uppercase tracking-widest">Mes</button>
+        <button onClick={filtrarHoy} className="bg-[#FFFFFF] border border-[#E2E8F0] px-4 py-2 text-[13px] font-bold text-[#1E293B] hover:bg-[#F8FAFC] transition-colors rounded-none uppercase tracking-widest">Hoy</button>
+        <button onClick={filtrarSemana} className="bg-[#FFFFFF] border border-[#E2E8F0] px-4 py-2 text-[13px] font-bold text-[#1E293B] hover:bg-[#F8FAFC] transition-colors rounded-none uppercase tracking-widest">7 Días</button>
+        <button onClick={filtrarMes} className="bg-[#FFFFFF] border border-[#E2E8F0] px-4 py-2 text-[13px] font-bold text-[#1E293B] hover:bg-[#F8FAFC] transition-colors rounded-none uppercase tracking-widest">Mes</button>
       </div>
     </div>
   );

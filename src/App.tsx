@@ -134,7 +134,7 @@ export const App: React.FC = () => {
           onNavigate={handleNavigate}
         />
 
-        <section className="p-3 sm:p-5 lg:p-8 flex-1 min-w-0 overflow-y-auto overflow-x-hidden">
+        <section className="p-2 flex-1 min-w-0 overflow-y-auto overflow-x-hidden">
           {renderCurrentView()}
         </section>
       </main>

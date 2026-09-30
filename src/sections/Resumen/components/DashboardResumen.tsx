@@ -238,7 +238,7 @@ export const DashboardResumen: React.FC = () => {
             <LayoutDashboard className="text-[#10B981] w-6 h-6 sm:w-8 sm:h-8" />
             Panel de <span className="text-[#10B981]">Control</span>
           </h1>
-          <p className="text-[#64748B] text-[10px] mt-1 font-mono uppercase tracking-widest sm:tracking-[0.4em] font-bold">Consolidado de Operaciones y Tesorería</p>
+          <p className="text-[#64748B] text-[12px] mt-1 font-mono uppercase tracking-widest sm:tracking-[0.4em] font-bold">Consolidado de Operaciones y Tesorería</p>
         </div>
         
         <div className="flex flex-col items-stretch md:items-end gap-3 w-full md:w-auto">
@@ -248,7 +248,7 @@ export const DashboardResumen: React.FC = () => {
                 <button
                   key={p}
                   onClick={() => setPeriodo(p)}
-                  className={`px-4 py-2 md:py-1.5 font-mono text-[10px] cursor-pointer font-black uppercase tracking-widest transition-colors ${
+                  className={`px-4 py-2 md:py-1.5 font-mono text-[12px] cursor-pointer font-black uppercase tracking-widest transition-colors ${
                     periodo === p ? 'bg-[#1E293B] text-[#10B981]' : 'text-[#64748B] hover:bg-[#F8FAFC] hover:text-[#1E293B]'
                   } ${p !== 'MES' ? 'border-r border-[#1E293B]' : ''}`}
                 >
@@ -256,7 +256,7 @@ export const DashboardResumen: React.FC = () => {
                 </button>
               ))}
             </div>
-            <div className="hidden md:flex items-center gap-3 border border-[#1E293B] bg-white px-5 py-2 font-mono text-[11px] font-black uppercase tracking-widest text-[#10B981] rounded-none shadow-[2px_2px_0px_0px_#10B981]">
+            <div className="hidden md:flex items-center gap-3 border border-[#1E293B] bg-white px-5 py-2 font-mono text-[13px] font-black uppercase tracking-widest text-[#10B981] rounded-none shadow-[2px_2px_0px_0px_#10B981]">
                 <div className="w-2.5 h-2.5 bg-[#10B981] animate-pulse"></div>
                 Conexión Estable
             </div>
@@ -264,11 +264,11 @@ export const DashboardResumen: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-3 sm:p-6 lg:p-8 space-y-8 sm:space-y-10 short:space-y-5 custom-scrollbar">
+      <div className="flex-1 overflow-auto p-3 lg:p-4 space-y-8 sm:space-y-10 short:space-y-5 custom-scrollbar">
 
         {/* Sin permiso de utilidades/reportes globales solo se ven las cantidades de stock */}
         {!verDinero && (
-          <p className="text-[10px] font-black text-[#64748B] uppercase tracking-widest border-l-4 border-[#E2E8F0] pl-3">
+          <p className="text-[12px] font-black text-[#64748B] uppercase tracking-widest border-l-4 border-[#E2E8F0] pl-3">
             Las cifras de dinero solo las ven los usuarios con permiso "Ver utilidades" o "Ver reportes globales".
           </p>
         )}
@@ -276,7 +276,7 @@ export const DashboardResumen: React.FC = () => {
         {/* MÉTRICAS DE ALTO IMPACTO */}
         {verDinero && (
         <section>
-          <h2 className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest sm:tracking-[0.3em] mb-5 flex items-center gap-4">
+          <h2 className="text-[14px] font-black text-[#1E293B] uppercase tracking-widest sm:tracking-[0.3em] mb-5 flex items-center gap-4">
             <div className="w-3 h-5 bg-[#10B981]"></div> Balance Financiero
           </h2>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
@@ -290,7 +290,7 @@ export const DashboardResumen: React.FC = () => {
 
         {/* CONTROL DE ACTIVOS */}
         <section>
-          <h2 className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest sm:tracking-[0.3em] mb-5 flex items-center gap-4">
+          <h2 className="text-[14px] font-black text-[#1E293B] uppercase tracking-widest sm:tracking-[0.3em] mb-5 flex items-center gap-4">
             <div className="w-3 h-5 bg-[#1E293B]"></div> Stock y Pérdidas
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6">
@@ -304,7 +304,7 @@ export const DashboardResumen: React.FC = () => {
 
         {/* ÁREA ANALÍTICA */}
         {verDinero && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8 pb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-4 pb-12">
           
           {/* GRÁFICA DE FLUJO MANTENIDA CON BORDES SUAVIZADOS */}
           <div className="lg:col-span-2 bg-white border-2 border-[#1E293B] flex flex-col rounded-none shadow-[4px_4px_0px_0px_#10B981] transition-shadow hover:shadow-[6px_6px_0px_0px_#10B981]">
@@ -313,7 +313,7 @@ export const DashboardResumen: React.FC = () => {
                  <CreditCard size={18} className="text-[#10B981]"/> Flujo por Método de Pago
                </h3>
             </div>
-            <div className="p-4 sm:p-6 lg:p-8 short:py-4 flex-1 w-full" style={{ minHeight: '350px' }}>
+            <div className="p-3 lg:p-4 flex-1 w-full" style={{ minHeight: '350px' }}>
               <ResponsiveContainer width="99%" height={350} minWidth={1}>
                 <BarChart data={flujoNeto} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" vertical={false} />
@@ -345,7 +345,7 @@ export const DashboardResumen: React.FC = () => {
               {topProductos.length > 0 ? (
                 <table className="w-full text-left font-mono">
                   <thead>
-                    <tr className="text-[10px] text-[#64748B] uppercase border-b-2 border-[#1E293B]">
+                    <tr className="text-[12px] text-[#64748B] uppercase border-b-2 border-[#1E293B]">
                       <th className="pb-3 font-black">Descripción</th>
                       <th className="pb-3 text-right font-black">Recaudado</th>
                     </tr>
@@ -353,14 +353,14 @@ export const DashboardResumen: React.FC = () => {
                   <tbody className="text-xs">
                     {topProductos.map((p, i) => (
                       <tr key={i} className="border-b border-[#F1F5F9] hover:bg-[#D1FAE5]/30 transition-colors">
-                        <td className="py-4 font-bold text-[#1E293B] uppercase text-[11px] truncate max-w-[130px]" title={p.desc}>{p.desc}</td>
+                        <td className="py-4 font-bold text-[#1E293B] uppercase text-[13px] truncate max-w-[130px]" title={p.desc}>{p.desc}</td>
                         <td className="py-4 text-right text-[#10B981] font-black">{fSoles(p.total)}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               ) : (
-                <div className="flex items-center justify-center h-full font-mono text-[10px] text-[#64748B] uppercase tracking-[0.2em]">Data no disponible</div>
+                <div className="flex items-center justify-center h-full font-mono text-[12px] text-[#64748B] uppercase tracking-[0.2em]">Data no disponible</div>
               )}
             </div>
           </div>

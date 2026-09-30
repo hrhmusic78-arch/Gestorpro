@@ -70,7 +70,7 @@ export const ModalBalanza: React.FC<Props> = ({ isOpen, onClose, product, onConf
 
         <div className="p-6 space-y-6">
           <div className="bg-[#F8FAFC] border-2 border-[#E2E8F0] p-4">
-            <p className="text-[10px] font-black text-[#64748B] uppercase tracking-widest mb-1">Cálculo de Peso</p>
+            <p className="text-[12px] font-black text-[#64748B] uppercase tracking-widest mb-1">Cálculo de Peso</p>
             <h3 className="text-lg font-black text-[#1E293B] uppercase mb-2 leading-tight">{product.name}</h3>
             <div className="flex justify-between items-center pt-2 border-t border-dashed border-[#E2E8F0]">
               <span className="text-xs font-bold text-[#64748B] uppercase">Precio x KG:</span>

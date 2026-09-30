@@ -18,7 +18,7 @@ export const TarjetaMetrica: React.FC<Props> = ({ label, value, icon, isAlert })
         {icon}
       </div>
       <div className="flex flex-col min-w-0">
-        <p className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest truncate">{label}</p>
+        <p className="text-[12px] font-bold text-[#64748B] uppercase tracking-widest truncate">{label}</p>
         <p className={`text-lg font-black uppercase tracking-wider truncate ${
           isAlert ? 'text-[#EF4444]' : 'text-[#1E293B]'
         }`}>

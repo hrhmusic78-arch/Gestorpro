@@ -166,19 +166,19 @@ interface Props {
         <div className="p-4 bg-[#F8FAFC] flex flex-col gap-3 overflow-y-auto custom-scrollbar">
           
           <div className="bg-[#1E293B] text-white p-4 text-center border-2 border-[#1E293B] shadow-inner relative shrink-0">
-            <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-[0.2em] mb-1">Total a Pagar</p>
+            <p className="text-[12px] font-bold text-[#94A3B8] uppercase tracking-[0.2em] mb-1">Total a Pagar</p>
             <p className="text-2xl sm:text-4xl font-black text-[#10B981]">S/ {total.toFixed(2)}</p>
           </div>
 
           <div className="flex gap-2 shrink-0">
-            <button onClick={() => pagoExacto('EFECTIVO')} className="flex-1 bg-white border-2 border-[#10B981] text-[#10B981] font-black text-[9px] uppercase py-2 hover:bg-[#10B981] hover:text-white transition-colors cursor-pointer">Exacto Efectivo</button>
-            <button onClick={() => pagoExacto('YAPE')} className="flex-1 bg-white border-2 border-[#8B5CF6] text-[#8B5CF6] font-black text-[9px] uppercase py-2 hover:bg-[#8B5CF6] hover:text-white transition-colors cursor-pointer">Exacto Yape</button>
-            <button onClick={() => pagoExacto('TARJETA')} className="flex-1 bg-white border-2 border-[#3B82F6] text-[#3B82F6] font-black text-[9px] uppercase py-2 hover:bg-[#3B82F6] hover:text-white transition-colors cursor-pointer">Exacto Tarjeta</button>
+            <button onClick={() => pagoExacto('EFECTIVO')} className="flex-1 bg-white border-2 border-[#10B981] text-[#10B981] font-black text-[12px] uppercase py-2 hover:bg-[#10B981] hover:text-white transition-colors cursor-pointer">Exacto Efectivo</button>
+            <button onClick={() => pagoExacto('YAPE')} className="flex-1 bg-white border-2 border-[#8B5CF6] text-[#8B5CF6] font-black text-[12px] uppercase py-2 hover:bg-[#8B5CF6] hover:text-white transition-colors cursor-pointer">Exacto Yape</button>
+            <button onClick={() => pagoExacto('TARJETA')} className="flex-1 bg-white border-2 border-[#3B82F6] text-[#3B82F6] font-black text-[12px] uppercase py-2 hover:bg-[#3B82F6] hover:text-white transition-colors cursor-pointer">Exacto Tarjeta</button>
           </div>
 
           <div className="flex flex-col gap-2 shrink-0">
             <div className="flex items-center justify-between bg-white border-2 border-[#E2E8F0] p-2 focus-within:border-[#10B981] transition-colors">
-              <div className="flex items-center gap-2 font-black text-[#1E293B] uppercase text-[10px]">
+              <div className="flex items-center gap-2 font-black text-[#1E293B] uppercase text-[12px]">
                 <Banknote size={16} className="text-[#10B981]"/> Efectivo
               </div>
               <div className="relative w-28">
@@ -202,7 +202,7 @@ interface Props {
               </div>
             </div>
             <div className="flex items-center justify-between bg-white border-2 border-[#E2E8F0] p-2 focus-within:border-[#8B5CF6] transition-colors">
-              <div className="flex items-center gap-2 font-black text-[#1E293B] uppercase text-[10px]">
+              <div className="flex items-center gap-2 font-black text-[#1E293B] uppercase text-[12px]">
                 <Smartphone size={16} className="text-[#8B5CF6]"/> Yape
               </div>
               <div className="relative w-28">
@@ -226,7 +226,7 @@ interface Props {
               </div>
             </div>
             <div className="flex items-center justify-between bg-white border-2 border-[#E2E8F0] p-2 focus-within:border-[#3B82F6] transition-colors">
-              <div className="flex items-center gap-2 font-black text-[#1E293B] uppercase text-[10px]">
+              <div className="flex items-center gap-2 font-black text-[#1E293B] uppercase text-[12px]">
                 <CreditCard size={16} className="text-[#3B82F6]"/> Tarjeta
               </div>
               <div className="relative w-28">
@@ -251,18 +251,18 @@ interface Props {
           </div>
 
           <div className="bg-white border-2 border-[#E2E8F0] p-3 flex flex-col gap-2 shrink-0">
-            <div className="flex justify-between items-center text-[10px] font-black uppercase text-[#64748B]">
+            <div className="flex justify-between items-center text-[12px] font-black uppercase text-[#64748B]">
               <span>Ingresado:</span>
               <span>S/ {totalIngresado.toFixed(2)}</span>
             </div>
             {faltante > 0 ? (
               <div className="flex justify-between items-center border-t-2 border-dashed border-[#E2E8F0] pt-2">
-                <span className="text-[10px] font-black uppercase text-[#F59E0B]">Falta cobrar:</span>
+                <span className="text-[12px] font-black uppercase text-[#F59E0B]">Falta cobrar:</span>
                 <span className="text-lg font-black text-[#F59E0B]">S/ {faltante.toFixed(2)}</span>
               </div>
             ) : (
               <div className="flex justify-between items-center border-t-2 border-dashed border-[#E2E8F0] pt-2">
-                <span className="text-[10px] font-black uppercase text-[#3B82F6]">Vuelto:</span>
+                <span className="text-[12px] font-black uppercase text-[#3B82F6]">Vuelto:</span>
                 <span className="text-xl font-black text-[#3B82F6]">S/ {vuelto.toFixed(2)}</span>
               </div>
             )}
@@ -288,7 +288,7 @@ interface Props {
                       setClienteTelefono('');
                       setSearchCliente('');
                     }}
-                    className="flex items-center gap-1 bg-[#10B981] text-white px-3 py-1.5 text-[10px] font-black uppercase border-2 border-[#10B981] hover:bg-[#059669] hover:border-[#059669] transition-colors rounded-none shadow-[2px_2px_0_0_#065F46] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] cursor-pointer"
+                    className="flex items-center gap-1 bg-[#10B981] text-white px-3 py-1.5 text-[12px] font-black uppercase border-2 border-[#10B981] hover:bg-[#059669] hover:border-[#059669] transition-colors rounded-none shadow-[2px_2px_0_0_#065F46] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] cursor-pointer"
                   >
                     <Plus size={14}/> Nuevo Cliente
                   </button>
@@ -300,7 +300,7 @@ interface Props {
                       setClienteDni('');
                       setClienteTelefono('');
                     }}
-                    className="flex items-center gap-1 bg-[#EF4444] text-white px-3 py-1.5 text-[10px] font-black uppercase border-2 border-[#EF4444] hover:bg-[#DC2626] hover:border-[#DC2626] transition-colors rounded-none shadow-[2px_2px_0_0_#991B1B] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] cursor-pointer"
+                    className="flex items-center gap-1 bg-[#EF4444] text-white px-3 py-1.5 text-[12px] font-black uppercase border-2 border-[#EF4444] hover:bg-[#DC2626] hover:border-[#DC2626] transition-colors rounded-none shadow-[2px_2px_0_0_#991B1B] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] cursor-pointer"
                   >
                     <X size={14}/> Cancelar Nuevo
                   </button>
@@ -311,7 +311,7 @@ interface Props {
               {!isCreatingNew ? (
                 // MODO 1: BUSCADOR DESPLEGABLE DE CLIENTES EXISTENTES
                 <div className="space-y-1 relative">
-                  <label className="text-[10px] font-black text-[#92400E] uppercase">Buscar Cliente Existente *</label>
+                  <label className="text-[12px] font-black text-[#92400E] uppercase">Buscar Cliente Existente *</label>
                   <div 
                     className="flex items-center justify-between border-2 border-[#FCD34D] bg-white p-2 cursor-text transition-colors rounded-none focus-within:border-[#F59E0B]"
                     {...clicConTeclado(() => setIsDropdownOpen(true))}
@@ -344,7 +344,7 @@ interface Props {
                           .map(c => (
                             <div
                               key={c.id}
-                              className="p-3 text-[11px] font-black uppercase text-[#1E293B] hover:bg-[#F59E0B] hover:text-white cursor-pointer border-b border-[#E2E8F0] last:border-0 transition-colors flex justify-between items-center rounded-none"
+                              className="p-3 text-[13px] font-black uppercase text-[#1E293B] hover:bg-[#F59E0B] hover:text-white cursor-pointer border-b border-[#E2E8F0] last:border-0 transition-colors flex justify-between items-center rounded-none"
                               {...clicConTeclado(() => {
                                 setClienteId(c.id?.toString() || ''); // <-- GUARDAMOS EL ID AL SELECCIONAR
                                 setClienteNombre(c.nombre || c.name || '');
@@ -355,7 +355,7 @@ interface Props {
                               })}
                             >
                               <span>{c.nombre || c.name || 'SIN NOMBRE'}</span>
-                              {c.dni && <span className="text-[10px] opacity-70">DNI:{c.dni}</span>}
+                              {c.dni && <span className="text-[12px] opacity-70">DNI:{c.dni}</span>}
                             </div>
                           ))
                       )}
@@ -366,7 +366,7 @@ interface Props {
                 // MODO 2: CREACIÓN MANUAL DE CLIENTE (CUADROS PUROS)
                 <div className="space-y-3 bg-[#FEF3C7] p-3 border-2 border-[#FCD34D] rounded-none">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black text-[#92400E] uppercase">Nombre del Nuevo Cliente *</label>
+                    <label className="text-[12px] font-black text-[#92400E] uppercase">Nombre del Nuevo Cliente *</label>
                     <input 
                       type="text" 
                       placeholder="EJ: JUAN PEREZ..."
@@ -377,7 +377,7 @@ interface Props {
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-[#92400E] uppercase">DNI (Opcional)</label>
+                      <label className="text-[12px] font-bold text-[#92400E] uppercase">DNI (Opcional)</label>
                       <input 
                         type="text" 
                         placeholder="8 DÍGITOS"
@@ -388,7 +388,7 @@ interface Props {
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[10px] font-bold text-[#92400E] uppercase">Celular (Opcional)</label>
+                      <label className="text-[12px] font-bold text-[#92400E] uppercase">Celular (Opcional)</label>
                       <input 
                         type="text" 
                         placeholder="NÚMERO"
@@ -404,7 +404,7 @@ interface Props {
 
               {/* FECHA VENCIMIENTO (APLICA PARA AMBOS MODOS) */}
               <div className="space-y-1 mt-1 pt-2 border-t-2 border-[#FCD34D]">
-                <label className="text-[10px] font-black text-[#92400E] uppercase flex items-center gap-1">
+                <label className="text-[12px] font-black text-[#92400E] uppercase flex items-center gap-1">
                   <Calendar size={14}/> Fecha Límite de Pago *
                 </label>
                 <input 
@@ -421,7 +421,7 @@ interface Props {
         </div>
 
         <div className="flex items-center justify-between px-4 py-3 bg-[#FFFFFF] border-t-2 border-[#E2E8F0] shrink-0">
-          <span className="text-[#1E293B] font-black text-[10px] uppercase tracking-widest">
+          <span className="text-[#1E293B] font-black text-[12px] uppercase tracking-widest">
             Imprimir Boleta Física
           </span>
           <button

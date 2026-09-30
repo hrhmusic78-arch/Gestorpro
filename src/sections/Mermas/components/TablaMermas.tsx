@@ -72,7 +72,7 @@ export const TablaMermas: React.FC<Props> = ({ mermas, products, onEdit, onDelet
       {/* CUERPO */}
       <div className="w-full flex-1 bg-[#FFFFFF]">
         {paginatedData.length === 0 ? (
-          <div className="p-6 sm:p-12 text-center text-[#64748B] font-bold uppercase text-[10px] tracking-widest flex flex-col items-center justify-center h-full gap-2 bg-[#FFFFFF]">
+          <div className="p-6 sm:p-12 text-center text-[#64748B] font-bold uppercase text-[12px] tracking-widest flex flex-col items-center justify-center h-full gap-2 bg-[#FFFFFF]">
             <Layers size={32} className="text-[#E2E8F0] mb-2" />
             <p>No hay registros de mermas con estos filtros.</p>
           </div>

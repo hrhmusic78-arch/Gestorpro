@@ -189,7 +189,7 @@ export const ModalClientes: React.FC<Props> = ({ isOpen, onClose, clientes, onSa
                 </div>
 
                 <div className="flex-shrink-0 w-full xl:w-auto">
-                  <button onClick={openNuevo} className="w-full xl:w-auto px-6 py-2 bg-[#1E293B] text-[#FFFFFF] border-2 border-[#1E293B] text-[10px] font-black uppercase flex items-center justify-center gap-2 hover:bg-[#64748B] hover:border-[#64748B] transition-colors shadow-[4px_4px_0_0_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] cursor-pointer rounded-none">
+                  <button onClick={openNuevo} className="w-full xl:w-auto px-6 py-2 bg-[#1E293B] text-[#FFFFFF] border-2 border-[#1E293B] text-[12px] font-black uppercase flex items-center justify-center gap-2 hover:bg-[#64748B] hover:border-[#64748B] transition-colors shadow-[4px_4px_0_0_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] cursor-pointer rounded-none">
                     <Plus size={16}/> Nuevo Cliente
                   </button>
                 </div>
@@ -212,17 +212,17 @@ export const ModalClientes: React.FC<Props> = ({ isOpen, onClose, clientes, onSa
                             <UserCircle size={32} className="text-[#94A3B8] shrink-0" />
                             <div className="min-w-0">
                               <p className="font-black text-[#1E293B] uppercase truncate" title={cli.nombre}>{cli.nombre}</p>
-                              <p className="text-[10px] font-bold text-[#64748B]">DNI: {cli.dni || '---'} | Cel: {cli.telefono || '---'}</p>
+                              <p className="text-[12px] font-bold text-[#64748B]">DNI: {cli.dni || '---'} | Cel: {cli.telefono || '---'}</p>
                             </div>
                           </div>
                           
                           <div className="sm:w-1/3 text-left sm:text-center">
                             {deudaActiva > 0 ? (
-                              <span className="inline-block px-3 py-1 bg-[#FEF2F2] text-[#EF4444] text-[10px] font-black uppercase border border-[#EF4444]">
+                              <span className="inline-block px-3 py-1 bg-[#FEF2F2] text-[#EF4444] text-[12px] font-black uppercase border border-[#EF4444]">
                                 Debe: S/ {deudaActiva.toFixed(2)}
                               </span>
                             ) : (
-                              <span className="inline-block px-3 py-1 bg-[#ECFDF5] text-[#10B981] text-[10px] font-black uppercase border border-[#10B981]">
+                              <span className="inline-block px-3 py-1 bg-[#ECFDF5] text-[#10B981] text-[12px] font-black uppercase border border-[#10B981]">
                                 Al Día
                               </span>
                             )}
@@ -235,7 +235,7 @@ export const ModalClientes: React.FC<Props> = ({ isOpen, onClose, clientes, onSa
                             <button onClick={() => onDeleteCliente(cli.id)} className="p-2 bg-white text-[#94A3B8] border-2 border-[#E2E8F0] hover:border-[#EF4444] hover:text-[#EF4444] transition-colors cursor-pointer" title="Eliminar Cliente">
                               <Trash2 size={16} />
                             </button>
-                            <button onClick={() => { setClienteActivo(cli); setView('HISTORIAL'); }} className="px-4 py-2 bg-[#F8FAFC] text-[#3B82F6] border-2 border-[#3B82F6] text-[10px] font-black uppercase hover:bg-[#3B82F6] hover:text-white transition-colors cursor-pointer ml-2">
+                            <button onClick={() => { setClienteActivo(cli); setView('HISTORIAL'); }} className="px-4 py-2 bg-[#F8FAFC] text-[#3B82F6] border-2 border-[#3B82F6] text-[12px] font-black uppercase hover:bg-[#3B82F6] hover:text-white transition-colors cursor-pointer ml-2">
                               Ver Historial
                             </button>
                           </div>
@@ -249,7 +249,7 @@ export const ModalClientes: React.FC<Props> = ({ isOpen, onClose, clientes, onSa
               {/* PAGINACIÓN */}
               {totalPages > 1 && (
                 <div className="flex justify-between items-center pt-2 shrink-0">
-                  <p className="text-[10px] font-black text-[#64748B] uppercase">
+                  <p className="text-[12px] font-black text-[#64748B] uppercase">
                     Mostrando {startIndex + 1} - {Math.min(startIndex + ITEMS_PER_PAGE, clientesFiltrados.length)} de {clientesFiltrados.length}
                   </p>
                   <div className="flex gap-2">
@@ -279,25 +279,25 @@ export const ModalClientes: React.FC<Props> = ({ isOpen, onClose, clientes, onSa
           {/* VISTA NUEVO / EDITAR */}
           {view === 'NUEVO' && (
             <div className="w-full h-full flex flex-col items-center justify-center">
-              <div className="w-full max-w-md bg-white border-2 border-[#E2E8F0] shadow-[8px_8px_0_0_#E2E8F0] p-4 sm:p-6 lg:p-8 short:py-4 flex flex-col gap-5">
+              <div className="w-full max-w-md bg-white border-2 border-[#E2E8F0] shadow-[8px_8px_0_0_#E2E8F0] p-3 lg:p-4 flex flex-col gap-5">
                 <h3 className="text-center font-black text-lg text-[#1E293B] uppercase tracking-widest border-b-2 border-[#E2E8F0] pb-2 mb-2">
                   {clienteAEditar ? 'Editar Cliente' : 'Nuevo Cliente'}
                 </h3>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-[#64748B]">Nombre Completo *</label>
+                  <label className="text-[12px] font-black uppercase text-[#64748B]">Nombre Completo *</label>
                   <input type="text" value={nombre} onChange={e=>setNombre(e.target.value)} className="w-full border-2 border-[#E2E8F0] p-3 text-xs font-black uppercase focus:border-[#3B82F6] outline-none transition-colors" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-[#64748B]">DNI (Opcional)</label>
+                  <label className="text-[12px] font-black uppercase text-[#64748B]">DNI (Opcional)</label>
                   <input type="text" value={dni} onChange={e=>setDni(e.target.value.replace(/\D/g, ''))} maxLength={8} className="w-full border-2 border-[#E2E8F0] p-3 text-xs font-black focus:border-[#3B82F6] outline-none transition-colors" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-[#64748B]">Celular (Opcional)</label>
+                  <label className="text-[12px] font-black uppercase text-[#64748B]">Celular (Opcional)</label>
                   <input type="text" value={telefono} onChange={e=>setTelefono(e.target.value.replace(/\D/g, ''))} maxLength={9} className="w-full border-2 border-[#E2E8F0] p-3 text-xs font-black focus:border-[#3B82F6] outline-none transition-colors" />
                 </div>
                 <div className="flex justify-end gap-3 mt-4">
-                  <button onClick={() => setView('LISTA')} className="px-6 py-3 border-2 border-[#E2E8F0] text-[#64748B] text-[10px] font-black uppercase hover:border-[#1E293B] hover:text-[#1E293B] transition-colors cursor-pointer rounded-none">Cancelar</button>
-                  <button onClick={handleSave} className="flex-1 py-3 bg-[#3B82F6] text-white border-2 border-[#1E293B] text-[10px] font-black uppercase flex items-center justify-center gap-2 hover:bg-[#1E293B] hover:text-[#3B82F6] transition-colors cursor-pointer shadow-[4px_4px_0_0_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] rounded-none"><Save size={16}/> {clienteAEditar ? 'Actualizar Datos' : 'Guardar Cliente'}</button>
+                  <button onClick={() => setView('LISTA')} className="px-6 py-3 border-2 border-[#E2E8F0] text-[#64748B] text-[12px] font-black uppercase hover:border-[#1E293B] hover:text-[#1E293B] transition-colors cursor-pointer rounded-none">Cancelar</button>
+                  <button onClick={handleSave} className="flex-1 py-3 bg-[#3B82F6] text-white border-2 border-[#1E293B] text-[12px] font-black uppercase flex items-center justify-center gap-2 hover:bg-[#1E293B] hover:text-[#3B82F6] transition-colors cursor-pointer shadow-[4px_4px_0_0_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] rounded-none"><Save size={16}/> {clienteAEditar ? 'Actualizar Datos' : 'Guardar Cliente'}</button>
                 </div>
               </div>
             </div>
@@ -319,7 +319,7 @@ export const ModalClientes: React.FC<Props> = ({ isOpen, onClose, clientes, onSa
               <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 <div className="grid grid-cols-1 gap-3">
                   {fiadosDelCliente.length === 0 ? (
-                    <div className="bg-white border-2 border-[#E2E8F0] p-4 sm:p-6 lg:p-8 short:py-4 text-center">
+                    <div className="bg-white border-2 border-[#E2E8F0] p-3 lg:p-4 text-center">
                       <p className="text-[#94A3B8] font-black text-sm uppercase">No tiene deudas ni historial registrado.</p>
                     </div>
                   ) : (

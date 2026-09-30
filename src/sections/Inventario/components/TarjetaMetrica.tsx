@@ -19,7 +19,7 @@ export const TarjetaMetrica: React.FC<Props> = ({ label, value, icon, isAlert, i
       {icon}
     </div>
     <div>
-      <p className="text-[8px] font-black uppercase tracking-wider text-[#64748B] mb-1">
+      <p className="text-[11px] font-black uppercase tracking-wider text-[#64748B] mb-1">
         {label}
       </p>
       <p className={`text-lg font-bold tracking-tighter ${

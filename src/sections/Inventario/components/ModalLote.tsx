@@ -242,7 +242,7 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
             <Database size={24} className="text-[#10B981]" />
             <div>
               <h2 className="text-sm font-black uppercase tracking-widest text-[#10B981]">Ingresar Lote de Stock</h2>
-              <p className="text-[9px] font-bold opacity-80 uppercase tracking-widest">Añadir existencias al inventario</p>
+              <p className="text-[12px] font-bold opacity-80 uppercase tracking-widest">Añadir existencias al inventario</p>
             </div>
           </div>
           <button onClick={onClose} className="hover:text-[#EF4444] transition-colors cursor-pointer">
@@ -255,14 +255,14 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
           
           {/* 1. BUSCADOR DE PRODUCTO DESPLEGABLE */}
           <div className="space-y-2 relative">
-            <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest flex items-center gap-2">
+            <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest flex items-center gap-2">
               <Search size={14} className="text-[#10B981]"/> 1. Buscar Producto *
             </label>
             
             {selectedProduct ? (
               <div className="flex items-center justify-between border-2 border-[#10B981] bg-[#ECFDF5] p-3 rounded-none">
                 <div className="flex flex-col">
-                  <span className="text-[9px] font-bold text-[#10B981] uppercase tracking-wider">Producto Seleccionado:</span>
+                  <span className="text-[12px] font-bold text-[#10B981] uppercase tracking-wider">Producto Seleccionado:</span>
                   <span className="text-xs font-black text-[#1E293B] uppercase mt-1">{selectedProduct.code} - {selectedProduct.name}</span>
                 </div>
                 <button 
@@ -302,12 +302,12 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
                           }}
                           className="flex flex-col p-3 hover:bg-[#F8FAFC] border-b border-[#E2E8F0] cursor-pointer group"
                         >
-                          <span className="text-[9px] font-bold text-[#64748B] group-hover:text-[#10B981]">{p.code} | {p.category}</span>
+                          <span className="text-[12px] font-bold text-[#64748B] group-hover:text-[#10B981]">{p.code} | {p.category}</span>
                           <span className="text-xs font-black text-[#1E293B] uppercase">{p.name}</span>
                         </div>
                       ))
                     ) : (
-                      <div className="p-4 text-center text-[10px] font-bold text-[#64748B] uppercase">No se encontraron productos</div>
+                      <div className="p-4 text-center text-[12px] font-bold text-[#64748B] uppercase">No se encontraron productos</div>
                     )}
                   </div>
                 )}
@@ -318,7 +318,7 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
           {/* 2. CANTIDAD Y COSTO TOTAL */}
           <div className="grid grid-cols-2 gap-4 border-t-2 border-[#E2E8F0] pt-6">
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest flex justify-between">
+              <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest flex justify-between">
                 <span>2. Cantidad *</span>
                 <span className="text-[#10B981]">{selectedProduct ? `(${selectedProduct.unit})` : ''}</span>
               </label>
@@ -333,18 +333,18 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
                   disabled={!selectedProduct}
                   className="w-full p-3 text-sm font-black text-[#1E293B] outline-none disabled:bg-[#F1F5F9] disabled:cursor-not-allowed text-right"
                 />
-                <div className="bg-[#F8FAFC] px-4 border-l-2 border-[#E2E8F0] flex items-center justify-center text-[10px] font-black text-[#64748B] w-16 shrink-0">
+                <div className="bg-[#F8FAFC] px-4 border-l-2 border-[#E2E8F0] flex items-center justify-center text-[12px] font-black text-[#64748B] w-16 shrink-0">
                   {selectedProduct ? selectedProduct.unit : '---'}
                 </div>
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">
+              <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">
                 3. Costo Compra (Total)
               </label>
               <div className="flex border-2 border-[#E2E8F0] bg-white focus-within:border-[#10B981] transition-colors">
-                <div className="bg-[#F8FAFC] px-4 border-r-2 border-[#E2E8F0] flex items-center justify-center text-[10px] font-black text-[#64748B] shrink-0">
+                <div className="bg-[#F8FAFC] px-4 border-r-2 border-[#E2E8F0] flex items-center justify-center text-[12px] font-black text-[#64748B] shrink-0">
                   S/
                 </div>
                 <input 
@@ -363,7 +363,7 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
 
           {/* 3. FÓRMULA MATEMÁTICA: COSTO UNITARIO AUTOMÁTICO */}
           <div className="bg-[#1E293B] p-4 flex items-center justify-between shadow-inner">
-            <span className="text-[10px] font-black text-white uppercase tracking-widest flex items-center gap-2">
+            <span className="text-[12px] font-black text-white uppercase tracking-widest flex items-center gap-2">
               <Calculator size={14} className="text-[#10B981]" /> Costo Unitario Automático
             </span>
             <span className="text-xl font-black text-[#10B981]">
@@ -375,7 +375,7 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 border-t-2 border-[#E2E8F0] pt-6">
             
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest flex items-center gap-2">
+              <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest flex items-center gap-2">
                 <FileText size={14} /> 4. Sustento (Doc. Proveedor)
               </label>
               <div className="flex flex-col gap-3 relative">
@@ -411,7 +411,7 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
                         </div>
                       ))
                     ) : (
-                      <div className="p-3 text-[10px] font-bold text-[#64748B] uppercase text-center bg-[#F8FAFC]">
+                      <div className="p-3 text-[12px] font-bold text-[#64748B] uppercase text-center bg-[#F8FAFC]">
                         ESCRIBE LIBREMENTE SI NO ESTÁ EN LA LISTA
                       </div>
                     )}
@@ -428,7 +428,7 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
                     onChange={() => setOmitirSustento(!omitirSustento)} 
                     disabled={!selectedProduct} 
                   />
-                  <span className="text-[9px] font-bold text-[#64748B] uppercase select-none group-hover:text-[#EF4444]">
+                  <span className="text-[12px] font-bold text-[#64748B] uppercase select-none group-hover:text-[#EF4444]">
                     Ingresar sin sustento tributario
                   </span>
                 </label>
@@ -436,7 +436,7 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest flex items-center gap-2">
+              <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest flex items-center gap-2">
                 <Calendar size={14} /> Fecha Vencimiento (Opcional)
               </label>
               <input 
@@ -456,14 +456,14 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
         <div className="p-6 bg-white border-t-2 border-[#E2E8F0] flex justify-end gap-3 shrink-0">
           <button 
             onClick={onClose}
-            className="px-6 py-3 border-2 border-[#E2E8F0] text-[#64748B] font-black text-[10px] uppercase tracking-widest hover:bg-[#F8FAFC] hover:border-[#1E293B] hover:text-[#1E293B] transition-all cursor-pointer rounded-none"
+            className="px-6 py-3 border-2 border-[#E2E8F0] text-[#64748B] font-black text-[12px] uppercase tracking-widest hover:bg-[#F8FAFC] hover:border-[#1E293B] hover:text-[#1E293B] transition-all cursor-pointer rounded-none"
           >
             Cancelar
           </button>
           <button 
             onClick={handleSave}
             disabled={!selectedProduct || !cantidad || Number(cantidad) <= 0 || isSubmitting}
-            className="bg-[#10B981] text-[#1E293B] px-6 py-3 border-2 border-[#1E293B] font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-[#1E293B] hover:text-[#10B981] transition-all cursor-pointer rounded-none shadow-[4px_4px_0_0_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] disabled:opacity-50"
+            className="bg-[#10B981] text-[#1E293B] px-6 py-3 border-2 border-[#1E293B] font-black text-[12px] uppercase tracking-widest flex items-center gap-2 hover:bg-[#1E293B] hover:text-[#10B981] transition-all cursor-pointer rounded-none shadow-[4px_4px_0_0_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] disabled:opacity-50"
           >
             {isSubmitting ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />}
             {isSubmitting ? 'PROCESANDO...' : 'Guardar Lote'}

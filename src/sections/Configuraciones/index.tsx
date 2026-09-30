@@ -14,7 +14,7 @@ const Configuraciones: React.FC = () => {
   return (
     <div className="flex flex-col h-full bg-[#F8FAFC]">
       {/* HEADER */}
-      <div className="bg-white border-b border-[#E2E8F0] p-6 shrink-0">
+      <div className="bg-white border-b border-[#E2E8F0] p-3 lg:p-4 shrink-0">
         <h1 className="text-2xl font-black text-[#1E293B] tracking-tight flex items-center gap-3 uppercase">
           <Settings className="text-[#10B981]" size={28} />
           Parámetros del Sistema
@@ -25,7 +25,7 @@ const Configuraciones: React.FC = () => {
       </div>
 
       {/* TABS */}
-      <div className="px-6 pt-4 border-b border-[#E2E8F0] bg-white shrink-0">
+      <div className="px-3 lg:px-4 pt-3 border-b border-[#E2E8F0] bg-white shrink-0">
         <div className="flex gap-6">
           {puedeEmpresa && (
           <button
@@ -64,7 +64,7 @@ const Configuraciones: React.FC = () => {
       </div>
 
       {/* CONTENIDO PRINCIPAL */}
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-2 lg:p-3">
         {activeTab === 'empresa' && puedeEmpresa && <FormularioEmpresa />}
         {activeTab === 'usuarios' && puedeUsuarios && <TablaUsuarios />}
       </div>

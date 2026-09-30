@@ -59,7 +59,7 @@ const InputPrecio = ({ item, updatePrice, index, setSelectedIndex, setColIndex, 
   };
   return (
     <div className="flex items-center gap-1 mt-0.5">
-      <span className="text-[10px] text-[#10B981] font-black">S/</span>
+      <span className="text-[12px] text-[#10B981] font-black">S/</span>
       <input 
          id={`edit-input-${index}`}
          type="text" inputMode="decimal" value={val}
@@ -71,7 +71,7 @@ const InputPrecio = ({ item, updatePrice, index, setSelectedIndex, setColIndex, 
          }}
          onBlur={aplicarCambio}
          onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }}
-         className={`w-16 h-5 text-[11px] font-black outline-none px-1 cursor-text rounded-none transition-all ${
+         className={`w-16 h-5 text-[13px] font-black outline-none px-1 cursor-text rounded-none transition-all ${
            isSelected 
              ? 'bg-[#ECFDF5] border-2 border-[#10B981] text-[#10B981] shadow-[0_0_0_2px_#10B981]' 
              : 'bg-[#F8FAFC] border border-[#CBD5E1] text-[#1E293B] focus:bg-white focus:border-[#10B981]'
@@ -139,7 +139,7 @@ export const TicketVenta: React.FC<Props> = ({ selectedIndex = -1, colIndex = 0,
             className="h-8 flex items-center justify-center px-3 gap-1 bg-[#F59E0B] text-[#1E293B] border-2 border-[#F59E0B] hover:bg-white hover:border-white transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-[2px_2px_0_0_#0F172A] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]" 
             title="Pausar y Guardar Ticket"
           >
-            <Pause size={14} fill="currentColor" /> <span className="text-[10px] font-black uppercase">Espera</span>
+            <Pause size={14} fill="currentColor" /> <span className="text-[12px] font-black uppercase">Espera</span>
           </button>
           <button 
             onClick={() => setCart([])}
@@ -158,7 +158,7 @@ export const TicketVenta: React.FC<Props> = ({ selectedIndex = -1, colIndex = 0,
             <button 
               key={i} 
               onClick={() => restoreCart(i)}
-              className="bg-[#3B82F6] text-white border-2 border-[#1E293B] px-3 py-1.5 text-[10px] font-black uppercase flex items-center gap-1.5 shadow-[2px_2px_0_0_#1E293B] hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-none transition-all whitespace-nowrap cursor-pointer"
+              className="bg-[#3B82F6] text-white border-2 border-[#1E293B] px-3 py-1.5 text-[12px] font-black uppercase flex items-center gap-1.5 shadow-[2px_2px_0_0_#1E293B] hover:translate-y-[2px] hover:translate-x-[2px] hover:shadow-none transition-all whitespace-nowrap cursor-pointer"
               title="Recuperar Ticket"
             >
               <Play size={10} fill="currentColor" /> RECUPERAR T-{i + 1}
@@ -179,7 +179,7 @@ export const TicketVenta: React.FC<Props> = ({ selectedIndex = -1, colIndex = 0,
         {cart.length === 0 ? (
           <div className="flex-1 flex flex-col items-center justify-center text-[#94A3B8] opacity-50">
             <ShoppingCart size={32} className="mb-2" />
-            <span className="text-[10px] font-black uppercase tracking-widest">Caja libre</span>
+            <span className="text-[12px] font-black uppercase tracking-widest">Caja libre</span>
           </div>
         ) : (
           <div className="flex flex-col gap-2">

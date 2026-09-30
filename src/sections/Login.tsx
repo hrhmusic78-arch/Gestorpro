@@ -115,7 +115,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 
             <div className="flex items-center gap-4 mt-6">
               <div className="h-[2px] flex-1 bg-[#10B981]"></div>
-              <p className="text-[10px] font-bold text-[#64748B] uppercase tracking-[0.3em]">
+              <p className="text-[12px] font-bold text-[#64748B] uppercase tracking-[0.3em]">
                 Terminal de Acceso
               </p>
               <div className="h-[2px] flex-1 bg-[#10B981]"></div>
@@ -124,13 +124,13 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 
           <form onSubmit={handleLogin} className="space-y-6">
             {error && (
-              <div className="border-2 border-red-500 bg-red-50 text-red-600 px-4 py-3 text-[10px] font-black uppercase tracking-widest animate-pulse">
+              <div className="border-2 border-red-500 bg-red-50 text-red-600 px-4 py-3 text-[12px] font-black uppercase tracking-widest animate-pulse">
                 {error}
               </div>
             )}
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest flex items-center gap-2">
+              <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-[#10B981]"></div>
                 Identificador_Usuario
               </label>
@@ -145,7 +145,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest flex items-center gap-2">
+              <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-[#10B981]"></div>
                 Clave_Seguridad
               </label>
@@ -172,7 +172,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
 
         {/* FOOTER IZQUIERDO */}
         <div className="p-8 border-t-2 border-[#E2E8F0] flex justify-between items-center">
-          <span className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">
+          <span className="text-[12px] font-bold text-[#94A3B8] uppercase tracking-widest">
             v2.0.4_oxide_engine
           </span>
           <div className="flex gap-2">
@@ -203,7 +203,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
         {/* OVERLAY TÉCNICO (HUD) */}
         <div className="absolute inset-0 border-[24px] border-[#10B981]/10 pointer-events-none z-10"></div>
         
-        <div className="absolute top-12 right-12 border border-[#10B981] bg-[#1E293B]/80 px-3 py-1 text-[8px] font-black text-[#10B981] tracking-[0.2em] uppercase backdrop-blur-sm z-20 transition-all duration-500">
+        <div className="absolute top-12 right-12 border border-[#10B981] bg-[#1E293B]/80 px-3 py-1 text-[11px] font-black text-[#10B981] tracking-[0.2em] uppercase backdrop-blur-sm z-20 transition-all duration-500">
           {carouselSlides[currentSlide].tag} <span className="inline-block w-1.5 h-1.5 bg-[#10B981] ml-2 animate-pulse"></span>
         </div>
 

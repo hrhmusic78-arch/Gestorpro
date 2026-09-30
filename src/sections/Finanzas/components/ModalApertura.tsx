@@ -61,7 +61,7 @@ export const ModalApertura: React.FC<Props> = ({ isOpen, onClose, onSuccess }) =
           </p>
 
           <div className="flex flex-col gap-2">
-            <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Monto Inicial (S/)</label>
+            <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Monto Inicial (S/)</label>
             <input 
               type="number" 
               value={monto}

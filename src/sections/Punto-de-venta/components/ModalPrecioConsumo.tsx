@@ -31,7 +31,7 @@ export const ModalPrecioConsumo: React.FC<Props> = ({ isOpen, producto, onClose,
       <div className="max-h-[calc(var(--alto-pantalla)*0.94)] overflow-y-auto bg-[#FFFFFF] border-2 border-[#1E293B] shadow-[8px_8px_0px_0px_rgba(30,41,59,1)] rounded-none w-full max-w-sm p-6">
         
         <div className="border-b border-[#E2E8F0] pb-3 mb-5">
-          <span className="text-[#64748B] text-[10px] font-mono tracking-widest uppercase block mb-1">
+          <span className="text-[#64748B] text-[12px] font-mono tracking-widest uppercase block mb-1">
             Registro Operativo
           </span>
           <h2 className="text-[#1E293B] font-bold text-lg uppercase tracking-wide">

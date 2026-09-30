@@ -88,7 +88,7 @@ export const TopBar: React.FC<TopBarProps> = ({ toggleSidebar, userEmail, onNavi
         {puedeVerFiados && fiadosCount > 0 && (
           <button 
             onClick={() => onNavigate('fiados')}
-            className="flex items-center shrink-0 whitespace-nowrap border-2 border-[#F59E0B] px-2 sm:px-3 py-1.5 bg-[#FFFBEB] text-[9px] font-black uppercase tracking-widest text-[#D97706] hover:bg-[#F59E0B] hover:text-white transition-all cursor-pointer animate-pulse shadow-[2px_2px_0_0_#D97706] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
+            className="flex items-center shrink-0 whitespace-nowrap border-2 border-[#F59E0B] px-2 sm:px-3 py-1.5 bg-[#FFFBEB] text-[12px] font-black uppercase tracking-widest text-[#D97706] hover:bg-[#F59E0B] hover:text-white transition-all cursor-pointer animate-pulse shadow-[2px_2px_0_0_#D97706] hover:shadow-none active:translate-x-[2px] active:translate-y-[2px]"
           >
             <AlertTriangle size={12} className="mr-2" />
             Por cobrar: {fiadosCount}

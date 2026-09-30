@@ -208,12 +208,12 @@ export const Inventario: React.FC<InventarioProps> = ({ onNavigate }) => {
         onRegistrarMerma={() => setIsModalMermaOpen(true)}
       />
 
-      <div className="px-3 sm:px-6 lg:px-8 shrink-0 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6">
+      <div className="px-3 lg:px-4 shrink-0 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6">
         <div className="grid grid-cols-2 sm:flex w-full sm:w-auto border-2 border-[#1E293B] p-0.5 bg-[#F8FAFC]">
-          <button onClick={() => setVistaActiva('PRODUCTOS')} className={`flex items-center justify-center gap-2 px-3 sm:px-6 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all rounded-none cursor-pointer ${vistaActiva === 'PRODUCTOS' ? 'bg-[#1E293B] text-white' : 'text-[#64748B] hover:text-[#1E293B] hover:bg-white'}`}>
+          <button onClick={() => setVistaActiva('PRODUCTOS')} className={`flex items-center justify-center gap-2 px-3 sm:px-6 py-2 text-[12px] font-black uppercase tracking-[0.2em] transition-all rounded-none cursor-pointer ${vistaActiva === 'PRODUCTOS' ? 'bg-[#1E293B] text-white' : 'text-[#64748B] hover:text-[#1E293B] hover:bg-white'}`}>
             <Package size={14} /> Inventario General
           </button>
-          <button onClick={() => setVistaActiva('LOTES')} className={`flex items-center justify-center gap-2 px-3 sm:px-6 py-2 text-[10px] font-black uppercase tracking-[0.2em] transition-all rounded-none cursor-pointer ${vistaActiva === 'LOTES' ? 'bg-[#1E293B] text-[#10B981]' : 'text-[#64748B] hover:text-[#1E293B] hover:bg-white'}`}>
+          <button onClick={() => setVistaActiva('LOTES')} className={`flex items-center justify-center gap-2 px-3 sm:px-6 py-2 text-[12px] font-black uppercase tracking-[0.2em] transition-all rounded-none cursor-pointer ${vistaActiva === 'LOTES' ? 'bg-[#1E293B] text-[#10B981]' : 'text-[#64748B] hover:text-[#1E293B] hover:bg-white'}`}>
             <Layers size={14} /> Control de Lotes
           </button>
         </div>
@@ -239,7 +239,7 @@ export const Inventario: React.FC<InventarioProps> = ({ onNavigate }) => {
         onClearFilters={handleClearFilters}
       />
 
-      <div className="flex-1 px-3 sm:px-6 lg:px-8 min-h-0 flex flex-col relative pb-8">
+      <div className="flex-1 px-3 lg:px-4 min-h-0 flex flex-col relative pb-8">
         <div className={`flex-1 min-h-0 ${vistaActiva === 'PRODUCTOS' ? 'flex flex-col' : 'hidden'}`}>
           {/* PASAMOS LOS DATOS PAGINADOS A LA TABLA */}
           <TablaProductos 

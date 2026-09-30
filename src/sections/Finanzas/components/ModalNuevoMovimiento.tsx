@@ -69,10 +69,10 @@ export const ModalNuevoMovimiento: React.FC<Props> = ({ isOpen, onClose, onSucce
           
           {/* NUEVO SELECTOR DE FLUJO (INTERNO / EXTERNO) */}
           <div className="flex bg-[#F8FAFC] border-2 border-[#1E293B] p-1 rounded-none">
-            <button onClick={() => setFlujo('INTERNO')} className={`flex-1 py-2 text-[10px] font-black uppercase transition-colors rounded-none cursor-pointer ${flujo === 'INTERNO' ? 'bg-[#1E293B] text-white shadow-sm' : 'text-[#64748B] hover:bg-[#E2E8F0]'}`}>
+            <button onClick={() => setFlujo('INTERNO')} className={`flex-1 py-2 text-[12px] font-black uppercase transition-colors rounded-none cursor-pointer ${flujo === 'INTERNO' ? 'bg-[#1E293B] text-white shadow-sm' : 'text-[#64748B] hover:bg-[#E2E8F0]'}`}>
               Caja Interna (Negocio)
             </button>
-            <button onClick={() => setFlujo('EXTERNO')} className={`flex-1 py-2 text-[10px] font-black uppercase transition-colors rounded-none cursor-pointer ${flujo === 'EXTERNO' ? 'bg-[#1E293B] text-white shadow-sm' : 'text-[#64748B] hover:bg-[#E2E8F0]'}`}>
+            <button onClick={() => setFlujo('EXTERNO')} className={`flex-1 py-2 text-[12px] font-black uppercase transition-colors rounded-none cursor-pointer ${flujo === 'EXTERNO' ? 'bg-[#1E293B] text-white shadow-sm' : 'text-[#64748B] hover:bg-[#E2E8F0]'}`}>
               Caja Externa (Personal)
             </button>
           </div>
@@ -87,17 +87,17 @@ export const ModalNuevoMovimiento: React.FC<Props> = ({ isOpen, onClose, onSucce
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Monto (S/)</label>
+            <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Monto (S/)</label>
             <input type="number" value={monto} onChange={(e) => setMonto(e.target.value)} placeholder="0.00" className="w-full bg-[#F8FAFC] border-2 border-[#1E293B] p-2 text-lg font-black outline-none focus:border-[#3B82F6] rounded-none"/>
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Motivo / Descripción</label>
+            <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Motivo / Descripción</label>
             <input type="text" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} placeholder="Ej. Pago a proveedor, Pasajes..." className="w-full bg-[#F8FAFC] border-2 border-[#1E293B] p-2 text-xs font-black uppercase outline-none focus:border-[#3B82F6] rounded-none"/>
           </div>
 
           <div className="space-y-1">
-            <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Método</label>
+            <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Método</label>
             <select value={metodoPago} onChange={(e) => setMetodoPago(e.target.value)} className="w-full bg-[#F8FAFC] border-2 border-[#1E293B] p-2 text-xs font-black uppercase outline-none focus:border-[#3B82F6] rounded-none cursor-pointer">
               <option value="EFECTIVO">EFECTIVO</option>
               <option value="YAPE">YAPE</option>

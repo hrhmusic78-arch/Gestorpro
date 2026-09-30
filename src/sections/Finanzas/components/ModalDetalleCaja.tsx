@@ -124,17 +124,17 @@ export const ModalDetalleCaja: React.FC<Props> = ({ isOpen, onClose, caja }) => 
 
                 <h3 className="font-black text-lg uppercase">Resumen de Caja</h3>
 
-                <p className="text-[10px] font-bold">ID: {caja.id}</p>
+                <p className="text-[12px] font-bold">ID: {caja.id}</p>
 
-                <p className="text-[9px]">Desde: {new Date(caja.opened_at).toLocaleString()}</p>
+                <p className="text-[12px]">Desde: {new Date(caja.opened_at).toLocaleString()}</p>
 
-                <p className="text-[9px]">Hasta: {new Date(caja.closed_at).toLocaleString()}</p>
+                <p className="text-[12px]">Hasta: {new Date(caja.closed_at).toLocaleString()}</p>
 
               </div>
 
 
 
-              <table className="w-full text-[10px] mb-4">
+              <table className="w-full text-[12px] mb-4">
 
                 <thead>
 

@@ -87,11 +87,11 @@ export const TablaUsuarios: React.FC = () => {
       {/* TABLA */}
       <div className="overflow-x-auto min-h-[200px]">
         {loading ? (
-          <div className="flex justify-center items-center h-full p-4 sm:p-6 lg:p-8 short:py-4 text-[#64748B] font-mono gap-2">
+          <div className="flex justify-center items-center h-full p-3 lg:p-4 text-[#64748B] font-mono gap-2">
             <Loader2 className="animate-spin" size={18} /> Cargando empleados...
           </div>
         ) : usuarios.length === 0 ? (
-          <div className="flex justify-center items-center h-full p-4 sm:p-6 lg:p-8 short:py-4 text-[#64748B] font-mono">
+          <div className="flex justify-center items-center h-full p-3 lg:p-4 text-[#64748B] font-mono">
             No hay empleados registrados todavía.
           </div>
         ) : (
@@ -112,13 +112,13 @@ export const TablaUsuarios: React.FC = () => {
                     <div className="text-xs text-[#64748B] font-mono">{usuario.email}</div>
                   </td>
                   <td className="p-4">
-                    <span className="bg-[#E2E8F0] text-[#475569] text-[10px] px-2 py-1 font-bold uppercase tracking-wider rounded-sm flex w-fit items-center gap-1">
+                    <span className="bg-[#E2E8F0] text-[#475569] text-[12px] px-2 py-1 font-bold uppercase tracking-wider rounded-sm flex w-fit items-center gap-1">
                       {usuario.rol === 'Administrador' && <ShieldAlert size={12} className="text-red-500" />}
                       {usuario.rol}
                     </span>
                   </td>
                   <td className="p-4 text-center">
-                    <span className={`text-[10px] px-2 py-1 font-bold uppercase tracking-wider rounded-sm ${
+                    <span className={`text-[12px] px-2 py-1 font-bold uppercase tracking-wider rounded-sm ${
                       usuario.estado === 'ACTIVO' ? 'bg-[#D1FAE5] text-[#059669]' : 'bg-[#FEE2E2] text-[#DC2626]'
                     }`}>
                       {usuario.estado}

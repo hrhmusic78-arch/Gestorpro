@@ -92,13 +92,13 @@ export const ModalAbono: React.FC<Props> = ({ isOpen, onClose, onConfirm, fiado 
         {/* BODY */}
         <div className="p-6 bg-[#F8FAFC] flex flex-col gap-4">
           <div className="bg-[#1E293B] text-white p-4 text-center border-2 border-[#1E293B] rounded-none">
-            <p className="text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">Saldo Actual de la Deuda</p>
+            <p className="text-[12px] font-bold text-[#94A3B8] uppercase tracking-widest">Saldo Actual de la Deuda</p>
             <p className="text-xl sm:text-3xl font-black text-[#EF4444]">S/ {saldoPendiente.toFixed(2)}</p>
-            <p className="text-[10px] font-bold uppercase mt-1">Cliente: {fiado.clienteNombre}</p>
+            <p className="text-[12px] font-bold uppercase mt-1">Cliente: {fiado.clienteNombre}</p>
           </div>
 
           <div className="space-y-3 mt-2">
-            <p className="text-[10px] font-black uppercase text-[#64748B] mb-2">Ingresa los montos por método de pago:</p>
+            <p className="text-[12px] font-black uppercase text-[#64748B] mb-2">Ingresa los montos por método de pago:</p>
             
             {/* EFECTIVO */}
             <div className="flex items-center gap-3 bg-white p-2 border-2 border-[#E2E8F0] focus-within:border-[#10B981] transition-colors rounded-none">
@@ -152,11 +152,11 @@ export const ModalAbono: React.FC<Props> = ({ isOpen, onClose, onConfirm, fiado 
           {/* RESUMEN DEL ABONO */}
           <div className="mt-2 bg-[#FEF2F2] border-2 border-[#EF4444] p-3 flex justify-between items-center rounded-none">
             <div>
-              <p className="text-[10px] font-black uppercase text-[#EF4444]">Total a Abonar</p>
+              <p className="text-[12px] font-black uppercase text-[#EF4444]">Total a Abonar</p>
               <p className="text-sm font-black text-[#1E293B]">S/ {totalAbono.toFixed(2)}</p>
             </div>
             <div className="text-right">
-              <p className="text-[10px] font-black uppercase text-[#EF4444]">Deuda Restante</p>
+              <p className="text-[12px] font-black uppercase text-[#EF4444]">Deuda Restante</p>
               <p className="text-lg font-black text-[#EF4444] leading-none">S/ {Math.max(0, nuevoSaldo).toFixed(2)}</p>
             </div>
           </div>
@@ -164,11 +164,11 @@ export const ModalAbono: React.FC<Props> = ({ isOpen, onClose, onConfirm, fiado 
 
         {/* FOOTER */}
         <div className="p-4 bg-white border-t-2 border-[#E2E8F0] flex justify-end gap-3 rounded-none">
-          <button onClick={onClose} className="px-4 py-2 bg-white border-2 border-[#E2E8F0] text-[#64748B] text-[10px] font-black uppercase hover:border-[#1E293B] hover:text-[#1E293B] transition-colors cursor-pointer rounded-none">Cancelar</button>
+          <button onClick={onClose} className="px-4 py-2 bg-white border-2 border-[#E2E8F0] text-[#64748B] text-[12px] font-black uppercase hover:border-[#1E293B] hover:text-[#1E293B] transition-colors cursor-pointer rounded-none">Cancelar</button>
           <button 
             onClick={handleConfirm} 
             disabled={isSaving}
-            className={`px-6 py-2 border-2 border-[#1E293B] text-[10px] font-black uppercase transition-all shadow-[2px_2px_0_0_#1E293B] rounded-none ${
+            className={`px-6 py-2 border-2 border-[#1E293B] text-[12px] font-black uppercase transition-all shadow-[2px_2px_0_0_#1E293B] rounded-none ${
               isSaving 
                 ? 'bg-[#E2E8F0] text-[#94A3B8] cursor-not-allowed shadow-none translate-x-[2px] translate-y-[2px]' 
                 : 'bg-[#10B981] text-[#1E293B] hover:bg-[#1E293B] hover:text-[#10B981] cursor-pointer hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]'

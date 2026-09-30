@@ -15,7 +15,7 @@ export const TarjetasResumen: React.FC<Props> = ({ ingresos, costos, mermas, gas
   return (
     <div className="flex flex-col gap-3 font-sans">
       {filtrado && (
-        <div className="flex items-center gap-2 text-[10px] font-black text-[#065F46] uppercase tracking-widest">
+        <div className="flex items-center gap-2 text-[12px] font-black text-[#065F46] uppercase tracking-widest">
           <Filter size={12} strokeWidth={3} />
           Mostrando totales solo de los productos filtrados en la tabla
         </div>
@@ -26,7 +26,7 @@ export const TarjetasResumen: React.FC<Props> = ({ ingresos, costos, mermas, gas
             <ArrowUpFromLine size={24} strokeWidth={2} />
           </div>
           <div>
-            <p className="text-[10px] font-black text-[#64748B] uppercase tracking-tighter">Ingreso Total Bruto</p>
+            <p className="text-[12px] font-black text-[#64748B] uppercase tracking-tighter">Ingreso Total Bruto</p>
             <p className="text-lg sm:text-2xl font-bold break-all text-[#1E293B] font-mono">S/ {ingresos.toFixed(2)}</p>
           </div>
         </div>
@@ -36,7 +36,7 @@ export const TarjetasResumen: React.FC<Props> = ({ ingresos, costos, mermas, gas
             <ArrowDownToLine size={24} strokeWidth={2} />
           </div>
           <div>
-            <p className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest">Inversión (Costo)</p>
+            <p className="text-[12px] font-bold text-[#64748B] uppercase tracking-widest">Inversión (Costo)</p>
             <p className="text-lg sm:text-2xl font-bold break-all text-[#1E293B] font-mono">S/ {costos.toFixed(2)}</p>
           </div>
         </div>
@@ -46,7 +46,7 @@ export const TarjetasResumen: React.FC<Props> = ({ ingresos, costos, mermas, gas
             <Activity size={24} strokeWidth={2} />
           </div>
           <div>
-            <p className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest">Pérdida Mermas</p>
+            <p className="text-[12px] font-bold text-[#64748B] uppercase tracking-widest">Pérdida Mermas</p>
             <p className="text-lg sm:text-2xl font-bold break-all text-[#1E293B] font-mono">S/ {mermas.toFixed(2)}</p>
           </div>
         </div>
@@ -56,7 +56,7 @@ export const TarjetasResumen: React.FC<Props> = ({ ingresos, costos, mermas, gas
             <Wallet size={24} strokeWidth={2} />
           </div>
           <div>
-            <p className="text-[10px] font-bold text-[#64748B] uppercase tracking-widest">Gastos Operativos</p>
+            <p className="text-[12px] font-bold text-[#64748B] uppercase tracking-widest">Gastos Operativos</p>
             <p className="text-lg sm:text-2xl font-bold break-all text-[#1E293B] font-mono">S/ {gastosOperativos.toFixed(2)}</p>
           </div>
         </div>
@@ -66,7 +66,7 @@ export const TarjetasResumen: React.FC<Props> = ({ ingresos, costos, mermas, gas
             <DollarSign size={28} strokeWidth={2.5} />
           </div>
           <div>
-            <p className="text-[10px] font-black text-[#ECFDF5] uppercase tracking-widest">Utilidad Neta</p>
+            <p className="text-[12px] font-black text-[#ECFDF5] uppercase tracking-widest">Utilidad Neta</p>
             <p className="text-xl sm:text-3xl font-black text-white font-mono">S/ {utilidad.toFixed(2)}</p>
           </div>
         </div>

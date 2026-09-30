@@ -13,7 +13,7 @@ export const EtiquetaStock: React.FC<Props> = ({ qty, minStock, unit }) => {
   // 1. CASO EXCEPCIONAL: CONSUMO INTERNO (Sin alertas, bloque estático)
   if (String(unit).toUpperCase().includes('CONSUMO')) {
     return (
-      <div className="inline-flex items-center gap-1.5 px-3 py-1 border border-[#E2E8F0] bg-[#F8FAFC] text-[#64748B] font-black text-[10px] uppercase tracking-widest rounded-none" title="Producto de Uso Interno o Servicio">
+      <div className="inline-flex items-center gap-1.5 px-3 py-1 border border-[#E2E8F0] bg-[#F8FAFC] text-[#64748B] font-black text-[12px] uppercase tracking-widest rounded-none" title="Producto de Uso Interno o Servicio">
         <Coffee size={12} />
         CONSUMO
       </div>
@@ -34,7 +34,7 @@ export const EtiquetaStock: React.FC<Props> = ({ qty, minStock, unit }) => {
   return (
     <div className={`inline-flex items-center gap-1.5 px-3 py-1 border font-black text-xs uppercase tracking-widest rounded-none ${colorClass}`}>
       {alertIcon && <AlertTriangle size={12} />}
-      {formatearCantidad(qty, unit)} <span className="opacity-70 text-[10px]">{unit}</span>
+      {formatearCantidad(qty, unit)} <span className="opacity-70 text-[12px]">{unit}</span>
     </div>
   );
 };

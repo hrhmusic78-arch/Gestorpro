@@ -347,7 +347,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
               <h2 className="text-sm font-black uppercase tracking-widest text-[#10B981]">
                 {step === 1 ? 'Paso 1: Naturaleza del Producto' : 'Paso 2: Detalles del Producto'}
               </h2>
-              <p className="text-[9px] font-bold opacity-80 uppercase tracking-widest">
+              <p className="text-[12px] font-bold opacity-80 uppercase tracking-widest">
                 {step === 1 ? 'Selecciona cómo se controlará el stock' : `Configurando producto por ${nature}`}
               </p>
             </div>
@@ -358,7 +358,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
         </div>
 
         {/* CUERPO DEL MODAL */}
-        <div className="p-4 sm:p-6 lg:p-8 short:py-4 overflow-y-auto custom-scrollbar bg-[#F8FAFC] flex-1">
+        <div className="p-3 lg:p-4 overflow-y-auto custom-scrollbar bg-[#F8FAFC] flex-1">
           
           {/* VISTA 1: SELECCIÓN DE NATURALEZA */}
           {step === 1 && (
@@ -374,7 +374,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
                 </div>
                 <div>
                   <h3 className="text-xs font-black text-[#1E293B] uppercase tracking-widest mb-2">Por Unidad</h3>
-                  <p className="text-[9px] font-bold text-[#64748B] uppercase">Productos que se cuentan por piezas enteras (botellas, cajas, latas).</p>
+                  <p className="text-[12px] font-bold text-[#64748B] uppercase">Productos que se cuentan por piezas enteras (botellas, cajas, latas).</p>
                 </div>
               </button>
 
@@ -388,7 +388,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
                 </div>
                 <div>
                   <h3 className="text-xs font-black text-[#1E293B] uppercase tracking-widest mb-2">Por Peso / Granel</h3>
-                  <p className="text-[9px] font-bold text-[#64748B] uppercase">Productos que requieren balanza o medida fraccionada (KG, GR, Litros).</p>
+                  <p className="text-[12px] font-bold text-[#64748B] uppercase">Productos que requieren balanza o medida fraccionada (KG, GR, Litros).</p>
                 </div>
               </button>
 
@@ -402,7 +402,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
                 </div>
                 <div>
                   <h3 className="text-xs font-black text-[#1E293B] uppercase tracking-widest mb-2">Uso Interno / Servicio</h3>
-                  <p className="text-[9px] font-bold text-[#64748B] uppercase">Insumos de consumo propio o servicios que no requieren stock estricto.</p>
+                  <p className="text-[12px] font-bold text-[#64748B] uppercase">Insumos de consumo propio o servicios que no requieren stock estricto.</p>
                 </div>
               </button>
 
@@ -419,7 +419,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
               </div>
 
               <div className="md:col-span-2 space-y-2">
-                <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Nombre / Descripción del Producto</label>
+                <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Nombre / Descripción del Producto</label>
                 <input 
                   type="text"
                   placeholder="Ej: COCA COLA 3 LITROS RETORNABLE..."
@@ -431,7 +431,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
 
               <div className="space-y-2 relative">
                 <div className="flex justify-between items-center">
-                  <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Categoría</label>
+                  <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Categoría</label>
                   
                   {/* CONTROLES SUPERIORES: AGREGAR Y CERRAR */}
                   {showCatDropdown && (
@@ -446,12 +446,12 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
                             // 🔥 NUEVO: Guarda en la DB cuando haces clic en Agregar
                             await supabase.from('categories').insert([{ id: Date.now(), name: nuevaCat, is_synced: 1 }]);
                           }}
-                          className="text-[10px] font-black text-[#10B981] uppercase hover:underline cursor-pointer flex items-center gap-1"
+                          className="text-[12px] font-black text-[#10B981] uppercase hover:underline cursor-pointer flex items-center gap-1"
                         >
                           + AGREGAR "{formData.category}"
                         </button>
                       )}
-                      <button onClick={() => setShowCatDropdown(false)} className="text-[9px] font-bold text-[#EF4444] uppercase hover:underline cursor-pointer">
+                      <button onClick={() => setShowCatDropdown(false)} className="text-[12px] font-bold text-[#EF4444] uppercase hover:underline cursor-pointer">
                         Cerrar Lista
                       </button>
                     </div>
@@ -508,8 +508,8 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
                         ))
                       ) : (
                         <div className="p-4 flex flex-col items-center justify-center gap-2 bg-[#F8FAFC] text-center">
-                          <span className="text-[10px] font-bold text-[#64748B] uppercase">Categoría no encontrada.</span>
-                          <span className="text-[9px] font-bold text-[#1E293B] uppercase">Usa el botón "+ Agregar" arriba para crearla.</span>
+                          <span className="text-[12px] font-bold text-[#64748B] uppercase">Categoría no encontrada.</span>
+                          <span className="text-[12px] font-bold text-[#1E293B] uppercase">Usa el botón "+ Agregar" arriba para crearla.</span>
                         </div>
                       )}
                     </div>
@@ -518,7 +518,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Escáner (Cód. Barras)</label>
+                <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Escáner (Cód. Barras)</label>
                 <input 
                   type="text"
                   placeholder="ESCANEAR..."
@@ -530,7 +530,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
 
               {/* === SECCIÓN DE BÚSQUEDA DE IMAGEN === */}
               <div className="md:col-span-2 space-y-2 relative">
-                <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">
+                <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">
                   Buscar Imagen en Internet o Pegar URL
                 </label>
                 <div className="flex flex-col sm:flex-row gap-3 relative">
@@ -566,7 +566,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
                     />
                   </div>
                   
-                  <label className="bg-[#1E293B] text-white px-6 py-3 border-2 border-[#1E293B] font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-white hover:text-[#1E293B] transition-all cursor-pointer rounded-none shadow-[4px_4px_0_0_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] shrink-0">
+                  <label className="bg-[#1E293B] text-white px-6 py-3 border-2 border-[#1E293B] font-black text-[12px] uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-white hover:text-[#1E293B] transition-all cursor-pointer rounded-none shadow-[4px_4px_0_0_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] shrink-0">
                     <ImagePlus size={16} /> Subir Local
                     <input 
                       type="file" 
@@ -615,7 +615,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
                           </div>
                         ))}
                       </div>
-                      <div className="text-center mt-2 text-[9px] font-bold text-[#94A3B8] uppercase tracking-widest">
+                      <div className="text-center mt-2 text-[12px] font-bold text-[#94A3B8] uppercase tracking-widest">
                         Selecciona una imagen para aplicarla
                       </div>
                     </div>
@@ -634,8 +634,8 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-[10px] font-black text-[#10B981] uppercase tracking-widest">Imagen Seleccionada</p>
-                      <p className="text-[9px] text-[#64748B] truncate mt-1">{formData.image}</p>
+                      <p className="text-[12px] font-black text-[#10B981] uppercase tracking-widest">Imagen Seleccionada</p>
+                      <p className="text-[12px] text-[#64748B] truncate mt-1">{formData.image}</p>
                     </div>
                     <button 
                       onClick={() => setFormData({...formData, image: ''})}
@@ -649,7 +649,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Precio de Venta Sugerido</label>
+                <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Precio de Venta Sugerido</label>
                 <input 
                   type="number"
                   placeholder="0.00"
@@ -663,7 +663,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
 
               {nature !== 'CONSUMO' && (
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Stock Mínimo (Alerta)</label>
+                  <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Stock Mínimo (Alerta)</label>
                   <input 
                     type="number"
                     value={formData.minStock}
@@ -676,7 +676,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
               {/* CAMPOS CONDICIONALES BASADOS EN LA NATURALEZA */}
               {nature === 'PESO' && (
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-[#1E293B] uppercase tracking-widest">Unidad de Medida</label>
+                  <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest">Unidad de Medida</label>
                   <select 
                     value={formData.weightUnit}
                     onChange={(e) => setFormData({...formData, weightUnit: e.target.value})}
@@ -700,7 +700,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
               <button 
                 onClick={() => handleSave(false)}
                 disabled={!formData.name || isSubmitting}
-                className="relative -top-8 -left-8 bg-white text-[#1E293B] px-6 py-3 border-2 border-[#1E293B] font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#F8FAFC] hover:border-[#10B981] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[4px_4px_0_0_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] cursor-pointer rounded-none min-w-[140px]"
+                className="relative -top-8 -left-8 bg-white text-[#1E293B] px-6 py-3 border-2 border-[#1E293B] font-black text-[12px] uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#F8FAFC] hover:border-[#10B981] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[4px_4px_0_0_#1E293B] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] cursor-pointer rounded-none min-w-[140px]"
               >
                 {isSubmitting ? <Loader2 className="animate-spin" size={16} /> : <Save size={16} />} 
                 <span>{isSubmitting ? 'Procesando...' : 'Guardar'}</span>
@@ -710,7 +710,7 @@ export const ModalProducto: React.FC<Props> = ({ isOpen, onClose, onGoToLotes, o
                 <button 
                   onClick={() => handleSave(true)}
                   disabled={!formData.name || isSubmitting}
-                  className="relative -top-8 -left-8 bg-[#10B981] text-[#1E293B] px-6 py-3 border-2 border-[#1E293B] font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#1E293B] hover:text-[#10B981] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[4px_4px_0_0_#10B981] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] cursor-pointer rounded-none min-w-[220px]"
+                  className="relative -top-8 -left-8 bg-[#10B981] text-[#1E293B] px-6 py-3 border-2 border-[#1E293B] font-black text-[12px] uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#1E293B] hover:text-[#10B981] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[4px_4px_0_0_#10B981] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] cursor-pointer rounded-none min-w-[220px]"
                 >
                   {isSubmitting ? <Loader2 className="animate-spin" size={16} /> : <Database size={16} />}
                   <span>{isSubmitting ? 'Procesando...' : 'Guardar e ir a Lotes'}</span>
