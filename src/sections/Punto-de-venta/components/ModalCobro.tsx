@@ -329,7 +329,7 @@ interface Props {
         )}
       <div className="bg-white w-full max-w-md border-2 border-[#1E293B] shadow-[8px_8px_0_0_#1E293B] flex flex-col max-h-[calc(var(--alto-pantalla)*0.94)] sm:max-h-[calc(var(--alto-pantalla)*0.9)]">
 
-        <div className="bg-[#10B981] text-[#1E293B] px-4 py-3 flex items-center justify-between border-b-2 border-[#1E293B] shrink-0">
+        <div className="bg-[#10B981] text-[#1E293B] px-4 py-2 flex items-center justify-between border-b-2 border-[#1E293B] shrink-0">
           <h2 className="text-lg font-black uppercase tracking-widest flex items-center gap-2">
             <Calculator size={20} /> Pago Mixto
           </h2>
@@ -338,22 +338,22 @@ interface Props {
           </button>
         </div>
 
-        <div className="p-4 bg-[#F8FAFC] flex flex-col gap-3 overflow-y-auto custom-scrollbar">
+        <div className="p-3 bg-[#F8FAFC] flex flex-col gap-2 overflow-y-auto custom-scrollbar">
           {/* COLUMNA DE PAGO */}
-          <div className="flex flex-col gap-3 w-full">
-          <div className="bg-[#1E293B] text-white p-4 text-center border-2 border-[#1E293B] shadow-inner relative shrink-0">
+          <div className="flex flex-col gap-2 w-full">
+          <div className="bg-[#1E293B] text-white p-3 [@media(max-height:700px)]:py-1.5 text-center border-2 border-[#1E293B] shadow-inner relative shrink-0">
             <p className="text-[12px] font-bold text-[#94A3B8] uppercase tracking-[0.2em] mb-1">Total a Pagar</p>
-            <p className="text-2xl sm:text-4xl font-black text-[#10B981]">S/ {total.toFixed(2)}</p>
+            <p className="text-2xl sm:text-4xl [@media(max-height:700px)]:text-2xl font-black text-[#10B981]">S/ {total.toFixed(2)}</p>
           </div>
 
           <div className="flex gap-2 shrink-0">
-            <button onClick={() => pagoExacto('EFECTIVO')} className="flex-1 bg-white border-2 border-[#10B981] text-[#10B981] font-black text-[12px] uppercase py-2 hover:bg-[#10B981] hover:text-white transition-colors cursor-pointer">Exacto Efectivo</button>
-            <button onClick={() => pagoExacto('YAPE')} className="flex-1 bg-white border-2 border-[#8B5CF6] text-[#8B5CF6] font-black text-[12px] uppercase py-2 hover:bg-[#8B5CF6] hover:text-white transition-colors cursor-pointer">Exacto Yape</button>
-            <button onClick={() => pagoExacto('TARJETA')} className="flex-1 bg-white border-2 border-[#3B82F6] text-[#3B82F6] font-black text-[12px] uppercase py-2 hover:bg-[#3B82F6] hover:text-white transition-colors cursor-pointer">Exacto Tarjeta</button>
+            <button onClick={() => pagoExacto('EFECTIVO')} className="flex-1 bg-white border-2 border-[#10B981] text-[#10B981] font-black text-[12px] uppercase py-2 [@media(max-height:700px)]:py-1 hover:bg-[#10B981] hover:text-white transition-colors cursor-pointer">Exacto Efectivo</button>
+            <button onClick={() => pagoExacto('YAPE')} className="flex-1 bg-white border-2 border-[#8B5CF6] text-[#8B5CF6] font-black text-[12px] uppercase py-2 [@media(max-height:700px)]:py-1 hover:bg-[#8B5CF6] hover:text-white transition-colors cursor-pointer">Exacto Yape</button>
+            <button onClick={() => pagoExacto('TARJETA')} className="flex-1 bg-white border-2 border-[#3B82F6] text-[#3B82F6] font-black text-[12px] uppercase py-2 [@media(max-height:700px)]:py-1 hover:bg-[#3B82F6] hover:text-white transition-colors cursor-pointer">Exacto Tarjeta</button>
           </div>
 
           <div className="flex flex-col gap-2 shrink-0">
-            <div className="flex items-center justify-between bg-white border-2 border-[#E2E8F0] p-2 focus-within:border-[#10B981] transition-colors">
+            <div className="flex items-center justify-between bg-white border-2 border-[#E2E8F0] p-2 [@media(max-height:700px)]:py-0.5 focus-within:border-[#10B981] transition-colors">
               <div className="flex items-center gap-2 font-black text-[#1E293B] uppercase text-[12px]">
                 <Banknote size={16} className="text-[#10B981]"/> Efectivo
               </div>
@@ -377,7 +377,7 @@ interface Props {
                 />
               </div>
             </div>
-            <div className="flex items-center justify-between bg-white border-2 border-[#E2E8F0] p-2 focus-within:border-[#8B5CF6] transition-colors">
+            <div className="flex items-center justify-between bg-white border-2 border-[#E2E8F0] p-2 [@media(max-height:700px)]:py-0.5 focus-within:border-[#8B5CF6] transition-colors">
               <div className="flex items-center gap-2 font-black text-[#1E293B] uppercase text-[12px]">
                 <Smartphone size={16} className="text-[#8B5CF6]"/> Yape
               </div>
@@ -401,7 +401,7 @@ interface Props {
                 />
               </div>
             </div>
-            <div className="flex items-center justify-between bg-white border-2 border-[#E2E8F0] p-2 focus-within:border-[#3B82F6] transition-colors">
+            <div className="flex items-center justify-between bg-white border-2 border-[#E2E8F0] p-2 [@media(max-height:700px)]:py-0.5 focus-within:border-[#3B82F6] transition-colors">
               <div className="flex items-center gap-2 font-black text-[#1E293B] uppercase text-[12px]">
                 <CreditCard size={16} className="text-[#3B82F6]"/> Tarjeta
               </div>
@@ -425,38 +425,40 @@ interface Props {
               </div>
             </div>
           </div>
-
-          <div className="bg-white border-2 border-[#E2E8F0] p-3 flex flex-col gap-2 shrink-0">
-            <div className="flex justify-between items-center text-[12px] font-black uppercase text-[#64748B]">
-              <span>Ingresado:</span>
-              <span>S/ {totalIngresado.toFixed(2)}</span>
-            </div>
-            {faltante > 0 ? (
-              <div className="flex justify-between items-center border-t-2 border-dashed border-[#E2E8F0] pt-2">
-                <span className="text-[12px] font-black uppercase text-[#F59E0B]">Falta cobrar:</span>
-                <span className="text-lg font-black text-[#F59E0B]">S/ {faltante.toFixed(2)}</span>
-              </div>
-            ) : (
-              <div className="flex justify-between items-center border-t-2 border-dashed border-[#E2E8F0] pt-2">
-                <span className="text-[12px] font-black uppercase text-[#3B82F6]">Vuelto:</span>
-                <span className="text-xl font-black text-[#3B82F6]">S/ {vuelto.toFixed(2)}</span>
-              </div>
-            )}
-          </div>
-
-          {digitalExcedeTotal && (
-            <div role="alert" className="border-2 border-[#EF4444] bg-[#FEF2F2] text-[#B91C1C] p-2 text-[12px] font-black uppercase shrink-0">
-              Yape y tarjeta no pueden superar el total; el vuelto solo sale del efectivo.
-            </div>
-          )}
-
           </div>
 
           {!esPantallaMedia && panelFiado}
 
         </div>
 
-        <div className="flex items-center justify-between px-4 py-3 bg-[#FFFFFF] border-t-2 border-[#E2E8F0] shrink-0">
+        {/* RESUMEN FIJO: siempre visible (en la TV la zona de arriba se desplaza) */}
+        <div className="px-3 py-2 bg-[#F8FAFC] border-t-2 border-[#E2E8F0] flex flex-col gap-2 shrink-0">
+        <div className="bg-white border-2 border-[#E2E8F0] px-3 py-2 flex flex-col gap-1 [@media(max-height:700px)]:flex-row [@media(max-height:700px)]:items-center [@media(max-height:700px)]:justify-between [@media(max-height:700px)]:gap-4 shrink-0">
+          <div className="flex justify-between items-center gap-2 text-[12px] font-black uppercase text-[#64748B]">
+            <span>Ingresado:</span>
+            <span>S/ {totalIngresado.toFixed(2)}</span>
+          </div>
+          {faltante > 0 ? (
+            <div className="flex justify-between items-center border-t-2 border-dashed border-[#E2E8F0] pt-1 [@media(max-height:700px)]:border-t-0 [@media(max-height:700px)]:pt-0 [@media(max-height:700px)]:gap-3">
+              <span className="text-[12px] font-black uppercase text-[#F59E0B]">Falta cobrar:</span>
+              <span className="text-lg font-black text-[#F59E0B]">S/ {faltante.toFixed(2)}</span>
+            </div>
+          ) : (
+            <div className="flex justify-between items-center border-t-2 border-dashed border-[#E2E8F0] pt-1 [@media(max-height:700px)]:border-t-0 [@media(max-height:700px)]:pt-0 [@media(max-height:700px)]:gap-3">
+              <span className="text-[12px] font-black uppercase text-[#3B82F6]">Vuelto:</span>
+              <span className="text-xl font-black text-[#3B82F6]">S/ {vuelto.toFixed(2)}</span>
+            </div>
+          )}
+        </div>
+
+        {digitalExcedeTotal && (
+          <div role="alert" className="border-2 border-[#EF4444] bg-[#FEF2F2] text-[#B91C1C] p-2 text-[12px] font-black uppercase shrink-0">
+            Yape y tarjeta no pueden superar el total; el vuelto solo sale del efectivo.
+          </div>
+        )}
+        </div>
+
+        <div className="flex items-center justify-between px-4 py-2 [@media(max-height:700px)]:py-1 bg-[#FFFFFF] border-t-2 border-[#E2E8F0] shrink-0">
           <span className="text-[#1E293B] font-black text-[12px] uppercase tracking-widest">
             Imprimir Boleta Física
           </span>
@@ -471,11 +473,11 @@ interface Props {
           </button>
         </div>
 
-        <div className="p-4 bg-white border-t-2 border-[#1E293B] shrink-0">
+        <div className="px-4 py-3 [@media(max-height:700px)]:py-2 bg-white border-t-2 border-[#1E293B] shrink-0">
           <button 
             onClick={handleCobrar}
             disabled={!puedeConfirmar || isProcessing}
-            className={`w-full py-3 border-2 border-[#1E293B] font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2 transition-all shadow-[4px_4px_0_0_#1E293B] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] ${
+            className={`w-full py-3 [@media(max-height:700px)]:py-2 border-2 border-[#1E293B] font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2 transition-all shadow-[4px_4px_0_0_#1E293B] active:shadow-none active:translate-x-[4px] active:translate-y-[4px] ${
               (!puedeConfirmar || isProcessing) ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-70' :
               faltante > 0 ? 'bg-[#F59E0B] text-[#1E293B] cursor-pointer' : 'bg-[#1E293B] text-white hover:bg-[#10B981] hover:text-[#1E293B] cursor-pointer'
             }`}
