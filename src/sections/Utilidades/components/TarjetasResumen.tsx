@@ -26,7 +26,7 @@ export const TarjetasResumen: React.FC<Props> = ({ ingresos, costos, mermas, gas
             <ArrowUpFromLine size={24} strokeWidth={2} />
           </div>
           <div className="min-w-0">
-            <p className="text-[12px] font-black text-[#64748B] uppercase tracking-tighter">Ingreso Total Bruto</p>
+            <p className="text-[12px] font-black text-[#64748B] uppercase tracking-wider">Ingreso Total Bruto</p>
             <p className="text-lg xl:text-2xl font-bold whitespace-nowrap text-[#1E293B] font-mono">S/ {ingresos.toFixed(2)}</p>
           </div>
         </div>

@@ -114,7 +114,7 @@ export const FormularioEmpresa: React.FC = () => {
 
   return (
     <div className="bg-white border border-[#E2E8F0] shadow-sm">
-      <div className="p-4 border-b border-[#E2E8F0] bg-[#F8FAFC] flex justify-between items-center">
+      <div className="p-4 border-b border-[#E2E8F0] bg-[#F8FAFC] flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
         <div>
           <h2 className="text-[#1E293B] font-bold uppercase text-sm flex items-center gap-2">
             <Building2 size={18} className="text-[#10B981]" />
@@ -136,7 +136,7 @@ export const FormularioEmpresa: React.FC = () => {
 
       <div className="p-6 flex flex-col md:flex-row gap-3 lg:gap-4">
         {/* COLUMNA IZQUIERDA: LOGO */}
-        <div className="w-full md:w-1/3 flex flex-col items-center border-r border-dashed border-[#E2E8F0] pr-8">
+        <div className="w-full md:w-1/3 flex flex-col items-center md:border-r border-dashed border-[#E2E8F0] md:pr-8">
           <div className="w-40 h-40 border-2 border-dashed border-[#CBD5E1] bg-[#F8FAFC] flex flex-col items-center justify-center mb-4 relative overflow-hidden group">
             {logoPreview ? (
               <img src={logoPreview} alt="Logo" className="w-full h-full object-contain p-2" />

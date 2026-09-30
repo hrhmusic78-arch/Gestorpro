@@ -131,7 +131,7 @@ export const TablaAnalisisProductos: React.FC<Props> = ({ datos, fechaInicio, fe
             <option value="SIN VENTAS">SIN VENTAS</option>
           </select>
 
-          <div className="flex items-center gap-2 bg-[#FFFFFF] border border-[#1E293B] p-1.5 rounded-none">
+          <div className="flex flex-wrap items-center gap-2 bg-[#FFFFFF] border border-[#1E293B] p-1.5 rounded-none w-full sm:w-auto min-w-0">
             <div className="flex flex-col px-1.5">
               <label className="text-[11px] font-bold text-[#64748B] uppercase tracking-wider">Desde</label>
               <div className="flex items-center gap-1.5">

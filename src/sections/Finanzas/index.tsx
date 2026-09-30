@@ -329,13 +329,13 @@ export const Finanzas: React.FC = () => {
              <div className="flex border-b-2 border-[#E2E8F0] bg-[#F8FAFC] shrink-0">
                <button 
                  onClick={() => setPestañaFlujo('INTERNO')}
-                 className={`flex-1 py-3 text-xs font-black uppercase tracking-widest border-b-4 transition-colors cursor-pointer rounded-none ${pestañaFlujo === 'INTERNO' ? 'border-[#1E293B] text-[#1E293B] bg-white' : 'border-transparent text-[#94A3B8] hover:text-[#1E293B] hover:bg-white'}`}
+                 className={`flex-1 px-2 py-3 text-xs font-black uppercase tracking-normal sm:tracking-widest border-b-4 transition-colors cursor-pointer rounded-none ${pestañaFlujo === 'INTERNO' ? 'border-[#1E293B] text-[#1E293B] bg-white' : 'border-transparent text-[#94A3B8] hover:text-[#1E293B] hover:bg-white'}`}
                >
                  Movimientos Internos (Negocio)
                </button>
                <button 
                  onClick={() => setPestañaFlujo('EXTERNO')}
-                 className={`flex-1 py-3 text-xs font-black uppercase tracking-widest border-b-4 transition-colors cursor-pointer rounded-none ${pestañaFlujo === 'EXTERNO' ? 'border-[#1E293B] text-[#1E293B] bg-white' : 'border-transparent text-[#94A3B8] hover:text-[#1E293B] hover:bg-white'}`}
+                 className={`flex-1 px-2 py-3 text-xs font-black uppercase tracking-normal sm:tracking-widest border-b-4 transition-colors cursor-pointer rounded-none ${pestañaFlujo === 'EXTERNO' ? 'border-[#1E293B] text-[#1E293B] bg-white' : 'border-transparent text-[#94A3B8] hover:text-[#1E293B] hover:bg-white'}`}
                >
                  Movimientos Externos (Personal)
                </button>

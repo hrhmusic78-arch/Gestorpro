@@ -126,7 +126,7 @@ export const TicketVenta: React.FC<Props> = ({ selectedIndex = -1, colIndex = 0,
     >
       
       {/* ENCABEZADO TICKET CON BOTÓN DE PAUSAR */}
-      <div className="bg-[#1E293B] text-white p-3 sm:p-5 flex items-center justify-between shrink-0 border-b-2 border-[#1E293B]">
+      <div className="bg-[#1E293B] text-white px-3 py-2 sm:px-4 flex items-center justify-between shrink-0 border-b-2 border-[#1E293B]">
         <div className="flex flex-col">
           <h2 className="text-sm font-black uppercase tracking-widest flex items-center gap-2 text-[#10B981]">
             <ShoppingCart size={18} /> Caja Actual

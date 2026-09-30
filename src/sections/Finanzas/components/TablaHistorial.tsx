@@ -16,7 +16,7 @@ export const TablaHistorial: React.FC<Props> = ({ historialCajas, paginaActual, 
 
   // EXTRAEMOS LA PAGINACIÓN PARA USARLA ARRIBA Y ABAJO SIN REPETIR CÓDIGO
   const ControlesPaginacion = () => (
-    <div className="bg-[#FFFFFF] border-b-2 border-[#1E293B] p-4 flex justify-between items-center shrink-0 rounded-none">
+    <div className="bg-[#FFFFFF] border-b-2 border-[#1E293B] p-3 sm:p-4 flex justify-between items-center gap-2 shrink-0 rounded-none">
       <button
         disabled={paginaActual === 1}
         onClick={() => onPageChange(paginaActual - 1)}
@@ -42,7 +42,7 @@ export const TablaHistorial: React.FC<Props> = ({ historialCajas, paginaActual, 
     <div className="bg-[#FFFFFF] border-2 border-[#1E293B] shadow-[8px_8px_0_0_#1E293B] flex flex-col animate-fade-in rounded-none mb-8">
       
       {/* HEADER */}
-      <div className="bg-[#1E293B] text-[#FFFFFF] p-4 flex justify-between items-center shrink-0 rounded-none">
+      <div className="bg-[#1E293B] text-[#FFFFFF] p-3 sm:p-4 flex flex-wrap justify-between items-center gap-2 shrink-0 rounded-none">
         <h2 className="font-black uppercase tracking-widest text-sm flex items-center gap-2">
           <ReceiptText size={18} /> Historial de Cajas Cerradas
         </h2>

@@ -551,7 +551,7 @@ const [searchQuery, setSearchQuery] = useState('');
       </div>
       
       {/* 🛡️ CONTENEDOR DERECHO EVICAMP: MINI REPORTE + CAJA ALINEADA */}
-      <div className={`${vistaMovil === 'ticket' ? 'flex' : 'hidden'} lg:flex flex-col flex-1 lg:flex-none lg:h-full gap-2 lg:gap-0 shrink-0 z-10 relative w-full lg:w-[380px] xl:w-[420px] min-h-0`}>
+      <div className={`${vistaMovil === 'ticket' ? 'flex' : 'hidden'} lg:flex flex-col flex-1 lg:flex-none lg:h-full gap-2 lg:gap-0 shrink-0 z-10 relative w-full lg:w-[420px] xl:w-[480px] 2xl:w-[560px] min-h-0`}>
         <MiniReporteDiario refreshTrigger={refreshReport} />
         
         {/* 🛡️ GEOMETRÍA PERFECTA: Flex-1 y min-h-0 hacen que se estire exactamente al ras del panel izquierdo */}

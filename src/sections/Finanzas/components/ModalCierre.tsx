@@ -33,7 +33,7 @@ const BloqueArqueo: React.FC<BloqueArqueoProps> = ({ icono, color, titulo, esper
         <span className="text-[12px] font-black uppercase tracking-widest flex items-center gap-2" style={{ color }}>
           {icono} {titulo}
         </span>
-        <span className="text-xs font-bold text-[#64748B]">Espera: S/ {esperado.toFixed(2)}</span>
+        <span className="text-xs font-bold text-[#64748B] whitespace-nowrap">Espera: S/ {esperado.toFixed(2)}</span>
       </div>
       <input
         type="number"

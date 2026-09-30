@@ -316,7 +316,7 @@ export const ModalLote: React.FC<Props> = ({ isOpen, onClose, productos, initial
           </div>
 
           {/* 2. CANTIDAD Y COSTO TOTAL */}
-          <div className="grid grid-cols-2 gap-4 border-t-2 border-[#E2E8F0] pt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t-2 border-[#E2E8F0] pt-6">
             <div className="space-y-2">
               <label className="text-[12px] font-black text-[#1E293B] uppercase tracking-widest flex justify-between">
                 <span>2. Cantidad *</span>
